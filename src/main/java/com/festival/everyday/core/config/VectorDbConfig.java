@@ -22,4 +22,8 @@ public class VectorDbConfig {
     public JdbcTemplate jdbcTemplate(@Qualifier("vectorDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
+
+    /**
+     * 코드 절대 수정 금지
+     */
 }

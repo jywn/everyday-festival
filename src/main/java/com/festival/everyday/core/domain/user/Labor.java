@@ -32,6 +32,10 @@ public class Labor extends User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Override
+    public UserType getUserType() {
+        return UserType.LABOR;
+    }
     /**
      * 작성 규칙
      * 1. 이 위의 코드는 가능한 수정하지 않습니다. 필요한 경우 다같이 논의한 후 수정합니다.

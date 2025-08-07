@@ -1,7 +1,11 @@
 package com.festival.everyday.core.domain.favorite;
 
+import com.festival.everyday.core.domain.user.User;
+import com.festival.everyday.core.domain.user.UserType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -15,28 +19,49 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name ="favorite")
+@NoArgsConstructor
 public class Favorite {
 
     @Id @GeneratedValue
     @Column(name = "favorite_id")
     private Long id;
 
-    @Column(name = "sender_id", nullable = false)
-    private Long senderId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "sender_type", nullable = false)
-    private ActorType senderType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
+    private User sender;
 
     @Column(name = "receiver_id", nullable = false)
     private Long receiverId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "receiver_type", nullable = false)
-    private ActorType receiverType;
+    private FavoredType receiverType;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    /**
+     * 자기가 보낸 찜 목록만 조회 가능하다.
+     * 자신이 받은 찜은 조회가 불가능하다.
+     */
+    public static Favorite create(User user, Long receiverId, FavoredType receiverType) {
+        Favorite favorite = new Favorite();
+        favorite.sender = user;
+        favorite.receiverId = receiverId;
+        favorite.receiverType = receiverType;
+
+        return favorite;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public void setReceiver(Long receiverId, FavoredType receiverType) {
+        this.receiverId = receiverId;
+        this.receiverType = receiverType;
+    }
+
 
     /**
      * 작성 규칙

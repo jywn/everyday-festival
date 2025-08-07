@@ -32,6 +32,16 @@ public class ExtraQuestion {
     @JoinColumn(name = "application_id")
     private Application application;
 
+    public void changeApplication(Application application) {
+        this.application = application;
+    }
+
+    public static ExtraQuestion of(String content, Application application) {
+        ExtraQuestion extraQuestion = new ExtraQuestion();
+        extraQuestion.content = content;
+        application.addQuestion(extraQuestion);
+        return extraQuestion;
+    }
     /**
      * 작성 규칙
      * 1. 이 위의 코드는 가능한 수정하지 않습니다. 필요한 경우 다같이 논의한 후 수정합니다.

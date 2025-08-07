@@ -4,6 +4,7 @@ import com.festival.everyday.core.domain.Festival;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,17 @@ public class Holder extends User {
     private String name;
 
     @OneToMany(mappedBy = "holder")
-    private List<Festival> festivals;
+    private List<Festival> festivals = new ArrayList<>();
+
+    public void addFestival(Festival festival) {
+        festivals.add(festival);
+        festival.uploadFestival(this);
+    }
+
+    @Override
+    public UserType getUserType() {
+        return UserType.HOLDER;
+    }
 
     /**
      * 작성 규칙

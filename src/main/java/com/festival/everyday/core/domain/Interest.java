@@ -1,8 +1,11 @@
 package com.festival.everyday.core.domain;
 
+import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 축제 -> 업체 관심 보내기
@@ -11,6 +14,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name ="interest")
 public class Interest {
 
@@ -33,6 +37,14 @@ public class Interest {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")
     private Festival festival;
+
+    /**
+     * 축제와 업체의 관심 관계를 연결합니다.
+     */
+    public Interest(Festival festival, Company company) {
+        this.festival = new Festival();
+        this.company = new Company();
+    }
 
     /**
      * 작성 규칙

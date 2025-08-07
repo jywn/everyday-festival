@@ -27,6 +27,18 @@ public class ExtraAnswer {
     @JoinColumn(name = "application_id")
     private Application application;
 
+
+    public void changeApplication(Application application) {
+        this.application = application;
+    }
+
+    public static ExtraAnswer create(String content, Application application) {
+        ExtraAnswer extraAnswer = new ExtraAnswer();
+        extraAnswer.content = content;
+        application.addExtraAnswer(extraAnswer);
+        return extraAnswer;
+    }
+
     /**
      * 작성 규칙
      * 1. 이 위의 코드는 가능한 수정하지 않습니다. 필요한 경우 다같이 논의한 후 수정합니다.

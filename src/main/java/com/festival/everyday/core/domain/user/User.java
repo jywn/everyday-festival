@@ -1,8 +1,14 @@
 package com.festival.everyday.core.domain.user;
 
+import com.festival.everyday.core.domain.Address;
+import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.favorite.Favorite;
 import com.festival.everyday.core.domain.image.Image;
 import jakarta.persistence.*;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Holder, Company, Labor 가 상속하는 엔티티.
@@ -31,6 +37,34 @@ public abstract class User {
     @JoinColumn(name = "image_id")
     private Image image;
 
+    /**
+     * 주소를 저장하는 타입입니다.
+     * 한 엔티티에서 두 번 이상 사용되는 경우에만 컬럼 명을 지정합니다.
+     */
+    @Embedded
+    private Address address;
+
+    @OneToMany(mappedBy = "user")
+    private List<Application> applications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Favorite> favorites = new ArrayList<>();
+
+    public void uploadImage(Image image) {
+        this.image = image;
+    }
+
+    public void addFavorite(Favorite favorite) {
+        favorites.add(favorite);
+        favorite.setSender(this);
+    }
+
+    public void removeFavorite(Favorite favorite) {
+        favorites.remove(favorite);
+        favorite.setSender(null);
+    }
+
+    public abstract UserType getUserType();
     /**
      * 작성 규칙
      * 1. 이 위의 코드는 가능한 수정하지 않습니다. 필요한 경우 다같이 논의한 후 수정합니다.

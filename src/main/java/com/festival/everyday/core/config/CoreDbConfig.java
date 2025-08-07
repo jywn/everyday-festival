@@ -64,4 +64,9 @@ public class CoreDbConfig {
     ) {
         return new JpaTransactionManager(emf);
     }
+
+
+    /**
+     * 코드 절대 수정 금지
+     */
 }

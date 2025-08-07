@@ -1,6 +1,5 @@
 package com.festival.everyday.core.domain.user;
 
-import com.festival.everyday.core.domain.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -39,15 +38,13 @@ public class Company extends User {
     @Column(name = "business_registration_number")
     private String business_registration_number;
 
-    /**
-     * 주소를 저장하는 타입입니다.
-     * 한 엔티티에서 두 번 이상 사용되는 경우에만 컬럼 명을 지정합니다.
-     */
-    @Embedded
-    private Address address;
-
     @Column(name = "created_at")
     private LocalDateTime created_at;
+
+    @Override
+    public UserType getUserType() {
+        return UserType.COMPANY;
+    }
 
     /**
      * 작성 규칙

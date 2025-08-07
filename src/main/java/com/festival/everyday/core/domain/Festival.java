@@ -1,12 +1,16 @@
 package com.festival.everyday.core.domain;
 
 import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.favorite.Favorite;
 import com.festival.everyday.core.domain.image.Image;
+import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.Holder;
+import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,6 +50,13 @@ public class Festival {
     @Column(name = "festival_tel")
     private String tel;
 
+    /**
+     * 주소를 저장하는 타입입니다.
+     * 한 엔티티에서 두 번 이상 사용되는 경우에만 컬럼 명을 지정합니다.
+     */
+    @Embedded
+    private Address address;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -57,15 +68,28 @@ public class Festival {
     @Column(name = "labor_recruit")
     private RecruitingStatus laborRecruit;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image image;
 
     @OneToMany(mappedBy = "festival")
-    private List<Application> applications;
+    private List<Application> applications = new ArrayList<>();
 
     @OneToMany(mappedBy = "festival")
-    private List<Interest> interests;
+    private List<Interest> interests = new ArrayList<>();
+
+    public void uploadFestival(Holder holder) {
+        this.holder = holder;
+    }
+
+    public void uploadImage(Image image) {
+        this.image = image;
+    }
+
+    public void sendInterest(Company company) {
+        Interest interest = new Interest(this, company);
+        interests.add(interest);
+    }
 
     /**
      * 작성 규칙
