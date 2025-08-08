@@ -5,6 +5,9 @@ import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+/**
+ * 이미지 엔티티는 수정이 필요합니다.
+ */
 @Entity
 @Getter
 @Table(name ="image")
