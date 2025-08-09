@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 축제 -> 업체 관심 보내기
- * SIGNAL 은 예약어였습니다.... INTEREST로 돌아가겠습니다 ...
+ * SIGNAL 은 예약어였습니다.... INTEREST 로 돌아가겠습니다 ...
  */
 
 @Entity

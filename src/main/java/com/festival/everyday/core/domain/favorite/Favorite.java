@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name ="favorite")
-@NoArgsConstructor
 public class Favorite {
 
     @Id @GeneratedValue

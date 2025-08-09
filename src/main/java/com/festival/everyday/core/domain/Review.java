@@ -27,10 +27,16 @@ public class Review {
     @Column(name = "review_content")
     private String content;
 
+    /**
+     * festival, company, labor
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     private User sender;
 
+    /**
+     * festival, company
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private User receiver;

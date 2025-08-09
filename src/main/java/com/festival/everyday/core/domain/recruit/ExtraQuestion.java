@@ -39,7 +39,7 @@ public class ExtraQuestion {
     public static ExtraQuestion of(String content, Application application) {
         ExtraQuestion extraQuestion = new ExtraQuestion();
         extraQuestion.content = content;
-        application.addQuestion(extraQuestion);
+        application.addExtraQuestion(extraQuestion);
         return extraQuestion;
     }
     /**

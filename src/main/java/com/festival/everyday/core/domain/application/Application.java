@@ -36,7 +36,7 @@ public class Application {
     private Festival festival;
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExtraQuestion> questions = new ArrayList<>();
+    private List<ExtraQuestion> extraQuestions = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
@@ -55,13 +55,13 @@ public class Application {
      * 질문/답변을 등록하고 제거하는 메서드입니다.
      * 해당 메서드들은 주인 엔티티 (답변, 추가질문 등) 에서만 호출 가능하빈다.
      */
-    public void addQuestion(ExtraQuestion extraQuestion) {
-        questions.add(extraQuestion);
+    public void addExtraQuestion(ExtraQuestion extraQuestion) {
+        extraQuestions.add(extraQuestion);
         extraQuestion.changeApplication(this);
     }
 
-    public void removeQuestion(ExtraQuestion extraQuestion) {
-        questions.remove(extraQuestion);
+    public void removeExtraQuestion(ExtraQuestion extraQuestion) {
+        extraQuestions.remove(extraQuestion);
         extraQuestion.changeApplication(null);
     }
 

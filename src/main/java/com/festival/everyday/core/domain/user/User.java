@@ -47,7 +47,7 @@ public abstract class User {
     @OneToMany(mappedBy = "user")
     private List<Application> applications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "sender")
     private List<Favorite> favorites = new ArrayList<>();
 
     public void uploadImage(Image image) {
