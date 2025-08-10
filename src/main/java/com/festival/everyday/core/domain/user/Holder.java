@@ -2,7 +2,10 @@ package com.festival.everyday.core.domain.user;
 
 import com.festival.everyday.core.domain.Festival;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +13,10 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("Holder")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Holder extends User {
 
+    @NotBlank
     @Column(name = "holder_name")
     private String name;
 

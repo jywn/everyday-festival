@@ -1,11 +1,17 @@
 package com.festival.everyday.core.domain.user;
 
 import com.festival.everyday.core.domain.Address;
+import com.festival.everyday.core.domain.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.domain.favorite.Favorite;
 import com.festival.everyday.core.domain.image.Image;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +26,19 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @Getter
-@Table(name ="user")
-public abstract class User {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name ="users")
+public abstract class User extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
 
+    @NotBlank
     @Column(name = "user_account")
     private String account;
 
+    @NotBlank
     @Column(name = "user_password")
     private String password;
 
@@ -41,8 +50,11 @@ public abstract class User {
      * 주소를 저장하는 타입입니다.
      * 한 엔티티에서 두 번 이상 사용되는 경우에만 컬럼 명을 지정합니다.
      */
+
+    @Valid
     @Embedded
     private Address address;
+
 
     @OneToMany(mappedBy = "user")
     private List<Application> applications = new ArrayList<>();

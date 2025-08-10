@@ -1,10 +1,12 @@
 package com.festival.everyday.core.domain.application;
 
+import com.festival.everyday.core.domain.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.recruit.ExtraQuestion;
 import com.festival.everyday.core.domain.recruit.Recruit;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -21,16 +23,18 @@ import static com.festival.everyday.core.domain.application.SELECTED.*;
 @Entity
 @Getter
 @Table(name ="application")
-public class Application {
+public class Application extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue
     @Column(name = "application_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")
     private Festival festival;
@@ -43,9 +47,6 @@ public class Application {
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExtraAnswer> extraAnswers = new ArrayList<>();
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "application_selected")

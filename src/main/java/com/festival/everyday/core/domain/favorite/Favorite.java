@@ -1,8 +1,11 @@
 package com.festival.everyday.core.domain.favorite;
 
+import com.festival.everyday.core.domain.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.user.User;
 import com.festival.everyday.core.domain.user.UserType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,25 +22,25 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name ="favorite")
-public class Favorite {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Favorite extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue
     @Column(name = "favorite_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sender_id")
     private User sender;
 
+    @NotNull
     @Column(name = "receiver_id", nullable = false)
     private Long receiverId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "receiver_type", nullable = false)
     private FavoredType receiverType;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     /**
      * 자기가 보낸 찜 목록만 조회 가능하다.

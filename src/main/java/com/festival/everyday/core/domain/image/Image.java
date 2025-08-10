@@ -3,7 +3,10 @@ package com.festival.everyday.core.domain.image;
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 이미지 엔티티는 수정이 필요합니다.
@@ -20,8 +23,11 @@ public class Image {
     @Column(name = "image_id")
     private Long id;
 
+    @NotBlank
     @Column(name = "image_url")
     private String url;
+
+
 
     /**
      * 작성 규칙

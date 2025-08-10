@@ -1,13 +1,18 @@
 package com.festival.everyday.core.domain.recruit;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("CompanyRecruit")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CompanyRecruit extends Recruit {
 
+    @NotBlank
     @Column(name = "company_preferred")
     private String preferred;
 
