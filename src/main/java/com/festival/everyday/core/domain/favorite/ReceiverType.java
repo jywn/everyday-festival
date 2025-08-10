@@ -1,7 +1,7 @@
-package com.festival.everyday.core.domain.user;
+package com.festival.everyday.core.domain.favorite;
 
-public enum Category {
-    ART, ENTERTAINMENT, EXPERIENCE, SALE, FOOD, CAMPAIGN, ETC
+public enum ReceiverType {
+    FESTIVAL, COMPANY
 
     /**
      * ~ 연관 관계 설정 메서드
