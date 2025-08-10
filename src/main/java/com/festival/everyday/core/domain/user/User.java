@@ -5,7 +5,9 @@ import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.domain.favorite.Favorite;
 import com.festival.everyday.core.domain.image.Image;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,8 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @Getter
-@Table(name ="user")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name ="users")
 public abstract class User {
 
     @Id @GeneratedValue
@@ -47,7 +50,7 @@ public abstract class User {
     @OneToMany(mappedBy = "user")
     private List<Application> applications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "sender")
     private List<Favorite> favorites = new ArrayList<>();
 
     public void uploadImage(Image image) {

@@ -1,9 +1,7 @@
 package com.festival.everyday.core.domain.favorite;
 
 import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.domain.user.UserType;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

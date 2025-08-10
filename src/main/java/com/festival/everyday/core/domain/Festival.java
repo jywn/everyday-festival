@@ -1,11 +1,9 @@
 package com.festival.everyday.core.domain;
 
 import com.festival.everyday.core.domain.application.Application;
-import com.festival.everyday.core.domain.favorite.Favorite;
 import com.festival.everyday.core.domain.image.Image;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.Holder;
-import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 

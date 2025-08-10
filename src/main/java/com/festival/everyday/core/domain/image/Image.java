@@ -1,7 +1,5 @@
 package com.festival.everyday.core.domain.image;
 
-import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 

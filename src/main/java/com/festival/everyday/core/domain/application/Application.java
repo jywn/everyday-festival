@@ -2,7 +2,6 @@ package com.festival.everyday.core.domain.application;
 
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.recruit.ExtraQuestion;
-import com.festival.everyday.core.domain.recruit.Recruit;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,7 +35,7 @@ public class Application {
     private Festival festival;
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExtraQuestion> questions = new ArrayList<>();
+    private List<ExtraQuestion> extraquestions = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
@@ -56,12 +55,12 @@ public class Application {
      * 해당 메서드들은 주인 엔티티 (답변, 추가질문 등) 에서만 호출 가능하빈다.
      */
     public void addQuestion(ExtraQuestion extraQuestion) {
-        questions.add(extraQuestion);
+        extraquestions.add(extraQuestion);
         extraQuestion.changeApplication(this);
     }
 
     public void removeQuestion(ExtraQuestion extraQuestion) {
-        questions.remove(extraQuestion);
+        extraquestions.remove(extraQuestion);
         extraQuestion.changeApplication(null);
     }
 
