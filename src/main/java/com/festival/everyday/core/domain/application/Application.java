@@ -1,9 +1,12 @@
 package com.festival.everyday.core.domain.application;
 
+import com.festival.everyday.core.domain.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.recruit.ExtraQuestion;
+import com.festival.everyday.core.domain.recruit.Recruit;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -20,31 +23,30 @@ import static com.festival.everyday.core.domain.application.SELECTED.*;
 @Entity
 @Getter
 @Table(name ="application")
-public class Application {
+public class Application extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue
     @Column(name = "application_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")
     private Festival festival;
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExtraQuestion> extraquestions = new ArrayList<>();
+    private List<ExtraQuestion> extraQuestions = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExtraAnswer> extraAnswers = new ArrayList<>();
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "application_selected")
@@ -54,13 +56,13 @@ public class Application {
      * 질문/답변을 등록하고 제거하는 메서드입니다.
      * 해당 메서드들은 주인 엔티티 (답변, 추가질문 등) 에서만 호출 가능하빈다.
      */
-    public void addQuestion(ExtraQuestion extraQuestion) {
-        extraquestions.add(extraQuestion);
+    public void addExtraQuestion(ExtraQuestion extraQuestion) {
+        extraQuestions.add(extraQuestion);
         extraQuestion.changeApplication(this);
     }
 
-    public void removeQuestion(ExtraQuestion extraQuestion) {
-        extraquestions.remove(extraQuestion);
+    public void removeExtraQuestion(ExtraQuestion extraQuestion) {
+        extraQuestions.remove(extraQuestion);
         extraQuestion.changeApplication(null);
     }
 

@@ -2,7 +2,11 @@ package com.festival.everyday.core.domain.recruit;
 import com.festival.everyday.core.domain.Period;
 import com.festival.everyday.core.domain.application.Answer;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +16,22 @@ import java.util.List;
 @DiscriminatorColumn(name = "dtype")
 @Getter
 @Table(name ="recruit")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Recruit {
 
     @Id @GeneratedValue
     @Column(name = "recruit_id")
     private Long id;
 
+    @Valid
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "begin", column = @Column(name = "recruit_begin")),
+            @AttributeOverride(name = "end", column = @Column(name = "recruit_end"))
+    })
     private Period period;
 
+    @NotBlank
     @Column(name = "notice")
     private String notice;
 

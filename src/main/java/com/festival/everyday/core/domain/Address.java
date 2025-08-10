@@ -2,6 +2,7 @@ package com.festival.everyday.core.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,12 +20,15 @@ import java.util.List;
 @Getter
 public class Address {
 
+    @NotBlank
     @Column(name = "city")
     private String city;
 
+    @NotBlank
     @Column(name = "district")
     private String district;
 
+    @NotBlank
     @Column(name = "detail")
     private String detail;
 

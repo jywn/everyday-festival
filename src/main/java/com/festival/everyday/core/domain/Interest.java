@@ -6,14 +6,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 축제 -> 업체 관심 보내기
- * SIGNAL 은 예약어였습니다.... INTEREST로 돌아가겠습니다 ...
+ * SIGNAL 은 예약어였습니다.... INTEREST 로 돌아가겠습니다 ...
  */
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name ="interest")
 public class Interest {
 
@@ -25,6 +27,7 @@ public class Interest {
      * 업체가 자신에게 관심을 표한 축제를 조회할 일은 없다.
      * 따라서 반대 방향은 설계하지 않는다.
      */
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private User company;
@@ -33,6 +36,7 @@ public class Interest {
      * 축제는 자신이 관심을 표한 업체의 지원서를 표시한다.
      * 반대 방향을 설계한다.
      */
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")
     private Festival festival;
@@ -41,8 +45,8 @@ public class Interest {
      * 축제와 업체의 관심 관계를 연결합니다.
      */
     public Interest(Festival festival, Company company) {
-        this.festival = new Festival();
-        this.company = new Company();
+        this.festival = festival;
+        this.company = company;
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.festival.everyday.core.domain.user;
 
 public enum Category {
-    FOOD, ART
+    ART, ENTERTAINMENT, EXPERIENCE, SALE, FOOD, CAMPAIGN, ETC
 
     /**
      * 작성 규칙
