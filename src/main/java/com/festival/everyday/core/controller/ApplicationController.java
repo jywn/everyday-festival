@@ -2,7 +2,6 @@ package com.festival.everyday.core.controller;
 
 import com.festival.everyday.core.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.dto.response.*;
-import com.festival.everyday.core.security.UserDetailsImpl;
 import com.festival.everyday.core.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
