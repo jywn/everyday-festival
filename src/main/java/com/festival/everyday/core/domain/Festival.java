@@ -1,7 +1,6 @@
 package com.festival.everyday.core.domain;
 
 import com.festival.everyday.core.domain.application.Application;
-import com.festival.everyday.core.domain.image.Image;
 import com.festival.everyday.core.domain.recruit.CompanyRecruit;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
 import com.festival.everyday.core.domain.user.Company;
@@ -96,10 +95,6 @@ public class Festival extends BaseCreatedAtEntity {
     @JoinColumn(name = "labor_recruit")
     private LaborRecruit laborRecruit;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "image_id")
-    private Image image;
-
     @OneToMany(mappedBy = "festival")
     private List<Application> applications = new ArrayList<>();
 
@@ -109,6 +104,12 @@ public class Festival extends BaseCreatedAtEntity {
      */
     @OneToMany(mappedBy = "festival")
     private List<Interest> interests = new ArrayList<>();
+
+    /**
+     * 축제가 잣니이 등록한 이미지를 조회할 수 있습니다.
+     * 양방향 연관관계입니다.
+     */
+
 
     /**
      * 외부에서 사용 불가능한 생성자입니다.

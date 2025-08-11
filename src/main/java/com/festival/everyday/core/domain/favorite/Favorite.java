@@ -73,13 +73,10 @@ public class Favorite extends BaseCreatedAtEntity {
 
     /**
      * 외부에서 호출 가능한 단일 공통 진입점.
-     * 좋아요 관계를 제거합니다.
-     * User 클래스에서 호출합니다.
+     * 좋아요 연관 관계를 제거합니다.
      */
-    public static void cancel(User sender, Long receiverId, ReceiverType receiverType) {
-        Favorite favorite = new Favorite(); //파라미터를 바탕으로 repository 에서 조회합니다. (임시 코드)
+    public static void cancel(User sender, Favorite favorite) {
         sender.removeFavorite(favorite);
-        // 리포지토리에서 제거합니다. (임시 코드)
     }
 
 

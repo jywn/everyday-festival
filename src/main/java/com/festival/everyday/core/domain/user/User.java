@@ -57,11 +57,6 @@ public abstract class User extends BaseCreatedAtEntity {
     @Column(name = "user_email")
     private String email;
 
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private Image image;
-
     /**
      * 주소를 저장하는 타입입니다.
      * 한 엔티티에서 두 번 이상 사용되는 경우에만 컬럼 명을 지정합니다.

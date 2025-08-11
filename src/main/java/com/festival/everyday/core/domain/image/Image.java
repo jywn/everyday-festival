@@ -1,8 +1,11 @@
 package com.festival.everyday.core.domain.image;
 
+import com.festival.everyday.core.domain.Festival;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
@@ -12,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Table(name ="image")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
 
     /**
@@ -25,7 +29,31 @@ public class Image {
     @Column(name = "image_url")
     private String url;
 
+    @NotBlank
+    @Column(name = "owner_type")
+    private OwnerType ownerType;
 
+    @NotNull
+    @Column(name = "owner_id")
+    private Long ownerId;
+
+    /**
+     * 외부 호출 불가능한 생성자.
+     * 정적 팩토리 메서드에서 사용합니다.
+     */
+    private Image(String url, OwnerType ownerType, Long ownerId) {
+        this.url = url;
+        this.ownerType = ownerType;
+        this.ownerId = ownerId;
+    }
+
+    /**
+     * 단일 공통 진입점.
+     * 이미지를 생성합니다.
+     */
+    public static Image create(String url, OwnerType ownerType, Long ownerId) {
+        return new Image(url, ownerType, ownerId);
+    }
 
     /**
      * ~ 연관 관계 설정 메서드
