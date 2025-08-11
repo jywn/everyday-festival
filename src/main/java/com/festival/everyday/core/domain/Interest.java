@@ -3,6 +3,7 @@ package com.festival.everyday.core.domain;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

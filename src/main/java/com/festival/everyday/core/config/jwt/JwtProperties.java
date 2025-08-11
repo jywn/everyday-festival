@@ -7,8 +7,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Getter
+@Setter
 @Component
-@ConfigurationProperties("jwt")
+@ConfigurationProperties(prefix = "jwt")
 public class JwtProperties {
     public  String issuer;
     public String secretKey;
