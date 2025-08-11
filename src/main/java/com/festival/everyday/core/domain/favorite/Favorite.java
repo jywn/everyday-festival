@@ -2,6 +2,7 @@ package com.festival.everyday.core.domain.favorite;
 
 import com.festival.everyday.core.domain.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.user.User;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -34,8 +35,8 @@ public class Favorite extends BaseCreatedAtEntity {
      * 내가 찜을 누른 목록을 조회해야 하므로, 양방향으로 설계한다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
     /**
@@ -66,6 +67,10 @@ public class Favorite extends BaseCreatedAtEntity {
      * 좋아요 관계를 생성합니다.
      */
     public static Favorite create(User sender, ReceiverType receiverType, Long receiverId) {
+        DomainValidator.notNull("sender", sender);
+        DomainValidator.notNull("receiver", receiverType);
+        DomainValidator.notNull("receiverId", receiverId);
+
         Favorite favorite = new Favorite(sender, receiverType, receiverId);
         sender.addFavorite(favorite);
         return favorite;

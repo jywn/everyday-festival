@@ -5,6 +5,7 @@ import com.festival.everyday.core.domain.recruit.CompanyRecruit;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.Holder;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -17,6 +18,8 @@ import org.hibernate.validator.constraints.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @Getter
@@ -33,15 +36,15 @@ public class Festival extends BaseCreatedAtEntity {
      * 양방향 연관관계입니다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "holder_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "holder_id", nullable = false)
     private Holder holder;
 
-    @NotBlank
-    @Column(name = "festival_name")
+    @NotNull
+    @Column(name = "festival_name", nullable = false)
     private String name;
 
-    @Valid
+    @NotNull
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "begin", column = @Column(name = "hold_begin")),
@@ -49,33 +52,32 @@ public class Festival extends BaseCreatedAtEntity {
     })
     private Period period;
 
-    @NotBlank
-    @Column(name = "festival_fee")
+    @NotNull
+    @Column(name = "festival_fee", nullable = false)
     private String fee;
 
-    @NotBlank
-    @Column(name = "festival_time")
+    @NotNull
+    @Column(name = "festival_time", nullable = false)
     private String time;
 
-    @NotBlank
-    @Column(name = "festival_introduction")
+    @NotNull
+    @Column(name = "festival_introduction", nullable = false)
     private String introduction;
 
     //공식 홈페이지가 없는 축제를 고려하여 공백 문자까지 허용합니다.
-    @URL
     @NotNull
-    @Column(name = "festival_link")
+    @Column(name = "festival_link", nullable = false)
     private String link;
 
-    @NotBlank
-    @Column(name = "festival_tel")
+    @NotNull
+    @Column(name = "festival_tel", nullable = false)
     private String tel;
 
     /**
      * 주소를 저장하는 타입입니다.
      * 한 엔티티에서 두 번 이상 사용되는 경우에만 컬럼 명을 지정합니다.
      */
-    @Valid
+    @NotNull
     @Embedded
     private Address address;
 
@@ -106,12 +108,6 @@ public class Festival extends BaseCreatedAtEntity {
     private List<Interest> interests = new ArrayList<>();
 
     /**
-     * 축제가 잣니이 등록한 이미지를 조회할 수 있습니다.
-     * 양방향 연관관계입니다.
-     */
-
-
-    /**
      * 외부에서 사용 불가능한 생성자입니다.
      * 정적 팩토리 메서드에서 사용합니다.
      */
@@ -130,8 +126,18 @@ public class Festival extends BaseCreatedAtEntity {
      * 단일 공통 진입점.
      * 작성한 공고를 바탕으로 축제를 생성합니다.
      */
-    public static Festival create(String name, Period period, String fee, String time, String introduction, String link, String tel, Address address) {
-        return new Festival(name, period, fee, time, fee, link, tel, address);
+    public static Festival create(Holder holder, String name, Period period, String fee, String time, String introduction, String link, String tel, Address address) {
+        notNull("name", name);
+        notNull("period", period);
+        notNull("fee", fee);
+        notNull("time", time);
+        notNull("introduction", introduction);
+        notNull("link", link);
+        notNull("tel", tel);
+        notNull("address", address);
+        Festival festival = new Festival(name, period, fee, time, fee, link, tel, address);
+        holder.addFestival(festival);
+        return festival;
     }
 
     /**

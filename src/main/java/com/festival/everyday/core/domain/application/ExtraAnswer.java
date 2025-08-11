@@ -1,6 +1,7 @@
 package com.festival.everyday.core.domain.application;
 
 import com.festival.everyday.core.domain.recruit.Recruit;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @Getter
@@ -21,13 +24,13 @@ public class ExtraAnswer {
     @Column(name = "answer_id")
     private Long id;
 
-    @NotBlank
-    @Column(name = "content")
+    @NotNull
+    @Column(name = "content", nullable = false)
     private String content;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "application_id", nullable = false)
     private Application application;
 
     /**
@@ -46,7 +49,10 @@ public class ExtraAnswer {
      */
     public static List<ExtraAnswer> createExtraAnswers(Application application, String... contents) {
         List<ExtraAnswer> extraAnswers = new ArrayList<>();
+
+        notNull("application", application);
         for (String content : contents) {
+            notNull("content", content);
             extraAnswers.add(new ExtraAnswer(application, content));
         }
 

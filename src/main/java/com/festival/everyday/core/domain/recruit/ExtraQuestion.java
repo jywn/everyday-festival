@@ -1,6 +1,7 @@
 package com.festival.everyday.core.domain.recruit;
 
 import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @Getter
@@ -21,8 +24,8 @@ public class ExtraQuestion {
     @Column(name = "extra_question_id")
     private Long id;
 
-    @NotBlank
-    @Column(name = "content")
+    @NotNull
+    @Column(name = "content", nullable = false)
     private String content;
 
     /**
@@ -31,8 +34,8 @@ public class ExtraQuestion {
      * 하지만, 반대 방향의 참조가 자주 일어나므로 편의를 위해 양방향으로 설계하였다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruit_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "recruit_id", nullable = false)
     private Recruit recruit;
 
     /**
@@ -52,7 +55,9 @@ public class ExtraQuestion {
     public static List<ExtraQuestion> createQuestions(Recruit recruit, String... contents) {
         List<ExtraQuestion> extraQuestions = new ArrayList<>();
 
+        notNull("recruit", recruit);
         for (String content : contents) {
+            notNull("content", content);
             extraQuestions.add(new ExtraQuestion(recruit, content));
         }
         recruit.addExtraQuestions(extraQuestions);

@@ -1,18 +1,14 @@
 package com.festival.everyday.core.domain.user;
 
 import com.festival.everyday.core.domain.Address;
-import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.application.Application;
-import com.festival.everyday.core.domain.recruit.Recruit;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @DiscriminatorValue("Labor")
@@ -21,14 +17,14 @@ import java.time.LocalDateTime;
 public class Labor extends User {
 
     @NotNull
-    @Column(name = "labor_age")
+    @Column(name = "labor_age", nullable = false)
     private Integer age;
 
     /**
      * MALE, FEMALE, ...
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "labor_gender")
+    @Column(name = "labor_gender", nullable = false)
     private Gender gender;
 
     @Override
@@ -51,6 +47,8 @@ public class Labor extends User {
      * Labor 를 생성합니다.
      */
     public static Labor create(String account, String password, String name, String tel, String email, Address address, Integer age, Gender gender) {
+        notNull("age", age);
+        notNull("gender", gender);
         return new Labor(account, password, name, tel, email, address, age, gender);
     }
 

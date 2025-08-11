@@ -1,6 +1,7 @@
 package com.festival.everyday.core.domain.application;
 
 import com.festival.everyday.core.domain.recruit.ExtraQuestion;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 /**
  * 어떠한 의미도 가지지 않습니다.
@@ -29,16 +32,16 @@ public class ApplicationExtraQuestion {
      * 양방향 연관관계입니다.
      * 지원서를 통해 질문을 조회합니다.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "application_id", nullable = false)
     private Application application;
 
     /**
      * 단방향 연관관계입니다.
      * 질문을 통해 지원서를 조회하지는 않습니다.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "extraQuestion_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "extraQuestion_id", nullable = false)
     private ExtraQuestion extraQuestion;
 
     /**
@@ -58,7 +61,9 @@ public class ApplicationExtraQuestion {
     public static List<ApplicationExtraQuestion> createApplicationExtraQuestions(Application application, ExtraQuestion... extraQuestions) {
         List<ApplicationExtraQuestion> applicationExtraQuestions = new ArrayList<>();
 
+        notNull("application", application);
         for (ExtraQuestion extraQuestion : extraQuestions) {
+            notNull("extraQuestion", extraQuestion);
             applicationExtraQuestions.add(new ApplicationExtraQuestion(application, extraQuestion));
         }
 
