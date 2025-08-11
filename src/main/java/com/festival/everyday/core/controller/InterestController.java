@@ -1,5 +1,6 @@
 package com.festival.everyday.core.controller;
 
+import com.festival.everyday.core.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.dto.request.InterestRequest;
 import com.festival.everyday.core.dto.response.ApiResponse;
 import com.festival.everyday.core.dto.response.InterestResponse;
@@ -19,7 +20,7 @@ public class InterestController {
     private final InterestService interestService;
 
     @PostMapping("/companies/{companyId}/interests")
-    public ResponseEntity <ApiResponse> sendInterest(@PathVariable Long companyId, @RequestBody InterestRequest request, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_ID) Long holderId, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
+    public ResponseEntity <ApiResponse> sendInterest(@PathVariable Long companyId, @RequestBody InterestRequest request, @RequestAttribute(name= TokenAuthenticationFilter.ATTR_USER_ID) Long holderId, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
     {
         InterestResponse response=interestService.createInterest(holderId,companyId,request);
 
