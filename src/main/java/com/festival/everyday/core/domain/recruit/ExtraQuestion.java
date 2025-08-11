@@ -56,6 +56,7 @@ public class ExtraQuestion {
         List<ExtraQuestion> extraQuestions = new ArrayList<>();
 
         notNull("recruit", recruit);
+        notNull("contents", contents);
         for (String content : contents) {
             notNull("content", content);
             extraQuestions.add(new ExtraQuestion(recruit, content));
