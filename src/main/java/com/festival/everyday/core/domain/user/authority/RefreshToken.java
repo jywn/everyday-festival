@@ -21,10 +21,10 @@ public class RefreshToken {
     @Column(name = "user_id", nullable = false)             //User의 user_id
     private Long userId;
 
-//    @Column(name = "token_hash", nullable = false, length = 128)
+//    @Column(name = "token_hash", nullable = false, length = 128)  //해쉬 값을 저장하는 방법
 //    private String tokenHash; // Refresh Token 해시 값
 
-    @Column(name = "refresh_token", nullable = false, length = 300)
+    @Column(name = "refresh_token", nullable = false, length = 300) //refresh_token을 그대로 저장
     private String refreshToken;
 
     @Column(name = "issued_at", nullable = false)       //언제 만들어졌는지
