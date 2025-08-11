@@ -4,7 +4,6 @@ import com.festival.everyday.core.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.dto.request.InterestRequest;
 import com.festival.everyday.core.dto.response.ApiResponse;
 import com.festival.everyday.core.dto.response.InterestResponse;
-import com.festival.everyday.core.security.UserDetailsImpl;
 import com.festival.everyday.core.service.InterestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,20 +1,16 @@
 package com.festival.everyday.core.domain.application;
 
-import com.festival.everyday.core.domain.BaseCreatedAtEntity;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.recruit.ExtraQuestion;
 import com.festival.everyday.core.domain.recruit.Recruit;
-import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.User;
 import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,17 +63,6 @@ public class Application extends BaseCreatedAtEntity {
      * 양방향 관계로 설정하였습니다.
      */
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-<<<<<<< HEAD
-    @OrderColumn(name="question_order") //추가함
-    private List<ExtraQuestion> questions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderColumn(name="answer_order") //추가함
-    private List<Answer> answers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderColumn(name="extra_answer_order") //추가함
-=======
     @OrderColumn(name = "application_extra_question_order")
     private List<ApplicationExtraQuestion> applicationExtraQuestions = new ArrayList<>();
 
@@ -87,7 +72,6 @@ public class Application extends BaseCreatedAtEntity {
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "extra_answer_order")
->>>>>>> main
     private List<ExtraAnswer> extraAnswers = new ArrayList<>();
 
     /**

@@ -1,20 +1,12 @@
 package com.festival.everyday.core.domain.user;
 
-import com.festival.everyday.core.domain.Address;
-import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.application.Application;
-import com.festival.everyday.core.domain.recruit.Recruit;
-import com.festival.everyday.core.domain.validate.DomainValidator;
+import com.festival.everyday.core.domain.common.value.Address;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.festival.everyday.core.domain.validate.DomainValidator.*;

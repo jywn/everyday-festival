@@ -1,4 +1,4 @@
-package com.festival.everyday.core.domain.favorite;
+package com.festival.everyday.core.domain.interaction;
 
 public enum ReceiverType {
     FESTIVAL, COMPANY
