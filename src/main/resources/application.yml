@@ -24,8 +24,14 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 50
+        jdbc:
+          batch_size: 100
 
 
 logging:
   level:
     org.hibernate.orm.jdbc.bind: trace
+
+jwt:
+  issuer: everyday.festival
+  secret_key: "KWPio$aMNRgJK&Eoo@JNgYIoOY#noOn!"

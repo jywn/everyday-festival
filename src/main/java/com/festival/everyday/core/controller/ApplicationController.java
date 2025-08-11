@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -39,9 +40,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/company-applications/{companyApplicationId}")
-    public ResponseEntity<ApiResponse> getCompanyApplicationDetail(@PathVariable Long companyApplicationId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long companyId=userDetails.getUser().getId();
-
+    public ResponseEntity<ApiResponse> getCompanyApplicationDetail(@PathVariable Long companyApplicationId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long companyId,
+                                                                   @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
         CompanyApplicationDetailResponse response=applicationService.getCompanyApplicationDetail(companyApplicationId, companyId);
 
         return ResponseEntity
@@ -49,9 +49,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/labor-applications/{laborApplicationId}")
-    public ResponseEntity<ApiResponse> getLaborApplicationDetail(@PathVariable Long laborApplicationId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long laborId=userDetails.getUser().getId();
-
+    public ResponseEntity<ApiResponse> getLaborApplicationDetail(@PathVariable Long laborApplicationId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long laborId,
+                                                                 @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
         LaborApplicationDetailResponse response=applicationService.getLaborApplicationDetail(laborApplicationId, laborId);
 
         return ResponseEntity
@@ -59,9 +58,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/company-applications")
-    public ResponseEntity<ApiResponse> getSentApplicationsForCompany(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long companyId=userDetails.getUser().getId();
-
+    public ResponseEntity<ApiResponse> getSentApplicationsForCompany(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long companyId,
+                                                                     @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
         List<CompanySentApplicationResponse> response=applicationService.getSentApplicationsForCompany(companyId);
 
         return ResponseEntity
@@ -69,9 +67,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/labor-applications")
-    public ResponseEntity<ApiResponse> getSentApplicationsForLabor(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long laborId=userDetails.getUser().getId();
-
+    public ResponseEntity<ApiResponse> getSentApplicationsForLabor(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long laborId,
+                                                                   @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
         List<LaborSentApplicationResponse> response=applicationService.getSentApplicationsForLabor(laborId);
 
         return ResponseEntity

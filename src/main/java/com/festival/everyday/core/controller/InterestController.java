@@ -9,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,9 +19,8 @@ public class InterestController {
     private final InterestService interestService;
 
     @PostMapping("/companies/{companyId}/interests")
-    public ResponseEntity <ApiResponse> sendInterest(@PathVariable Long companyId, @RequestBody InterestRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails)
+    public ResponseEntity <ApiResponse> sendInterest(@PathVariable Long companyId, @RequestBody InterestRequest request, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_ID) Long holderId, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
     {
-        Long holderId=userDetails.getUser().getId();
         InterestResponse response=interestService.createInterest(holderId,companyId,request);
 
         return ResponseEntity

@@ -1,11 +1,8 @@
 package com.festival.everyday.core.domain.application;
 
 import com.festival.everyday.core.domain.recruit.ExtraQuestion;
-import com.festival.everyday.core.domain.recruit.Recruit;
 import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,55 +12,64 @@ import java.util.List;
 
 import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
+/**
+ * 어떠한 의미도 가지지 않습니다.
+ * 다만, 추가 질문은 지원서마다 재사용합니다.
+ * 따라서 다대다 관계가 발생하였으므로, 별도의 테이블로 분리하였습니다.
+ * -> 지원서에 질문을 연결하는 엔티티가 되겠습니다.
+ */
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name ="answer")
-public class Answer {
+@Table(name = "application_extra_question")
+public class ApplicationExtraQuestion {
 
     @Id @GeneratedValue
-    @Column(name = "answer_id")
+    @Column(name = "application_extra_question_id")
     private Long id;
-
-    @NotNull
-    @Column(name = "content", nullable = false)
-    private String content;
 
     /**
      * 양방향 연관관계입니다.
-     * 지원서는 답변을 조회할 필요가 있습니다.
+     * 지원서를 통해 질문을 조회합니다.
      */
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "application_id", nullable = false)
     private Application application;
 
     /**
-     * 외부에서 호출 불가능한 메서드.
+     * 단방향 연관관계입니다.
+     * 질문을 통해 지원서를 조회하지는 않습니다.
+     */
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "extraQuestion_id", nullable = false)
+    private ExtraQuestion extraQuestion;
+
+    /**
+     * 외부 호출 불가능 생성자.
      * 정적 팩토리 메서드에서 사용합니다.
      */
-    private Answer(Application application, String content) {
+    private ApplicationExtraQuestion(Application application, ExtraQuestion extraQuestion) {
         this.application = application;
-        this.content = content;
+        this.extraQuestion = extraQuestion;
     }
 
     /**
      * 단일 공통 진입점.
      * 외부에서 호출 가능합니다.
-     * 답변을 생성합니다.
+     * 지원서와 추가 질문을 연결합니다.
      */
-    public static List<Answer> createAnswers(Application application, String... contents) {
-        List<Answer> answers = new ArrayList<>();
+    public static List<ApplicationExtraQuestion> createApplicationExtraQuestions(Application application, ExtraQuestion... extraQuestions) {
+        List<ApplicationExtraQuestion> applicationExtraQuestions = new ArrayList<>();
+
         notNull("application", application);
-        for (String content : contents) {
-            notNull("content", content);
-            answers.add(new Answer(application, content));
+        for (ExtraQuestion extraQuestion : extraQuestions) {
+            notNull("extraQuestion", extraQuestion);
+            applicationExtraQuestions.add(new ApplicationExtraQuestion(application, extraQuestion));
         }
 
-        application.addAnswers(answers);
-        return answers;
+        application.addApplicationExtraQuestions(applicationExtraQuestions);
+        return applicationExtraQuestions;
     }
-
 
     /**
      * ~ 연관 관계 설정 메서드

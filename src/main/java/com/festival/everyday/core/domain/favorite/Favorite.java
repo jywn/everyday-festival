@@ -1,13 +1,13 @@
 package com.festival.everyday.core.domain.favorite;
 
+import com.festival.everyday.core.domain.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.domain.user.UserType;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
-import lombok.Builder;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * 연관 관계가 존재하지 않습니다.
@@ -18,55 +18,81 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Getter
-@Table(name ="favorite")
-@NoArgsConstructor
-public class Favorite {
+@Table(name ="favorite",
+uniqueConstraints = @UniqueConstraint(
+        columnNames = {"sender_id", "receiver_id", "receiver_type"}
+))
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Favorite extends BaseCreatedAtEntity {
 
     @Id @GeneratedValue
     @Column(name = "favorite_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
+    /**
+     * 좋아요를 누른 사람.
+     * Holder, Labor, Company
+     * 내가 찜을 누른 목록을 조회해야 하므로, 양방향으로 설계한다.
+     */
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
+    /**
+     * 좋아요를 받은 사람.
+     * Festival, Company
+     */
+    @NotNull
     @Column(name = "receiver_id", nullable = false)
     private Long receiverId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "receiver_type", nullable = false)
-    private FavoredType receiverType;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private ReceiverType receiverType;
 
     /**
-     * 자기가 보낸 찜 목록만 조회 가능하다.
-     * 자신이 받은 찜은 조회가 불가능하다.
+     * 외부에서 호출 불가능한 생성자.
+     * 정적 팩토리 메서드에서 사용한다.
      */
-    public static Favorite create(User user, Long receiverId, FavoredType receiverType) {
-        Favorite favorite = new Favorite();
-        favorite.sender = user;
-        favorite.receiverId = receiverId;
-        favorite.receiverType = receiverType;
+    private Favorite(User sender, ReceiverType receiverType, Long receiverId) {
+        this.sender = sender;
+        this.receiverType = receiverType;
+        this.receiverId = receiverId;
+    }
 
+    /**
+     * 외부에서 호출 가능한 단일 공통 진입점.
+     * 자신에게 좋아요를 누른 목록을 조회할 필요가 없습니다.
+     * 좋아요 관계를 생성합니다.
+     */
+    public static Favorite create(User sender, ReceiverType receiverType, Long receiverId) {
+        DomainValidator.notNull("sender", sender);
+        DomainValidator.notNull("receiver", receiverType);
+        DomainValidator.notNull("receiverId", receiverId);
+
+        Favorite favorite = new Favorite(sender, receiverType, receiverId);
+        sender.addFavorite(favorite);
         return favorite;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public void setReceiver(Long receiverId, FavoredType receiverType) {
-        this.receiverId = receiverId;
-        this.receiverType = receiverType;
+    /**
+     * 외부에서 호출 가능한 단일 공통 진입점.
+     * 좋아요 연관 관계를 제거합니다.
+     */
+    public static void cancel(User sender, Favorite favorite) {
+        sender.removeFavorite(favorite);
     }
 
 
     /**
-     * 작성 규칙
-     * 1. 이 위의 코드는 가능한 수정하지 않습니다. 필요한 경우 다같이 논의한 후 수정합니다.
-     * 2. @Setter 는 절대 선언하지 않습니다. 필요한 경우 메서드 단위로 직접 제작합니다.
-     * 3. 그럼에도 불구하고, 세터 메서드도 가능한 제작하지 않습니다. 필요한 경우 사용 의도가 나타나도록 이름을 작성합니다.
+     * ~ 연관 관계 설정 메서드
+     * ======================================
+     * 비즈니스 메서드 ~
+     *
+     * 주의 사항
+     * 1. 연관관계 설정 메서드는 가능한 수정하지 않습니다. 필요한 경우 다같이 논의한 후 수정합니다.
+     * 2. @Setter 는 가능한 선언하지 않습니다.필요한 경우 메서드 단위로 직접 제작합니다.
+     * 3. 그럼에도 불구하고, 세터 메서드도 가능한 제작하지 않습니다. 사용 의도가 나타나도록 이름을 작성합니다.
      */
 }

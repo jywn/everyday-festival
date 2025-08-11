@@ -14,11 +14,8 @@ public class InterestRequest {
 
     private Long festivalId;
 
-    public Interest toEntity(Festival festival, Company company)
+    public Interest toEntity(Company company, Festival festival)
     {
-        return Interest.builder()
-                .festival(festival)
-                .company(company)
-                .build();
+        return Interest.create(company, festival);
     }
 }

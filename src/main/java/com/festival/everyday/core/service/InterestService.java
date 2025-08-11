@@ -32,7 +32,7 @@ public class InterestService
         Festival festival=festivalRepository.findByIdAndHolderId(request.getFestivalId(),holderId)
                 .orElseThrow(()->new AccessDeniedException("해당 축제에 대한 권한이 없습니다."));
 
-        Interest newInterest=request.toEntity(festival, company);
+        Interest newInterest=request.toEntity(company, festival);
         interestRepository.save(newInterest);
 
         return InterestResponse.of(newInterest);
