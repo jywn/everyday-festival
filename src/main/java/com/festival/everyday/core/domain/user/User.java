@@ -4,19 +4,16 @@ import com.festival.everyday.core.domain.Address;
 import com.festival.everyday.core.domain.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.domain.favorite.Favorite;
-import com.festival.everyday.core.domain.favorite.ReceiverType;
-import com.festival.everyday.core.domain.image.Image;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 /**
  * Holder, Company, Labor 가 상속하는 엔티티.
@@ -36,32 +33,30 @@ public abstract class User extends BaseCreatedAtEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @NotBlank
-    @Column(name = "user_account")
+    @NotNull
+    @Column(name = "user_account", nullable = false)
     private String account;
 
-    @NotBlank
-    @Column(name = "user_password")
+    @NotNull
+    @Column(name = "user_password", nullable = false)
     private String password;
 
-    @NotBlank
-    @Column(name = "user_name")
+    @NotNull
+    @Column(name = "user_name", nullable = false)
     private String name;
 
-    @NotBlank
-    @Column(name = "user_tel")
+    @NotNull
+    @Column(name = "user_tel", nullable = false)
     private String tel;
 
-    @Email
-    @NotBlank
-    @Column(name = "user_email")
+    @NotNull
+    @Column(name = "user_email", nullable = false)
     private String email;
 
     /**
      * 주소를 저장하는 타입입니다.
      * 한 엔티티에서 두 번 이상 사용되는 경우에만 컬럼 명을 지정합니다.
      */
-    @Valid
     @Embedded
     private Address address;
 
@@ -85,6 +80,11 @@ public abstract class User extends BaseCreatedAtEntity {
      * 자식 클래스에서 사용하는 생성자.
      */
     protected User(String account, String password, String name, String tel, String email, Address address) {
+        notNull(account, "account");
+        notNull(password, "password");
+        notNull(name, "name");
+        notNull(tel, "tel");
+        notNull(email, "email");
         this.account = account;
         this.password = password;
         this.name = name;

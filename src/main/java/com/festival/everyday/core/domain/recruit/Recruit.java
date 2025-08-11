@@ -1,16 +1,16 @@
 package com.festival.everyday.core.domain.recruit;
 import com.festival.everyday.core.domain.Period;
-import com.festival.everyday.core.domain.application.Answer;
 import com.festival.everyday.core.domain.application.Application;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -24,7 +24,7 @@ public abstract class Recruit {
     @Column(name = "recruit_id")
     private Long id;
 
-    @Valid
+    @NotNull
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "begin", column = @Column(name = "recruit_begin")),
@@ -32,8 +32,8 @@ public abstract class Recruit {
     })
     private Period period;
 
-    @NotBlank
-    @Column(name = "notice")
+    @NotNull
+    @Column(name = "notice", nullable = false)
     private String notice;
 
     /**
@@ -57,6 +57,9 @@ public abstract class Recruit {
      * 생성자는 protected 입니다.
      */
     protected Recruit(Period period, String notice, List<ExtraQuestion> extraQuestions) {
+        notNull("period", period);
+        notNull("notice", notice);
+        notNull("extraQuestions", extraQuestions);
         this.period = period;
         this.notice = notice;
         this.extraQuestions = extraQuestions;

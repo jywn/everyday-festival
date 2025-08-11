@@ -2,6 +2,7 @@ package com.festival.everyday.core.domain.application;
 
 import com.festival.everyday.core.domain.recruit.ExtraQuestion;
 import com.festival.everyday.core.domain.recruit.Recruit;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @Getter
@@ -22,8 +25,8 @@ public class Answer {
     @Column(name = "answer_id")
     private Long id;
 
-    @NotBlank
-    @Column(name = "content")
+    @NotNull
+    @Column(name = "content", nullable = false)
     private String content;
 
     /**
@@ -31,8 +34,8 @@ public class Answer {
      * 지원서는 답변을 조회할 필요가 있습니다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "application_id", nullable = false)
     private Application application;
 
     /**
@@ -51,8 +54,10 @@ public class Answer {
      */
     public static List<Answer> createAnswers(Application application, String... contents) {
         List<Answer> answers = new ArrayList<>();
+        notNull("application", application);
         for (String content : contents) {
-            answers.add(new Answer( application, content));
+            notNull("content", content);
+            answers.add(new Answer(application, content));
         }
 
         application.addAnswers(answers);
