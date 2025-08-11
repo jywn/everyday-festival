@@ -1,6 +1,6 @@
 package com.festival.everyday.core.dto.response;
 
-import com.festival.everyday.core.domain.Interest;
+import com.festival.everyday.core.domain.interaction.Interest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

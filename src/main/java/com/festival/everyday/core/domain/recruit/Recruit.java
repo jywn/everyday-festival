@@ -1,5 +1,5 @@
 package com.festival.everyday.core.domain.recruit;
-import com.festival.everyday.core.domain.Period;
+import com.festival.everyday.core.domain.common.value.Period;
 import com.festival.everyday.core.domain.application.Application;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -56,13 +56,11 @@ public abstract class Recruit {
      * 필드는 private,
      * 생성자는 protected 입니다.
      */
-    protected Recruit(Period period, String notice, List<ExtraQuestion> extraQuestions) {
+    protected Recruit(Period period, String notice) {
         notNull("period", period);
         notNull("notice", notice);
-        notNull("extraQuestions", extraQuestions);
         this.period = period;
         this.notice = notice;
-        this.extraQuestions = extraQuestions;
     }
 
 

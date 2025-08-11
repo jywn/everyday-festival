@@ -1,16 +1,12 @@
-package com.festival.everyday.core.domain;
+package com.festival.everyday.core.domain.interaction;
 
-import com.festival.everyday.core.domain.favorite.ReceiverType;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 

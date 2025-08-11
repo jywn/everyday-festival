@@ -4,6 +4,7 @@ package com.festival.everyday.core.dto.response;
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.application.Answer;
 import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.application.ApplicationExtraQuestion;
 import com.festival.everyday.core.domain.application.ExtraAnswer;
 import com.festival.everyday.core.domain.recruit.ExtraQuestion;
 import com.festival.everyday.core.domain.user.Company;
@@ -59,7 +60,8 @@ public class LaborApplicationDetailResponse {
                 .dueAvailable(answers.get(7).getContent())
                 .laborLink(answers.get(8).getContent())
                 .questions(
-                        application.getQuestions().stream()
+                        application.getApplicationExtraQuestions().stream()
+                                .map(ApplicationExtraQuestion::getExtraQuestion)
                                 .map(ExtraQuestion::getContent)
                                 .toList()
                 )

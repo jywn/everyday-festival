@@ -1,7 +1,6 @@
 package com.festival.everyday.core.domain.user;
 
-import com.festival.everyday.core.domain.Address;
-import com.festival.everyday.core.domain.validate.DomainValidator;
+import com.festival.everyday.core.domain.common.value.Address;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

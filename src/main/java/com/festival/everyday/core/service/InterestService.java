@@ -1,7 +1,7 @@
 package com.festival.everyday.core.service;
 
 import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.Interest;
+import com.festival.everyday.core.domain.interaction.Interest;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.dto.request.InterestRequest;
 import com.festival.everyday.core.dto.response.InterestResponse;

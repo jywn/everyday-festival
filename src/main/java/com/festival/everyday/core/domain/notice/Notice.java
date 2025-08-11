@@ -1,6 +1,6 @@
 package com.festival.everyday.core.domain.notice;
 
-import com.festival.everyday.core.domain.BaseCreatedAtEntity;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,8 +9,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

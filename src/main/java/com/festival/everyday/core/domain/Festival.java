@@ -1,21 +1,19 @@
 package com.festival.everyday.core.domain;
 
 import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.common.value.Address;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
+import com.festival.everyday.core.domain.common.value.Period;
+import com.festival.everyday.core.domain.interaction.Interest;
 import com.festival.everyday.core.domain.recruit.CompanyRecruit;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
-import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.Holder;
-import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.URL;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +109,8 @@ public class Festival extends BaseCreatedAtEntity {
      * 외부에서 사용 불가능한 생성자입니다.
      * 정적 팩토리 메서드에서 사용합니다.
      */
-    private Festival(String name, Period period, String fee, String time, String introduction, String link, String tel, Address address) {
+    private Festival(Holder holder, String name, Period period, String fee, String time, String introduction, String link, String tel, Address address) {
+        this.holder = holder;
         this.name = name;
         this.period = period;
         this.fee = fee;
@@ -127,6 +126,7 @@ public class Festival extends BaseCreatedAtEntity {
      * 작성한 공고를 바탕으로 축제를 생성합니다.
      */
     public static Festival create(Holder holder, String name, Period period, String fee, String time, String introduction, String link, String tel, Address address) {
+        notNull("holder", holder);
         notNull("name", name);
         notNull("period", period);
         notNull("fee", fee);
@@ -135,7 +135,7 @@ public class Festival extends BaseCreatedAtEntity {
         notNull("link", link);
         notNull("tel", tel);
         notNull("address", address);
-        Festival festival = new Festival(name, period, fee, time, fee, link, tel, address);
+        Festival festival = new Festival(holder, name, period, fee, time, fee, link, tel, address);
         holder.addFestival(festival);
         return festival;
     }

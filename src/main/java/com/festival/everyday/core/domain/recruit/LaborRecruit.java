@@ -1,9 +1,7 @@
 package com.festival.everyday.core.domain.recruit;
 
-import com.festival.everyday.core.domain.Period;
-import com.festival.everyday.core.domain.validate.DomainValidator;
+import com.festival.everyday.core.domain.common.value.Period;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,8 +32,8 @@ public class LaborRecruit extends Recruit {
     /**
      * 외부에서 호출 불가능한 생성자입니다.
      */
-    private LaborRecruit(Period period, String notice, List<ExtraQuestion> extraQuestions, String job, String wage, String remark) {
-        super(period, notice, extraQuestions);
+    private LaborRecruit(Period period, String notice, String job, String wage, String remark) {
+        super(period, notice);
         this.job = job;
         this.wage = wage;
         this.remark = remark;
@@ -45,11 +43,11 @@ public class LaborRecruit extends Recruit {
      * 단일 공통 진입점입니다.
      * 단기 근로자 모집 공고를 생성합니다.
      */
-    public static LaborRecruit create(Period period, String notice, List<ExtraQuestion> extraQuestions, String job, String wage, String remark) {
+    public static LaborRecruit create(Period period, String notice, String job, String wage, String remark) {
         notNull("job", job);
         notNull("wage", wage);
         notNull("remark", remark);
-        return new LaborRecruit(period, notice, extraQuestions, job, wage, remark);
+        return new LaborRecruit(period, notice, job, wage, remark);
     }
 
     /**

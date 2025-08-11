@@ -1,9 +1,7 @@
 package com.festival.everyday.core.domain.recruit;
 
-import com.festival.everyday.core.domain.Period;
-import com.festival.everyday.core.domain.validate.DomainValidator;
+import com.festival.everyday.core.domain.common.value.Period;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,8 +25,8 @@ public class CompanyRecruit extends Recruit {
      * 외부에서 접근 불가능한 메서드입니다.
      * 정적 팩토리 메서드에서 사용합니다.
      */
-    private CompanyRecruit(Period period, String notice, List<ExtraQuestion> extraQuestions, String preferred) {
-        super(period, notice, extraQuestions);
+    private CompanyRecruit(Period period, String notice, String preferred) {
+        super(period, notice);
         this.preferred = preferred;
     }
 
@@ -36,9 +34,9 @@ public class CompanyRecruit extends Recruit {
      * 단일 공통 진입점입니다.
      * 업체 모집 공고를 생성합니다.
      */
-    public static CompanyRecruit create(Period period, String notice, List<ExtraQuestion> extraQuestions, String preferred) {
+    public static CompanyRecruit create(Period period, String notice, String preferred) {
         notNull(preferred, "preferred");
-        return new CompanyRecruit(period, notice, extraQuestions,  preferred);
+        return new CompanyRecruit(period, notice, preferred);
     }
 
     /**

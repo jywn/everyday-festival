@@ -1,6 +1,6 @@
-package com.festival.everyday.core.domain.favorite;
+package com.festival.everyday.core.domain.interaction;
 
-import com.festival.everyday.core.domain.BaseCreatedAtEntity;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.user.User;
 import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
