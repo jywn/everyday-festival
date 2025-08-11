@@ -1,7 +1,5 @@
-package com.festival.everyday.core.domain;
+package com.festival.everyday.core.domain.common.value;
 
-import com.festival.everyday.core.domain.validate.DomainValidator;
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

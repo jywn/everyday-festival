@@ -1,13 +1,13 @@
-package com.festival.everyday.core.domain;
+package com.festival.everyday.core.domain.interaction;
 
+import com.festival.everyday.core.domain.Festival;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.sql.In;
 
 import javax.validation.constraints.NotNull;
 

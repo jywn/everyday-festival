@@ -1,9 +1,9 @@
 package com.festival.everyday.core.domain.user;
 
-import com.festival.everyday.core.domain.Address;
-import com.festival.everyday.core.domain.BaseCreatedAtEntity;
+import com.festival.everyday.core.domain.common.value.Address;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.application.Application;
-import com.festival.everyday.core.domain.favorite.Favorite;
+import com.festival.everyday.core.domain.interaction.Favorite;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -80,11 +80,12 @@ public abstract class User extends BaseCreatedAtEntity {
      * 자식 클래스에서 사용하는 생성자.
      */
     protected User(String account, String password, String name, String tel, String email, Address address) {
-        notNull(account, "account");
-        notNull(password, "password");
-        notNull(name, "name");
-        notNull(tel, "tel");
-        notNull(email, "email");
+        notNull("account", account);
+        notNull("password", password);
+        notNull("name", name);
+        notNull("tel", tel);
+        notNull("email", email);
+        notNull("address", address);
         this.account = account;
         this.password = password;
         this.name = name;
