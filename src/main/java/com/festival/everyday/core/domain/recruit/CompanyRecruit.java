@@ -1,13 +1,17 @@
 package com.festival.everyday.core.domain.recruit;
 
 import com.festival.everyday.core.domain.Period;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @DiscriminatorValue("CompanyRecruit")
@@ -15,8 +19,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CompanyRecruit extends Recruit {
 
-    @NotBlank
-    @Column(name = "company_preferred")
+    @NotNull
+    @Column(name = "company_preferred", nullable = false)
     private String preferred;
 
     /**
@@ -33,6 +37,7 @@ public class CompanyRecruit extends Recruit {
      * 업체 모집 공고를 생성합니다.
      */
     public static CompanyRecruit create(Period period, String notice, List<ExtraQuestion> extraQuestions, String preferred) {
+        notNull(preferred, "preferred");
         return new CompanyRecruit(period, notice, extraQuestions,  preferred);
     }
 

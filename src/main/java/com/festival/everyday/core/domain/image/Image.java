@@ -1,6 +1,7 @@
 package com.festival.everyday.core.domain.image;
 
 import com.festival.everyday.core.domain.Festival;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -25,16 +26,16 @@ public class Image {
     @Column(name = "image_id")
     private Long id;
 
-    @NotBlank
-    @Column(name = "image_url")
+    @NotNull
+    @Column(name = "image_url", nullable = false)
     private String url;
 
-    @NotBlank
-    @Column(name = "owner_type")
+    @NotNull
+    @Column(name = "owner_type", nullable = false)
     private OwnerType ownerType;
 
     @NotNull
-    @Column(name = "owner_id")
+    @Column(name = "owner_id", nullable = false)
     private Long ownerId;
 
     /**
@@ -52,6 +53,10 @@ public class Image {
      * 이미지를 생성합니다.
      */
     public static Image create(String url, OwnerType ownerType, Long ownerId) {
+        DomainValidator.notNull("url", url);
+        DomainValidator.notNull("ownerType", ownerType);
+        DomainValidator.notNull("ownerId", ownerId);
+
         return new Image(url, ownerType, ownerId);
     }
 

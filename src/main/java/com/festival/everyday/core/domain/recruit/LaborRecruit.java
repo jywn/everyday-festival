@@ -1,13 +1,17 @@
 package com.festival.everyday.core.domain.recruit;
 
 import com.festival.everyday.core.domain.Period;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @DiscriminatorValue("LaborRecruit")
@@ -15,16 +19,16 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LaborRecruit extends Recruit {
 
-    @NotBlank
-    @Column(name = "labor_job")
+    @NotNull
+    @Column(name = "labor_job", nullable = false)
     private String job;
 
-    @NotBlank
-    @Column(name = "wage")
+    @NotNull
+    @Column(name = "wage", nullable = false)
     private String wage;
 
-    @NotBlank
-    @Column(name = "remark")
+    @NotNull
+    @Column(name = "remark", nullable = false)
     private String remark;
 
     /**
@@ -42,6 +46,9 @@ public class LaborRecruit extends Recruit {
      * 단기 근로자 모집 공고를 생성합니다.
      */
     public static LaborRecruit create(Period period, String notice, List<ExtraQuestion> extraQuestions, String job, String wage, String remark) {
+        notNull("job", job);
+        notNull("wage", wage);
+        notNull("remark", remark);
         return new LaborRecruit(period, notice, extraQuestions, job, wage, remark);
     }
 

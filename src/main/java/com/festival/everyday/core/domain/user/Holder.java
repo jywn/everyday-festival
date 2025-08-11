@@ -17,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Holder extends User {
 
-
     /**
      * Holder 가 자신의 축제 목록을 조회해야 합니다.
      * 양방향 연관관계입니다.

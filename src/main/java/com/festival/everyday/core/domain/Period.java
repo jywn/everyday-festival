@@ -1,17 +1,18 @@
 package com.festival.everyday.core.domain;
 
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
+
 @Embeddable
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Period {
@@ -21,6 +22,25 @@ public class Period {
 
     @NotNull
     private LocalDateTime end;
+
+    /**
+     * 외부에서 호출 불가능한 생성자.
+     * 정적 팩토리 메서드에서 사용합니다.
+     */
+    private Period(LocalDateTime begin, LocalDateTime end) {
+        this.begin = begin;
+        this.end = end;
+    }
+
+    /**
+     * 단일 공통 진입점.
+     * 기간을 생성합니다.
+     */
+    public static Period create(LocalDateTime begin, LocalDateTime end) {
+        notNull("begin", begin);
+        notNull("end", end);
+        return new Period(begin, end);
+    }
 
     /**
      * ~ 연관 관계 설정 메서드

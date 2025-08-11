@@ -4,6 +4,7 @@ import com.festival.everyday.core.domain.Address;
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.domain.recruit.Recruit;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,8 @@ import org.hibernate.validator.constraints.URL;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 @Entity
 @DiscriminatorValue("Company")
@@ -28,30 +31,29 @@ public class Company extends User {
      * @NotBlank : @NotEmpty + @NotNull
      */
 
-    @NotBlank
-    @Column(name = "company_introduction")
+    @NotNull
+    @Column(name = "company_introduction", nullable = false)
     private String introduction;
 
     //공식 홈페이지가 없는 영세 업체를 고려하여 공백 문자까지 허용합니다.
-    @URL
     @NotNull
-    @Column(name = "company_link")
+    @Column(name = "company_link", nullable = false)
     private String link;
 
-    @NotBlank
-    @Column(name = "ceo_name")
+    @NotNull
+    @Column(name = "ceo_name", nullable = false)
     private String ceoName;
 
     /**
      * FOOD, ART, ...
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "company_category")
+    @Column(name = "company_category", nullable = false)
     private Category category;
 
 
     // 데모 버전에서 임의의 문자열을 삽입하도록 하였습니다.
-    @Column(name = "business_registration_number")
+    @Column(name = "business_registration_number", nullable = false)
     private String business_registration_number = UUID.randomUUID().toString();
 
     @Override
@@ -63,8 +65,9 @@ public class Company extends User {
      * 외부 호출 불가능한 생성자.
      * 정적 팩토리 메서드에서 사용한다.
      */
-    private Company(String account, String password, String name, String tel, String email, Address address, String link, String ceoName, Category category) {
+    private Company(String account, String password, String name, String tel, String email, Address address, String introduction, String link, String ceoName, Category category) {
         super(account, password, name, tel, email, address);
+        this.introduction = introduction;
         this.link = link;
         this.ceoName = ceoName;
         this.category = category;
@@ -74,8 +77,13 @@ public class Company extends User {
      * 단일 공통 진입점.
      * 업체를 생성합니다.
      */
-    public static Company create(String account, String password, String name, String tel, String email, Address address, String link, String ceoName, Category category) {
-        return new Company(account, password, name, tel, email, address, link, ceoName, category);
+    public static Company create(String account, String password, String name, String tel, String email, Address address, String introduction, String link, String ceoName, Category category, String business_registration_number) {
+        notNull("introduction", introduction);
+        notNull("link", link);
+        notNull("ceoName", ceoName);
+        notNull("category", category);
+        notNull("business_registration_number", business_registration_number);
+        return new Company(account, password, name, tel, email, address, introduction, link, ceoName, category);
     }
 
     /**

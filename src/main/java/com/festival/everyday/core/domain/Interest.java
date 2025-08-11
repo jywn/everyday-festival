@@ -2,6 +2,7 @@ package com.festival.everyday.core.domain;
 
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.User;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.sql.In;
 
 import javax.validation.constraints.NotNull;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 /**
  * 축제 -> 업체 관심 보내기
@@ -30,8 +33,8 @@ public class Interest extends BaseCreatedAtEntity {
      * 단방향 연관관계다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "company_id", nullable = false)
     private User company;
 
     /**
@@ -39,8 +42,8 @@ public class Interest extends BaseCreatedAtEntity {
      * 양방향 연관관계다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "festival_id", nullable = false)
     private Festival festival;
 
     /**
@@ -58,6 +61,8 @@ public class Interest extends BaseCreatedAtEntity {
      * 관심 관계를 생성합니다.
      */
     public static Interest create(Company company, Festival festival) {
+        notNull("company", company);
+        notNull("festival", festival);
         Interest interest = new Interest(company, festival);
         festival.addInterest(interest);
         return interest;

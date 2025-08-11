@@ -6,7 +6,9 @@ import com.festival.everyday.core.domain.recruit.ExtraQuestion;
 import com.festival.everyday.core.domain.recruit.Recruit;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.User;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,8 +41,8 @@ public class Application extends BaseCreatedAtEntity {
      * 양방향으로 설계한다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     /**
@@ -48,16 +50,16 @@ public class Application extends BaseCreatedAtEntity {
      * 양방향 연관관계입니다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "festival_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "festival_id", nullable = false)
     private Festival festival;
 
     /**
      * 지원서가 대상으로 삼는 공고.
      * 양방향 연관관계입니다.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruit_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "recruit_id", nullable = false)
     private Recruit recruit;
 
     /**
@@ -79,8 +81,9 @@ public class Application extends BaseCreatedAtEntity {
     /**
      * 최초에는 심사중 상태를 저장합니다.
      */
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "application_selected")
+    @Column(name = "application_selected", nullable = false)
     private SELECTED selected = NEUTRAL;
 
     /**
@@ -99,6 +102,10 @@ public class Application extends BaseCreatedAtEntity {
      * 양방향 연관관계를 설정합니다.
      */
     public static Application create(Recruit recruit, User user, Festival festival) {
+        DomainValidator.notNull("recruit", recruit);
+        DomainValidator.notNull("user", user);
+        DomainValidator.notNull("festival", festival);
+
         Application application = new Application(recruit, user, festival);
         user.addApplication(application);
         festival.addApplication(application);

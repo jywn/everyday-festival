@@ -2,6 +2,7 @@ package com.festival.everyday.core.domain;
 
 import com.festival.everyday.core.domain.favorite.ReceiverType;
 import com.festival.everyday.core.domain.user.User;
+import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
+
 @Entity
 @Getter
 @Table(name = "review",
@@ -23,8 +27,11 @@ public class Review extends BaseCreatedAtEntity {
     @Column(name = "review_id")
     private Long id;
 
-    @NotBlank
-    @Column(name = "review_content")
+    /**
+     * 공백 문자를 허용한다.
+     */
+    @NotNull
+    @Column(name = "review_content", nullable = false)
     private String content;
 
     /**
@@ -33,8 +40,8 @@ public class Review extends BaseCreatedAtEntity {
      * 단방향 연관관계다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
     /**
@@ -47,6 +54,7 @@ public class Review extends BaseCreatedAtEntity {
     @Column(name = "receiver_id", nullable = false)
     private Long receiverId;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "receiver_type", nullable = false)
     private ReceiverType receiverType;
@@ -68,6 +76,10 @@ public class Review extends BaseCreatedAtEntity {
      * 리뷰를 생성한다.
      */
     public static Review create(User sender, Long receiverId, ReceiverType receiverType, String content) {
+        notNull("sender", sender);
+        notNull("receiver", receiverId);
+        notNull("receiverType", receiverType);
+        notNull("content", content);
         return new Review(sender, receiverId, receiverType, content);
     }
 
