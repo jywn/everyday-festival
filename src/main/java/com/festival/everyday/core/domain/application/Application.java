@@ -67,6 +67,17 @@ public class Application extends BaseCreatedAtEntity {
      * 양방향 관계로 설정하였습니다.
      */
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+<<<<<<< HEAD
+    @OrderColumn(name="question_order") //추가함
+    private List<ExtraQuestion> questions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name="answer_order") //추가함
+    private List<Answer> answers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name="extra_answer_order") //추가함
+=======
     @OrderColumn(name = "application_extra_question_order")
     private List<ApplicationExtraQuestion> applicationExtraQuestions = new ArrayList<>();
 
@@ -76,6 +87,7 @@ public class Application extends BaseCreatedAtEntity {
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "extra_answer_order")
+>>>>>>> main
     private List<ExtraAnswer> extraAnswers = new ArrayList<>();
 
     /**
