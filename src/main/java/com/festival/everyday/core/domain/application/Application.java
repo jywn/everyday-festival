@@ -36,12 +36,15 @@ public class Application {
     private Festival festival;
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name="question_order") //추가함
     private List<ExtraQuestion> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name="answer_order") //추가함
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name="extra_answer_order") //추가함
     private List<ExtraAnswer> extraAnswers = new ArrayList<>();
 
     @Column(name = "created_at")

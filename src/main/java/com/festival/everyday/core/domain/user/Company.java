@@ -1,13 +1,19 @@
 package com.festival.everyday.core.domain.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @DiscriminatorValue("Company")
 @Getter
+@NoArgsConstructor
+@Builder //추가함
+@AllArgsConstructor //추가함
 public class Company extends User {
 
     @Column(name = "company_name")

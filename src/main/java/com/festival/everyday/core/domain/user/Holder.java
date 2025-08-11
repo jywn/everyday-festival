@@ -2,7 +2,10 @@ package com.festival.everyday.core.domain.user;
 
 import com.festival.everyday.core.domain.Festival;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,9 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("Holder")
 @Getter
+@NoArgsConstructor
+@Builder //추가함
+@AllArgsConstructor //추가함
 public class Holder extends User {
 
     @Column(name = "holder_name")

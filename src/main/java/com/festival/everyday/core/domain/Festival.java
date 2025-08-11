@@ -7,7 +7,10 @@ import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.Holder;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,7 +18,10 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name ="festival")
+@Builder //추가함
+@AllArgsConstructor //추가함
 public class Festival {
 
     @Id @GeneratedValue

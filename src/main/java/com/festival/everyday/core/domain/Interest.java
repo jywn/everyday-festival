@@ -3,9 +3,7 @@ package com.festival.everyday.core.domain;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 축제 -> 업체 관심 보내기
@@ -14,7 +12,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder //추가함
 @NoArgsConstructor
+@AllArgsConstructor //추가함
 @Table(name ="interest")
 public class Interest {
 
@@ -42,8 +42,8 @@ public class Interest {
      * 축제와 업체의 관심 관계를 연결합니다.
      */
     public Interest(Festival festival, Company company) {
-        this.festival = new Festival();
-        this.company = new Company();
+        this.festival = festival;
+        this.company = company;
     }
 
     /**
