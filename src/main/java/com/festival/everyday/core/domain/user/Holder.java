@@ -45,7 +45,6 @@ public class Holder extends User {
     }
 
     /**
-     * 단일 공통 진입점입니다.
      * 개최자의 축제 목록에 축제를 추가합니다.
      * Festival 에서만 호출합니다.
      */

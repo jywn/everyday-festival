@@ -58,10 +58,11 @@ public class ApplicationExtraQuestion {
      * 외부에서 호출 가능합니다.
      * 지원서와 추가 질문을 연결합니다.
      */
-    public static List<ApplicationExtraQuestion> createApplicationExtraQuestions(Application application, ExtraQuestion... extraQuestions) {
+    public static List<ApplicationExtraQuestion> createApplicationExtraQuestions(Application application, List<ExtraQuestion> extraQuestions) {
         List<ApplicationExtraQuestion> applicationExtraQuestions = new ArrayList<>();
 
         notNull("application", application);
+        notNull("extraQuestions", extraQuestions);
         for (ExtraQuestion extraQuestion : extraQuestions) {
             notNull("extraQuestion", extraQuestion);
             applicationExtraQuestions.add(new ApplicationExtraQuestion(application, extraQuestion));

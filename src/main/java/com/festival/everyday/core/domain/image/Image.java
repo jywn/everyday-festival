@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
+
 /**
  * 이미지 엔티티는 수정이 필요합니다.
  */
@@ -53,9 +55,9 @@ public class Image {
      * 이미지를 생성합니다.
      */
     public static Image create(String url, OwnerType ownerType, Long ownerId) {
-        DomainValidator.notNull("url", url);
-        DomainValidator.notNull("ownerType", ownerType);
-        DomainValidator.notNull("ownerId", ownerId);
+        notNull("url", url);
+        notNull("ownerType", ownerType);
+        notNull("ownerId", ownerId);
 
         return new Image(url, ownerType, ownerId);
     }

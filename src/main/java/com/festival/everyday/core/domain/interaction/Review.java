@@ -14,7 +14,7 @@ import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 @Getter
 @Table(name = "review",
 uniqueConstraints = @UniqueConstraint(
-        columnNames = {"sender_id", "receiver_id", "receiver_type"}
+        columnNames = {"sender_id", "sender_type", "receiver_id", "receiver_type"}
 ))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends BaseCreatedAtEntity {
@@ -32,13 +32,17 @@ public class Review extends BaseCreatedAtEntity {
 
     /**
      * festival, company, labor
-     * 사용자는 자신이 작성한 리뷰 목록을 조회할 일이 없으므로,
-     * 단방향 연관관계다.
+     * 사용자는 자신이 작성한 리뷰 목록을 조회할 일이 없다.
+     * 연관관계는 없다.
      */
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sender_id", nullable = false)
-    private User sender;
+    private Long senderId;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sender_type", nullable = false)
+    private SenderType senderType;
 
     /**
      * 좋아요를 받은 사람.
@@ -59,8 +63,9 @@ public class Review extends BaseCreatedAtEntity {
      * 외부에서 호출 불가능한 생성자.
      * 정적 팩토리 메서드에서 사용한다.
      */
-    private Review(User sender, Long receiverId, ReceiverType receiverType, String content) {
-        this.sender = sender;
+    private Review(Long senderId, SenderType senderType, Long receiverId, ReceiverType receiverType, String content) {
+        this.senderId = senderId;
+        this.senderType = senderType;
         this.receiverId = receiverId;
         this.receiverType = receiverType;
         this.content = content;
@@ -71,12 +76,13 @@ public class Review extends BaseCreatedAtEntity {
      * 외부에서 호출 가능하다.
      * 리뷰를 생성한다.
      */
-    public static Review create(User sender, Long receiverId, ReceiverType receiverType, String content) {
-        notNull("sender", sender);
+    public static Review create(Long senderId, SenderType senderType, Long receiverId, ReceiverType receiverType, String content) {
+        notNull("senderId", senderId);
+        notNull("senderType", senderType);
         notNull("receiver", receiverId);
         notNull("receiverType", receiverType);
         notNull("content", content);
-        return new Review(sender, receiverId, receiverType, content);
+        return new Review(senderId, senderType, receiverId, receiverType, content);
     }
 
 
