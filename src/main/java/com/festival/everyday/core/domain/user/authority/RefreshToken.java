@@ -47,3 +47,4 @@ public class RefreshToken {
         this.revoked = true;
     }
 }
+
