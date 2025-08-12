@@ -1,10 +1,13 @@
 package com.festival.everyday.core.repository;
 
 import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.user.User;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +35,8 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
         WHERE a.user.id=:userId
         """)
     List<Application> findApplicationByApplicationIdWithDetails(@Param("userId") Long UserId);
+
+    Optional<Application> findApplicationByUserIdAndRecruitId(Long userId, Long recruitId);
+
+    Long user(@NotNull User user);
 }
