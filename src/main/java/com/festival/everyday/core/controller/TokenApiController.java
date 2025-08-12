@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenApiController {
     private final TokenService tokenService;
 
-    @PostMapping("/api/token")      //access token 재발급용 controller
-    public ResponseEntity<CreateAccessTokenResponse> createAccessToken(@RequestBody CreateAccessTokenRequest createAccessTokenRequest) {
-        String newAccessToken = tokenService.createNewAccessToken(createAccessTokenRequest.getRefreshToken());
+    @PostMapping("/api/token")
+    public ResponseEntity<CreateAccessTokenResponse> createAccessToken(
+            @RequestBody CreateAccessTokenRequest req) {
 
+        String newAccess = tokenService.createNewAccessToken(req.getRefreshToken());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CreateAccessTokenResponse(newAccessToken));
+                .body(new CreateAccessTokenResponse(newAccess));
     }
 }

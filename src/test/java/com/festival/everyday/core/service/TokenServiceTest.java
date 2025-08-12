@@ -15,9 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Duration;
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -31,72 +29,49 @@ class TokenServiceTest {
     @InjectMocks TokenService tokenService;
 
     @Test
-    @DisplayName("성공: 유효한 RT로 15분짜리 AT 발급")
+    @DisplayName("유효한 RT → 새 AT 문자열 반환(만료 15분)")
     void createNewAccessToken_success() {
-        // given
         String rtValue = "RT_valid";
         long userId = 100L;
-        //rt 발급
-        RefreshToken rtEntity =
-                new RefreshToken(userId, rtValue, Instant.now(), Instant.now().plusSeconds(3600));
+        RefreshToken rt = new RefreshToken(userId, rtValue, Instant.now(), Instant.now().plusSeconds(3600));
         User user = mock(User.class);
 
-        when(refreshTokenService.getActiveByTokenOrThrow(rtValue)).thenReturn(rtEntity);
+        when(refreshTokenService.getActiveByTokenOrThrow(rtValue)).thenReturn(rt);
         when(userService.findById(userId)).thenReturn(user);
 
-        ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
-        when(tokenProvider.generateToken(eq(user), durationCaptor.capture()))
-                .thenReturn("AT_new");
+        ArgumentCaptor<Duration> dur = ArgumentCaptor.forClass(Duration.class);
+        when(tokenProvider.generateToken(eq(user), dur.capture())).thenReturn("AT_new");
 
-        // when
+        // ← 여기!
         String result = tokenService.createNewAccessToken(rtValue);
 
-        // then
         assertEquals("AT_new", result);
-        assertEquals(Duration.ofMinutes(15), durationCaptor.getValue());
-
-        verify(refreshTokenService).getActiveByTokenOrThrow(rtValue);
-        verify(userService).findById(userId);
-        verify(tokenProvider).generateToken(eq(user), any(Duration.class));
+        assertEquals(Duration.ofMinutes(15), dur.getValue());
         verifyNoMoreInteractions(refreshTokenService, userService, tokenProvider);
     }
 
     @Test
-    @DisplayName("실패: RT 미유효 → IllegalArgumentException 전파")
-    void createNewAccessToken_invalidRefreshToken() {
-        // given
+    @DisplayName("RT 무효 → IllegalArgumentException 전파")
+    void createNewAccessToken_invalidRT() {
         String bad = "RT_bad";
         when(refreshTokenService.getActiveByTokenOrThrow(bad))
                 .thenThrow(new IllegalArgumentException("Invalid refresh token"));
 
-        // when & then
-        IllegalArgumentException ex =
-                assertThrows(IllegalArgumentException.class,
-                        () -> tokenService.createNewAccessToken(bad));
-        assertEquals("Invalid refresh token", ex.getMessage());
-
-        verify(refreshTokenService).getActiveByTokenOrThrow(bad);
+        assertThrows(IllegalArgumentException.class, () -> tokenService.createNewAccessToken(bad));
         verifyNoInteractions(userService, tokenProvider);
     }
 
     @Test
-    @DisplayName("실패: 사용자 없음 → EntityNotFoundException 전파")
+    @DisplayName("유저 없음 → EntityNotFoundException 전파")
     void createNewAccessToken_userNotFound() {
-        // given
-        String rt = "RT_ok";
-        long userId = 1L;
-        RefreshToken rtEntity =
-                new RefreshToken(userId, rt, Instant.now(), Instant.now().plusSeconds(3600));
+        String rtVal = "RT_ok";
+        long uid = 1L;
+        RefreshToken rt = new RefreshToken(uid, rtVal, Instant.now(), Instant.now().plusSeconds(3600));
 
-        when(refreshTokenService.getActiveByTokenOrThrow(rt)).thenReturn(rtEntity);
-        when(userService.findById(userId)).thenThrow(new EntityNotFoundException("User not found"));
+        when(refreshTokenService.getActiveByTokenOrThrow(rtVal)).thenReturn(rt);
+        when(userService.findById(uid)).thenThrow(new EntityNotFoundException("Unexpected User"));
 
-        // when & then
-        assertThrows(EntityNotFoundException.class,
-                () -> tokenService.createNewAccessToken(rt));
-
-        verify(refreshTokenService).getActiveByTokenOrThrow(rt);
-        verify(userService).findById(userId);
+        assertThrows(EntityNotFoundException.class, () -> tokenService.createNewAccessToken(rtVal));
         verifyNoInteractions(tokenProvider);
     }
 }

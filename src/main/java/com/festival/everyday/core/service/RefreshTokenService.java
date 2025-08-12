@@ -17,7 +17,7 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
-    /** 존재 여부 + 만료(Expired) + 철회(Revoked) 검증 수행 */
+    // refresh token 존재 여부 + 만료(Expired) + 철회(Revoked) 검증 수행
     public RefreshToken getActiveByTokenOrThrow(String refreshToken) {
         RefreshToken rt = refreshTokenRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid refresh token"));
