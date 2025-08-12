@@ -16,7 +16,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
-
+    private final RefreshTokenService refreshTokenService;
     @Transactional
     public LoginResponse login(LoginRequest req) {
         User user = userRepository.findByAccount(req.account())    //account로 찾기
@@ -27,5 +27,11 @@ public class AuthService {
         }
 
         return tokenService.issueTokens(user);
+    }
+
+    @Transactional
+    public void logout(Long sid) {
+        if (sid == null) return; // idempotent
+        refreshTokenService.revokeById(sid);
     }
 }

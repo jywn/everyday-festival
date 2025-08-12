@@ -3,7 +3,6 @@ package com.festival.everyday.core.service;
 import com.festival.everyday.core.config.jwt.TokenProvider;
 import com.festival.everyday.core.domain.user.User;
 import com.festival.everyday.core.domain.user.authority.RefreshToken;
-import com.festival.everyday.core.dto.response.CreateAccessTokenResponse;
 import com.festival.everyday.core.dto.response.LoginResponse;
 import com.festival.everyday.core.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,61 +26,26 @@ public class TokenService {
     private static final Duration ACCESS_EXPIRES  = Duration.ofMinutes(15);
     private static final Duration REFRESH_EXPIRES = Duration.ofDays(14);
 
-    // 사용자당 RT 하나
-    private static final boolean SINGLE_RT_PER_USER = true;
-
-    //로그인 시 AT,RT 제공
+    // [MOD] 로그인 시 AT,RT 제공 (sid 사용 시)
     @Transactional
     public LoginResponse issueTokens(User user) {
-        String access  = tokenProvider.generateToken(user, ACCESS_EXPIRES);
-        String refresh = tokenProvider.generateToken(user, REFRESH_EXPIRES);
-
+        String refresh = tokenProvider.generateRefreshToken(user, REFRESH_EXPIRES);   // RT 생성
         Instant now = Instant.now();
 
-        if (SINGLE_RT_PER_USER) {
-            refreshTokenRepository.findByUserId(user.getId())
-                    .ifPresent(RefreshToken::revoke); // 이전 RT 무효화(또는 delete)
-        }
-
-        RefreshToken entity = new RefreshToken(
-                user.getId(),
-                refresh,
-                now,
-                now.plus(REFRESH_EXPIRES)
+        RefreshToken saved = refreshTokenRepository.save(
+                new RefreshToken(user.getId(), refresh, now, now.plus(REFRESH_EXPIRES))
         );
-        refreshTokenRepository.save(entity);
 
+        String access  = tokenProvider.generateAccessToken(user, ACCESS_EXPIRES, saved.getTokenId()); // AT 생성
         return new LoginResponse(access, refresh);
     }
+
 
     // 재발급 메서드(유효 RT로 새 AT 발급)
     public String createNewAccessToken(String refreshToken) {
-        RefreshToken rt = refreshTokenService.getActiveByTokenOrThrow(refreshToken);
-        User user = userService.findById(rt.getUserId());
-        return tokenProvider.generateToken(user, ACCESS_EXPIRES);
-    }
-
-    // ---------------------------------------------------------
-    // (선택) 3) 재발급 + RT 회전: 재사용 공격 대응이 필요한 경우
-    // ---------------------------------------------------------
-    @Transactional
-    public LoginResponse reissueTokensWithRotation(String refreshToken) {
-        RefreshToken old = refreshTokenService.getActiveByTokenOrThrow(refreshToken);
-        User user = userService.findById(old.getUserId());
-
-        String access  = tokenProvider.generateToken(user, ACCESS_EXPIRES);
-        String refresh = tokenProvider.generateToken(user, REFRESH_EXPIRES);
-
-        // 이전 RT 폐기 후 새 RT 저장(회전)
-        old.revoke();
-        Instant now = Instant.now();
-        refreshTokenRepository.save(new RefreshToken(
-                user.getId(),
-                refresh,
-                now,
-                now.plus(REFRESH_EXPIRES)
-        ));
-
-        return new LoginResponse(access, refresh);
+        RefreshToken rt = refreshTokenService.getActiveByTokenOrThrow(refreshToken);    //RT 유효한지 체크
+        User user = userService.findById(rt.getUserId());                               //RT로 User를 찾기
+        // 기존 세션 유지: AT에 sid로 rt.getTokenId() 포함
+        return tokenProvider.generateAccessToken(user, ACCESS_EXPIRES, rt.getTokenId()); //Access token 지급
     }
 }
