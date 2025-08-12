@@ -1,14 +1,15 @@
 package com.festival.everyday.core.api;
 
-import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.dto.FestivalSimpleDto;
+import com.festival.everyday.core.dto.request.CompanyRegisterRequest;
+import com.festival.everyday.core.dto.request.HolderRegisterRequest;
+import com.festival.everyday.core.dto.request.LaborRegisterRequest;
 import com.festival.everyday.core.dto.response.ApiResponse;
 import com.festival.everyday.core.service.FestivalService;
+import com.festival.everyday.core.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,11 +19,49 @@ import java.util.List;
 public class UserApiController {
 
     private final FestivalService festivalService;
+    private final UserService userService;
 
+    /**
+     * 내가 등록한 축제 목록 조회 API
+     * @return 내가 등록한 축제 목록
+     */
     @GetMapping("/me/festivals")
     public ResponseEntity<ApiResponse<List<FestivalSimpleDto>>> getMyFestivals() {
         Long holderId = 1L;
         List<FestivalSimpleDto> festivalsByHolderId = festivalService.findListByHolderId(holderId);
         return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", festivalsByHolderId));
+    }
+
+    /**
+     * 기획자 회원가입 API
+     * @return 기획자 ID
+     */
+    @PostMapping("/holders")
+    public ResponseEntity<ApiResponse<Long>> registerHolder(@RequestBody HolderRegisterRequest request) {
+        Long holderId = userService.holderJoin(request);
+
+        return ResponseEntity.ok(ApiResponse.success("기획자 가입에 성공하였습니다.", holderId));
+    }
+
+    /**
+     * 업체 회원가입 API
+     * @return 업체 ID
+     */
+    @PostMapping("/companies")
+    public ResponseEntity<ApiResponse<Long>> registerCompany(@RequestBody CompanyRegisterRequest request) {
+        Long companyId = userService.companyJoin(request);
+
+        return ResponseEntity.ok(ApiResponse.success("업체 가입에 성공하였습니다.", companyId));
+    }
+
+    /**
+     * 근로자 회원가입 API
+     * @return 근로자 ID
+     */
+    @PostMapping("/labors")
+    public ResponseEntity<ApiResponse<Long>> registerLabor(@RequestBody LaborRegisterRequest request) {
+        Long laborId = userService.laborJoin(request);
+
+        return ResponseEntity.ok(ApiResponse.success("근로자 가입에 성공하였습니다.", laborId));
     }
 }
