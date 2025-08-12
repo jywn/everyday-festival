@@ -2,6 +2,7 @@ package com.festival.everyday.core.service;
 
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.interaction.ReceiverType;
 import com.festival.everyday.core.domain.recruit.CompanyRecruit;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
 import com.festival.everyday.core.domain.user.Holder;
@@ -17,9 +18,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.festival.everyday.core.dto.ApplyStatus.*;
+import static com.festival.everyday.core.dto.FavorStatus.*;
 import static com.festival.everyday.core.dto.RecruitStatus.*;
 
 @Service
@@ -32,6 +35,7 @@ public class FestivalService {
     private final CompanyRecruitRepository companyRecruitRepository;
     private final LaborRecruitRepository laborRecruitRepository;
     private final ApplicationRepository applicationRepository;
+    private final FavoriteRepository favoriteRepository;
     private final FestivalMapper festivalMapper;
 
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
@@ -82,5 +86,18 @@ public class FestivalService {
         Holder holder = holderRepository.findById(holderId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 기획자입니다."));
         Festival festival = festivalRepository.save(festivalMapper.toEntity(holder, festivalFormRequest));
         return festival.getId();
+    }
+
+    public List<FestivalSimpleDto> findListByHolderId(Long holderId) {
+        return  festivalRepository.findFestivalsByHolderId(holderId)
+                .stream()
+                .map(festival -> {
+                    FavorStatus favorStatus = isFavoredFestival(holderId, festival.getId()) ? FAVORED : NOT_FAVORED;
+                    return FestivalSimpleDto.of(festival, favorStatus);
+                }).toList();
+    }
+
+    private boolean isFavoredFestival(Long userId, Long festivalId) {
+        return favoriteRepository.existBySenderIdAndReceiverIdAndReceiverType(userId, festivalId, ReceiverType.FESTIVAL);
     }
 }
