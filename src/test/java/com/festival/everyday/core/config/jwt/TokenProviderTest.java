@@ -51,8 +51,8 @@ class TokenProviderTest {
     }
 
     @Test
-    void generateToken() {
-        String token = tokenProvider.generateToken(user, Duration.ofMinutes(5));
+    void generateRefreshToken() {
+        String token = tokenProvider.generateRefreshToken(user, Duration.ofMinutes(5));
 
         assertNotNull(token);
         assertTrue(tokenProvider.validateToken(token));
@@ -65,7 +65,7 @@ class TokenProviderTest {
     @Test
     void validateToken() {
         // 정상 토큰
-        String good = tokenProvider.generateToken(user, Duration.ofMinutes(1));
+        String good = tokenProvider.generateRefreshToken(user, Duration.ofMinutes(1));
         assertTrue(tokenProvider.validateToken(good));
 
         // 만료 토큰(의도적으로 exp를 과거로 설정)
@@ -96,7 +96,7 @@ class TokenProviderTest {
 
     @Test
     void getAuthentication() {
-        String token = tokenProvider.generateToken(user, Duration.ofMinutes(5));
+        String token = tokenProvider.generateRefreshToken(user, Duration.ofMinutes(5));
 
         Authentication auth = tokenProvider.getAuthentication(token);
         assertNotNull(auth);
@@ -113,19 +113,19 @@ class TokenProviderTest {
 
     @Test
     void getAccount() {
-        String token = tokenProvider.generateToken(user, Duration.ofMinutes(5));
+        String token = tokenProvider.generateRefreshToken(user, Duration.ofMinutes(5));
         assertEquals("geo", tokenProvider.getAccount(token));
     }
 
     @Test
     void getUserId() {
-        String token = tokenProvider.generateToken(user, Duration.ofMinutes(5));
+        String token = tokenProvider.generateRefreshToken(user, Duration.ofMinutes(5));
         assertEquals(42L, tokenProvider.getUserId(token));
     }
 
     @Test
     void getUserType() {
-        String token = tokenProvider.generateToken(user, Duration.ofMinutes(5));
+        String token = tokenProvider.generateRefreshToken(user, Duration.ofMinutes(5));
         assertEquals("HOLDER", tokenProvider.getUserType(token));
     }
 }

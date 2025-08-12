@@ -40,7 +40,7 @@ class TokenServiceTest {
         when(userService.findById(userId)).thenReturn(user);
 
         ArgumentCaptor<Duration> dur = ArgumentCaptor.forClass(Duration.class);
-        when(tokenProvider.generateToken(eq(user), dur.capture())).thenReturn("AT_new");
+        when(tokenProvider.generateRefreshToken(eq(user), dur.capture())).thenReturn("AT_new");
 
         // ← 여기!
         String result = tokenService.createNewAccessToken(rtValue);

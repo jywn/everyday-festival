@@ -46,5 +46,9 @@ public class RefreshToken {
     public void revoke() {
         this.revoked = true;
     }
+
+    public void setRevoked(boolean b) {
+        this.revoked = b;
+    }
 }
 
