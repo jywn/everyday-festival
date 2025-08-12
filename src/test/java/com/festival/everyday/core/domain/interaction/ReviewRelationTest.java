@@ -31,8 +31,8 @@ class ReviewRelationTest {
     @Test
     @DisplayName("사용자가 리뷰를 등록한다.")
     void createWithSender() {
-        Review review = Review.create(company, 1L, ReceiverType.FESTIVAL, "별점 5점!");
-        assertThat(review.getSender()).isEqualTo(company);
+        Review review = Review.create(2L, SenderType.COMPANY, 1L, ReceiverType.FESTIVAL, "별점 5점!");
+        assertThat(review.getSenderType()).isEqualTo(SenderType.COMPANY);
     }
 
 

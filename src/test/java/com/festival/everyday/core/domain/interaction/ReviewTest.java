@@ -27,7 +27,7 @@ class ReviewTest {
     @Test
     @DisplayName("정상 생성")
     public void create() throws Exception {
-        Review review = Review.create(company, 1L, ReceiverType.FESTIVAL, "축제 장소가 너무 좁소.");
+        Review review = Review.create(2L, SenderType.COMPANY, 1L, ReceiverType.FESTIVAL, "축제 장소가 너무 좁소.");
         assertNotNull(review);
         assertEquals("축제 장소가 너무 좁소.", review.getContent());
     }
@@ -35,21 +35,21 @@ class ReviewTest {
     @Test
     @DisplayName("null content 예외 발생")
     void nullReview() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> {Review.create(company, 1L, ReceiverType.FESTIVAL, null);
+        assertThrows(IllegalArgumentException.class, () -> {Review.create(2L, SenderType.COMPANY, 1L, ReceiverType.FESTIVAL, null);
         });
     }
 
     @Test
     @DisplayName("null sender 예외 발생")
     void nullSender() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> {Review.create(null, 1L, ReceiverType.FESTIVAL, null);
+        assertThrows(IllegalArgumentException.class, () -> {Review.create(null, null, 1L, ReceiverType.FESTIVAL, null);
         });
     }
 
     @Test
     @DisplayName("null receiver 예외 발생")
     void nullReceiver() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> {Review.create(company, null, null, null);
+        assertThrows(IllegalArgumentException.class, () -> {Review.create(2L, SenderType.COMPANY, null, null, null);
         });
     }
 }

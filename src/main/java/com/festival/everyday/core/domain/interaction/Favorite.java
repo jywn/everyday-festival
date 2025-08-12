@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
+
 /**
  * 연관 관계가 존재하지 않습니다.
  * festival 의 존재로 인해 다형적 설계가 어려워 연관관계를 제거하였습니다.
@@ -67,9 +69,9 @@ public class Favorite extends BaseCreatedAtEntity {
      * 좋아요 관계를 생성합니다.
      */
     public static Favorite create(User sender, ReceiverType receiverType, Long receiverId) {
-        DomainValidator.notNull("sender", sender);
-        DomainValidator.notNull("receiver", receiverType);
-        DomainValidator.notNull("receiverId", receiverId);
+        notNull("sender", sender);
+        notNull("receiver", receiverType);
+        notNull("receiverId", receiverId);
 
         Favorite favorite = new Favorite(sender, receiverType, receiverId);
         sender.addFavorite(favorite);
