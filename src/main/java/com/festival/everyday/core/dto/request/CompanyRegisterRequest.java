@@ -17,7 +17,7 @@ public class CompanyRegisterRequest {
     private String email;
     private AddressDto addressDto;
     private String introduction;
-    String link;
-    String ceoName;
-    Category category;
+    private String link;
+    private String ceoName;
+    private Category category;
 }

@@ -1,10 +1,13 @@
 package com.festival.everyday.core.api;
 
+import com.festival.everyday.core.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.domain.user.User;
 import com.festival.everyday.core.dto.FestivalSimpleDto;
 import com.festival.everyday.core.dto.request.CompanyRegisterRequest;
 import com.festival.everyday.core.dto.request.HolderRegisterRequest;
 import com.festival.everyday.core.dto.request.LaborRegisterRequest;
 import com.festival.everyday.core.dto.response.ApiResponse;
+import com.festival.everyday.core.dto.response.MyProfileResponse;
 import com.festival.everyday.core.service.FestivalService;
 import com.festival.everyday.core.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +35,20 @@ public class UserApiController {
         return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", festivalsByHolderId));
     }
 
+    /**
+    * 내 프로필 조회 API
+     * @return username, userId, userType
+     */
+    @GetMapping("/me/profile")
+    public ResponseEntity<ApiResponse<MyProfileResponse>>  getMyProfile(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                                        @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType)
+    {
+        User user = userService.findById(userId);
+        String userName = user.getName();
+
+        MyProfileResponse myProfileResponse = new MyProfileResponse(userId,userType,userName);
+        return ResponseEntity.ok(ApiResponse.success("내 프로필 보기에 성공하였습니다.", myProfileResponse));
+    }
     /**
      * 기획자 회원가입 API
      * @return 기획자 ID

@@ -31,34 +31,40 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         String authorizationHeader = request.getHeader(HEADER_AUTHORIZATION);
         String token = getAccessToken(authorizationHeader);
-        if (token != null
-                && SecurityContextHolder.getContext().getAuthentication() == null
-                && tokenProvider.validateToken(token)) {
-            try { // [ADD] 파싱/검증 중 예외가 나도 전체 요청을 막지 않도록 방어
-                Authentication authentication = tokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                request.setAttribute(ATTR_USER_ID, tokenProvider.getUserId(token));
-                request.setAttribute(ATTR_USER_TYPE, tokenProvider.getUserType(token));
+        if (token == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-                Long sid = tokenProvider.getSessionId(token); // [ADD] AT에 sid를 넣었다면 현재 세션 식별자 전달
-                if (sid != null) {
-                    request.setAttribute(ATTR_SESSION_ID, sid);
-                }
-            } catch (Exception ignored) { // [ADD]
-                SecurityContextHolder.clearContext();
-            }
+        // 토큰 유효성 먼저 검증
+        if (!tokenProvider.validateToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            return;
+        }
+
+        // 여기서부터는 항상 attribute 세팅
+        Long userId = tokenProvider.getUserId(token);
+        request.setAttribute(ATTR_USER_ID, userId);
+        request.setAttribute(ATTR_USER_TYPE, tokenProvider.getUserType(token));
+        Long sid = tokenProvider.getSessionId(token);
+        if (sid != null) request.setAttribute(ATTR_SESSION_ID, sid);
+
+        // Authentication은 비어있을 때만 세팅(원하면 항상 갱신해도 됨)
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            Authentication authentication = tokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
     }
+
 
     private String getAccessToken(String authorizationHeader) {
         if (authorizationHeader != null
