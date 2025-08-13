@@ -2,6 +2,7 @@ package com.festival.everyday.core.dto.response;
 
 import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.domain.application.SELECTED;
+import com.festival.everyday.core.domain.user.Category;
 import com.festival.everyday.core.domain.user.Company;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class CompanyApplicationResponse {
 
     private final Long id;
     private final String name;
-    private final String category;
+    private final Category category;
 
     private final String city;
     private final String district;
@@ -33,7 +34,7 @@ public class CompanyApplicationResponse {
                     .selected(application.getSelected())
                     .id(company.getId())
                     .name(company.getName())
-                    .category(company.getCategory().toString())
+                    .category(company.getCategory())
                     .city(company.getAddress().getCity())
                     .district(company.getAddress().getDetail())
                     .build();
