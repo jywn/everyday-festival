@@ -16,14 +16,14 @@ import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 public class Labor extends User {
 
     @NotNull
-    @Column(name = "labor_age", nullable = false)
+    @Column(name = "labor_age")
     private Integer age;
 
     /**
      * MALE, FEMALE, ...
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "labor_gender", nullable = false)
+    @Column(name = "labor_gender")
     private Gender gender;
 
     @Override
