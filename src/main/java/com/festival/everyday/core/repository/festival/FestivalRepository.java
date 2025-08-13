@@ -11,4 +11,6 @@ public interface FestivalRepository extends JpaRepository<Festival,Long>, Festiv
     Optional<Long> findLaborRecruitIdById(Long festivalId);
     Optional<Long> findCompanyRecruitIdById(Long festivalId);
     List<Festival> findFestivalsByHolderId(Long holderId);
+    boolean existsCompanyRecruitById(Long festivalId);
+    boolean existsLaborRecruitById(Long festivalId);
 }
