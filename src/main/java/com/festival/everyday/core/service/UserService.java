@@ -40,31 +40,38 @@ public class UserService {
     public Long holderJoin(HolderRegisterRequest request) {
 
         // 계정 중복을 확인한다.
-        if (userRepository.existsByAccount(request.getAccount())) {
-            throw new EntityExistsException("중복 계정입니다.");
-        }
+        checkRedundant(request.getAccount());
+
         // 주소를 DTO 로 변환한다.
         AddressDto addressDto = request.getAddressDto();
         Address address = Address.create(addressDto.getCity(), addressDto.getDistrict(), addressDto.getDetail());
+
+        // 비밀번호를 암호화한다.
         String encodedPw = passwordEncoder.encode(request.getPassword());
-        ;
+
         // Holder 엔티티를 생성한다.
-        Holder holder = Holder.create(request.getAccount(), encodedPw, request.getName(),
-                request.getTel(), request.getEmail(), address);
+        Holder holder = Holder.create(request.getAccount(), encodedPw, request.getName(), request.getTel(), request.getEmail(), address);
 
         // 엔티티를 영속화(DB에 저장)한다.
         return holderRepository.save(holder).getId();
     }
 
+    private void checkRedundant(String request) {
+        if (userRepository.existsByAccount(request)) {
+            throw new EntityExistsException("중복 계정입니다.");
+        }
+    }
+
     public Long companyJoin(CompanyRegisterRequest request) {
 
         // 계정 중복을 확인한다.
-        if (userRepository.existsByAccount(request.getAccount())) {
-            throw new EntityExistsException("중복 계정입니다.");
-        }
+        checkRedundant(request.getAccount());
+
         // 주소를 DTO 로 변환한다.
         AddressDto addressDto = request.getAddressDto();
         Address address = Address.create(addressDto.getCity(), addressDto.getDistrict(), addressDto.getDetail());
+
+        // 비밀번호를 암호화한다.
         String encodedPw = passwordEncoder.encode(request.getPassword());
 
         // Company 엔티티를 생성한다.
@@ -78,12 +85,12 @@ public class UserService {
     public Long laborJoin(LaborRegisterRequest request) {
 
         // 계정 중복을 확인한다.
-        if (userRepository.existsByAccount(request.getAccount())) {
-            throw new EntityExistsException("중복 계정입니다.");
-        }
+        checkRedundant(request.getAccount());
         // 주소를 DTO 로 변환한다.
         AddressDto addressDto = request.getAddressDto();
         Address address = Address.create(addressDto.getCity(), addressDto.getDistrict(), addressDto.getDetail());
+
+        // 비밀번호를 암호화한다.
         String encodedPw = passwordEncoder.encode(request.getPassword());
 
         // Labor 엔티티를 생성한다.
