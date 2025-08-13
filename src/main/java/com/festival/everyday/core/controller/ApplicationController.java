@@ -5,7 +5,6 @@ import com.festival.everyday.core.dto.response.*;
 import com.festival.everyday.core.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -22,7 +21,7 @@ public class ApplicationController {
     @GetMapping("/festivals/{festivalId}/company-applications")
     public ResponseEntity<ApiResponse> getCompanyApplications(@PathVariable Long festivalId)
     {
-        FestivalCompanyApplicationResponse response=applicationService.getCompanyApplications(festivalId);
+        CompanyApplicationListResponse response=applicationService.getCompanyApplications(festivalId);
 
         return ResponseEntity
                 .ok()
@@ -32,7 +31,7 @@ public class ApplicationController {
     @GetMapping("/festivals/{festivalId}/labor-applications")
     public ResponseEntity<ApiResponse> getLaborApplications(@PathVariable Long festivalId)
     {
-        FestivalLaborApplicationResponse response=applicationService.getLaborApplications(festivalId);
+        LaborApplicationListResponse response=applicationService.getLaborApplications(festivalId);
 
         return ResponseEntity
                 .ok()
