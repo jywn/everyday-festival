@@ -1,0 +1,21 @@
+package com.festival.everyday.core.service;
+
+import com.festival.everyday.core.dto.CompanySearchDto;
+import com.festival.everyday.core.dto.FestivalSearchDto;
+import com.festival.everyday.core.dto.response.PageResponse;
+import com.festival.everyday.core.repository.company.CompanyRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class CompanyService {
+
+    private final CompanyRepository companyRepository;
+
+    public PageResponse<CompanySearchDto> searchByKeyword(String keyword, PageRequest pageRequest) {
+        Long userId = 1L; // 수정 필요
+        return PageResponse.from(companyRepository.dynamicSearch(userId, keyword, pageRequest));
+    }
+}

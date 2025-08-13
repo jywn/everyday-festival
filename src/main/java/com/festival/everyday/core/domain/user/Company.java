@@ -23,30 +23,26 @@ public class Company extends User {
      * @NotBlank : @NotEmpty + @NotNull
      */
 
-    @NotNull
-    @Column(name = "company_introduction", nullable = false)
+    @Column(name = "company_introduction")
     private String introduction;
 
     //공식 홈페이지가 없는 영세 업체를 고려하여 공백 문자까지 허용합니다.
-    @NotNull
-    @Column(name = "company_link", nullable = false)
+    @Column(name = "company_link")
     private String link;
 
-    @NotNull
-    @Column(name = "ceo_name", nullable = false)
+    @Column(name = "ceo_name")
     private String ceoName;
 
     /**
      * FOOD, ART, ...
      */
     @Enumerated(EnumType.STRING)
-    @Column(name = "company_category", nullable = false)
+    @Column(name = "company_category")
     private Category category;
 
-
     // 데모 버전에서 임의의 문자열을 삽입하도록 하였습니다.
-    @Column(name = "business_registration_number", nullable = false)
-    private String business_registration_number = UUID.randomUUID().toString();
+    @Column(name = "business_registration_number")
+    private String business_registration_number;
 
     @Override
     public UserType getUserType() {

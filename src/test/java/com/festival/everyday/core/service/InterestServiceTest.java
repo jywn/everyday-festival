@@ -7,7 +7,7 @@
 //import com.festival.everyday.core.dto.request.InterestRequest;
 //import com.festival.everyday.core.dto.response.InterestResponse;
 //import com.festival.everyday.core.repository.CompanyRepository;
-//import com.festival.everyday.core.repository.FestivalRepository;
+//import com.festival.everyday.core.repository.festival.FestivalRepository;
 //import com.festival.everyday.core.repository.HolderRepository;
 //import com.festival.everyday.core.repository.InterestRepository;
 //import org.junit.jupiter.api.DisplayName;
