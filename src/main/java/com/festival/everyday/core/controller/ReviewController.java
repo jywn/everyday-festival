@@ -88,7 +88,7 @@ public class ReviewController {
                 .ok(new ApiResponse(true,200,"축제 리뷰 작성 폼 조회에 성공하였습니다."));
     }
 
-    @GetMapping("/festivals/{festivalId}/reviews/form")
+    @GetMapping("/companies/{companyId}/reviews/form")
     public ResponseEntity<ApiResponse> getCompanyReviewForm(@PathVariable Long companyId) {
 
         CompanyReviewFormResponse response=reviewService.getCompanyReviewForm(companyId);

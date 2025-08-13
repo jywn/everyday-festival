@@ -40,45 +40,26 @@ public class FestivalService {
     private final FestivalMapper festivalMapper;
 
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
-        // 축제를 찾아 DTO 로 변환합니다.
+        // 축제를 찾습니다.
         Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 축제입니다."));
+
+        // 축제를 DTO 로 변환합니다.
         FestivalDetailDto festivalDetailDto = FestivalDetailDto.from(festival);
 
         // 업체 모집 공고를 조회하여 모집 여부를 설정합니다.
-        RecruitStatus companyRecruitStatus = NOT_RECRUITING;
         Optional<Long> companyRecruitId = festivalRepository.findCompanyRecruitIdById(festivalId);
-        if (companyRecruitId.isPresent()) {
-            companyRecruitStatus = RECRUITING;
-        }
+        RecruitStatus companyRecruitStatus = checkRecruitExists(companyRecruitId);
 
         // 근로자 모집 공고를 조회합니다 모집 여부를 설정합니다.
-        RecruitStatus laborRecruitStatus = NOT_RECRUITING;
         Optional<Long> laborRecruitId = festivalRepository.findLaborRecruitIdById(festivalId);
-        if (laborRecruitId.isPresent()) {
-            laborRecruitStatus = RECRUITING;
-        }
+        RecruitStatus laborRecruitStatus = checkRecruitExists(laborRecruitId);
+
 
         // 업체 모집 공고가 존재하면, 업체 모집 공고를 찾아 DTO 로 변환합니다.
-        CompanyRecruitDto companyRecruitDto = null;
-        if(companyRecruitStatus.equals(RECRUITING)) {
-            Optional<CompanyRecruit> findCompanyRecruit = companyRecruitRepository.findById(companyRecruitId.get());
-
-            Optional<Application> companyApplied = applicationRepository.findApplicationByUserIdAndRecruitId(userId, companyRecruitId.get());
-            // application 전부 가져오는건 낭비. 수정 필요
-            ApplyStatus applyStatus = companyApplied.isPresent() ? APPLIED : NOT_APPLIED;
-            companyRecruitDto = CompanyRecruitDto.from(findCompanyRecruit.get(), applyStatus);
-
-        }
+        CompanyRecruitDto companyRecruitDto = ifCompRecruitExistsToDto(userId, companyRecruitStatus, companyRecruitId.get());
 
         // 근로자 모집 공고가 존재하면, 근로자 모집 공고를 찾아 DTO 로 변환합니다.
-        LaborRecruitDto laborRecruitDto = null;
-        if(laborRecruitStatus.equals(RECRUITING)) {
-            Optional<LaborRecruit> findLaborRecruit = laborRecruitRepository.findById(laborRecruitId.get());
-
-            Optional<Application> laborApplied = applicationRepository.findApplicationByUserIdAndRecruitId(userId, laborRecruitId.get());
-            ApplyStatus applyStatus = laborApplied.isPresent() ? APPLIED : NOT_APPLIED;
-            laborRecruitDto = LaborRecruitDto.from(findLaborRecruit.get(), applyStatus);
-        }
+        LaborRecruitDto laborRecruitDto = ifLaborRecruitExistsToDto(userId, laborRecruitStatus, laborRecruitId.get());
 
         return FestivalDetailResponse.of(festivalDetailDto, companyRecruitStatus, companyRecruitDto, laborRecruitStatus, laborRecruitDto);
     }
@@ -107,4 +88,26 @@ public class FestivalService {
         return PageResponse.from(festivalRepository.dynamicSearch(userId, keyword, pageRequest));
     }
 
+    private RecruitStatus checkRecruitExists(Optional<Long> id) {
+        return id.isPresent() ? RECRUITING : NOT_RECRUITING;
+    }
+
+    private ApplyStatus checkApplyStatus(Long userId, Long recruitId) {
+        return applicationRepository.existsByUserIdAndRecruitId(userId, recruitId) ? APPLIED : NOT_APPLIED;
+    }
+
+    private CompanyRecruitDto ifCompRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long companyRecruitId) {
+        if (recruitStatus.equals(NOT_RECRUITING)) { return null; }
+
+        Optional<CompanyRecruit> findCompanyRecruit = companyRecruitRepository.findById(companyRecruitId);
+        return CompanyRecruitDto.from(findCompanyRecruit.get(), checkApplyStatus(userId, companyRecruitId));
+    }
+
+    private LaborRecruitDto ifLaborRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long laborRecruitId) {
+        if (recruitStatus.equals(NOT_RECRUITING)) { return null; }
+
+        Optional<LaborRecruit> findLaborRecruit = laborRecruitRepository.findById(laborRecruitId);
+        return LaborRecruitDto.from(findLaborRecruit.get(), checkApplyStatus(userId, laborRecruitId));
+    }
 }
+
