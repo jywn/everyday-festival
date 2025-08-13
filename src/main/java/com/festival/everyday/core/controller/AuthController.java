@@ -3,6 +3,7 @@ package com.festival.everyday.core.controller;
 import com.festival.everyday.core.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.dto.request.CreateAccessTokenRequest;
 import com.festival.everyday.core.dto.request.LoginRequest;
+import com.festival.everyday.core.dto.response.ApiResponse;
 import com.festival.everyday.core.dto.response.CreateAccessTokenResponse;
 import com.festival.everyday.core.dto.response.LoginResponse;
 import com.festival.everyday.core.service.AuthService;
@@ -37,10 +38,17 @@ public class AuthController {
 
     // 3) 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_SESSION_ID)Long token_id) {
+    public ResponseEntity<String> logout(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_SESSION_ID,required = false)Long token_id) {
+        if (token_id == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         authService.logout(token_id);
-        return ResponseEntity.status(HttpStatus.SEE_OTHER)
-                .header(HttpHeaders.LOCATION, "/mock-login")
-                .build();
+        return ResponseEntity.status(HttpStatus.SEE_OTHER) // 303
+                .header(HttpHeaders.LOCATION, "/mock-login.html") // 리다이렉트 경로
+                .body("로그아웃 잘 되었습니다.");
     }
+
+    //@PostMapping("/mock-login")
+
 }
