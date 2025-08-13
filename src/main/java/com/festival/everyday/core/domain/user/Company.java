@@ -40,7 +40,6 @@ public class Company extends User {
     @Column(name = "company_category")
     private Category category;
 
-
     // 데모 버전에서 임의의 문자열을 삽입하도록 하였습니다.
     @Column(name = "business_registration_number")
     private String business_registration_number;

@@ -4,7 +4,7 @@ import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.dto.response.*;
 import com.festival.everyday.core.repository.ApplicationRepository;
-import com.festival.everyday.core.repository.FestivalRepository;
+import com.festival.everyday.core.repository.festival.FestivalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class ApplicationService {
     private final FestivalRepository festivalRepository;
 
     //업체->축제 지원 목록 조회
-    public FestivalCompanyApplicationResponse getCompanyApplications(Long festivalId) {
+    public CompanyApplicationListResponse getCompanyApplications(Long festivalId) {
         Festival festival = festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 축제를 찾을 수 없습니다."));
         List<Application> applications = applicationRepository.findCompanyApplicationsByFestivalId(festivalId);
@@ -30,10 +30,10 @@ public class ApplicationService {
                 .map(application -> CompanyApplicationResponse.from(application))
                 .toList();
 
-        return FestivalCompanyApplicationResponse.of(festival, companyList);
+        return CompanyApplicationListResponse.of(festival, companyList);
     }
     //근로자->축제 지원 목록 조회
-    public FestivalLaborApplicationResponse getLaborApplications(Long festivalId) {
+    public LaborApplicationListResponse getLaborApplications(Long festivalId) {
         Festival festival = festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 축제를 찾을 수 없습니다."));
 
@@ -43,7 +43,7 @@ public class ApplicationService {
                 .map(application -> LaborApplicationResponse.from(application))
                 .toList();
 
-        return FestivalLaborApplicationResponse.of(festival, laborList);
+        return LaborApplicationListResponse.of(festival, laborList);
     }
 
     //업체->축제 제출한 지원서 하나 조회

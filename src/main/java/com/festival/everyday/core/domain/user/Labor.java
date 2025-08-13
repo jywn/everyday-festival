@@ -15,7 +15,6 @@ import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Labor extends User {
 
-    @NotNull
     @Column(name = "labor_age")
     private Integer age;
 

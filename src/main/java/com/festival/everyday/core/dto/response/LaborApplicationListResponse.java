@@ -10,17 +10,16 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-public class FestivalCompanyApplicationResponse {
+public class LaborApplicationListResponse {
     private final Long festivalId;
     private final String festivalName;
-    private final List<CompanyApplicationResponse> companyList;
+    private final List<LaborApplicationResponse> laborList;
 
-    public static FestivalCompanyApplicationResponse of(Festival festival, List<CompanyApplicationResponse> companyList) {
-        return FestivalCompanyApplicationResponse.builder()
+    public static LaborApplicationListResponse of(Festival festival, List<LaborApplicationResponse> laborList) {
+        return LaborApplicationListResponse.builder()
                 .festivalId(festival.getId())
                 .festivalName(festival.getName())
-                .companyList(companyList)
+                .laborList(laborList)
                 .build();
     }
-
 }

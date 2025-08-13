@@ -5,8 +5,8 @@ import com.festival.everyday.core.domain.interaction.Interest;
 import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.dto.request.InterestRequest;
 import com.festival.everyday.core.dto.response.InterestResponse;
-import com.festival.everyday.core.repository.CompanyRepository;
-import com.festival.everyday.core.repository.FestivalRepository;
+import com.festival.everyday.core.repository.company.CompanyRepository;
+import com.festival.everyday.core.repository.festival.FestivalRepository;
 import com.festival.everyday.core.repository.InterestRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -24,7 +24,7 @@ public class InterestService
     private final CompanyRepository companyRepository;
 
     //holderID는 토큰정보로 알 수 있고
-    public InterestResponse createInterest(Long holderId, Long companyId, InterestRequest request)
+    public Interest createInterest(Long holderId, Long companyId, InterestRequest request)
     {
         Company company=companyRepository.findById(companyId)
                 .orElseThrow(()->new EntityNotFoundException("업체를 찾을 수 없습니다."));
@@ -33,9 +33,8 @@ public class InterestService
                 .orElseThrow(()->new AccessDeniedException("해당 축제에 대한 권한이 없습니다."));
 
         Interest newInterest=request.toEntity(company, festival);
-        interestRepository.save(newInterest);
 
-        return InterestResponse.of(newInterest);
+        return interestRepository.save(newInterest);
     }
 
 }
