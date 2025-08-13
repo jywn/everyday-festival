@@ -98,6 +98,6 @@ public class FestivalService {
     }
 
     private boolean isFavoredFestival(Long userId, Long festivalId) {
-        return favoriteRepository.existBySenderIdAndReceiverIdAndReceiverType(userId, festivalId, ReceiverType.FESTIVAL);
+        return favoriteRepository.existsBySenderIdAndReceiverIdAndReceiverType(userId, festivalId, ReceiverType.FESTIVAL);
     }
 }
