@@ -24,7 +24,7 @@ public class InterestService
     private final CompanyRepository companyRepository;
 
     //holderID는 토큰정보로 알 수 있고
-    public InterestResponse createInterest(Long holderId, Long companyId, InterestRequest request)
+    public Interest createInterest(Long holderId, Long companyId, InterestRequest request)
     {
         Company company=companyRepository.findById(companyId)
                 .orElseThrow(()->new EntityNotFoundException("업체를 찾을 수 없습니다."));
@@ -33,9 +33,8 @@ public class InterestService
                 .orElseThrow(()->new AccessDeniedException("해당 축제에 대한 권한이 없습니다."));
 
         Interest newInterest=request.toEntity(company, festival);
-        interestRepository.save(newInterest);
 
-        return InterestResponse.of(newInterest);
+        return interestRepository.save(newInterest);
     }
 
 }
