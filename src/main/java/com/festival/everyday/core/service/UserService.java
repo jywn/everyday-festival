@@ -46,7 +46,7 @@ public class UserService {
                 request.getTel(), request.getEmail(), address);
 
         // 엔티티를 영속화(DB에 저장)한다.
-        return userRepository.save(holder).getId();
+        return holderRepository.save(holder).getId();
     }
 
     public Long companyJoin(CompanyRegisterRequest request) {

@@ -1,4 +1,4 @@
-package com.festival.everyday.core.repository;
+package com.festival.everyday.core.repository.festival;
 
 import com.festival.everyday.core.domain.Festival;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface FestivalRepository extends JpaRepository<Festival,Long> {
+public interface FestivalRepository extends JpaRepository<Festival,Long>, FestivalRepositoryCustom{
     Optional<Festival> findByIdAndHolderId(Long festivalId, Long holderId);
     Optional<Long> findLaborRecruitIdById(Long festivalId);
     Optional<Long> findCompanyRecruitIdById(Long festivalId);

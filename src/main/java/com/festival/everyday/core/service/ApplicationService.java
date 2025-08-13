@@ -4,7 +4,7 @@ import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.dto.response.*;
 import com.festival.everyday.core.repository.ApplicationRepository;
-import com.festival.everyday.core.repository.FestivalRepository;
+import com.festival.everyday.core.repository.festival.FestivalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

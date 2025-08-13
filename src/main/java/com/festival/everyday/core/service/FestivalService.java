@@ -6,15 +6,16 @@ import com.festival.everyday.core.domain.interaction.ReceiverType;
 import com.festival.everyday.core.domain.recruit.CompanyRecruit;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
 import com.festival.everyday.core.domain.user.Holder;
-import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.domain.user.UserType;
 import com.festival.everyday.core.dto.*;
 import com.festival.everyday.core.dto.mapper.FestivalMapper;
 import com.festival.everyday.core.dto.request.FestivalFormRequest;
 import com.festival.everyday.core.dto.response.FestivalDetailResponse;
+import com.festival.everyday.core.dto.response.PageResponse;
 import com.festival.everyday.core.repository.*;
+import com.festival.everyday.core.repository.festival.FestivalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,4 +101,10 @@ public class FestivalService {
     private boolean isFavoredFestival(Long userId, Long festivalId) {
         return favoriteRepository.existsBySenderIdAndReceiverIdAndReceiverType(userId, festivalId, ReceiverType.FESTIVAL);
     }
+
+    public PageResponse<FestivalSearchDto> searchByKeyword(String keyword, PageRequest pageRequest) {
+        Long userId = 1L; // 수정 필요
+        return PageResponse.from(festivalRepository.dynamicSearch(userId, keyword, pageRequest));
+    }
+
 }
