@@ -20,6 +20,7 @@ public class CompanyApiController {
 
     private final CompanyService companyService;
 
+    // 검색 메서드
     @PostMapping("/search")
     public ResponseEntity<ApiResponse<PageResponse<CompanySearchDto>>> searchCompanies(@RequestBody SearchRequest searchRequest) {
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
