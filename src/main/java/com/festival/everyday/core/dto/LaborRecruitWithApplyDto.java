@@ -1,33 +1,28 @@
 package com.festival.everyday.core.dto;
 
-import com.festival.everyday.core.domain.recruit.ExtraQuestion;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class LaborRecruitDto {
+public class LaborRecruitWithApplyDto {
     private PeriodDto periodDto;
     private String notice;
     private String job;
     private String wage;
     private String remark;
-    private List<String> extraQuestions;
+    private ApplyStatus applyStatus;
 
-
-    public static LaborRecruitDto from(LaborRecruit laborRecruit) {
-        return new LaborRecruitDto(
+    public static LaborRecruitWithApplyDto from(LaborRecruit laborRecruit, ApplyStatus applyStatus) {
+        return new LaborRecruitWithApplyDto(
                 PeriodDto.from(laborRecruit.getPeriod()),
                 laborRecruit.getNotice(),
                 laborRecruit.getJob(),
                 laborRecruit.getWage(),
                 laborRecruit.getRemark(),
-                laborRecruit.getExtraQuestions().stream().map(ExtraQuestion::getContent).toList()
+                applyStatus
         );
-
     }
 }

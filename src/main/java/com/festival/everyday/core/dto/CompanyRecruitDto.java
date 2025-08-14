@@ -1,21 +1,34 @@
 package com.festival.everyday.core.dto;
 
-import com.festival.everyday.core.domain.common.value.Period;
 import com.festival.everyday.core.domain.recruit.CompanyRecruit;
+import com.festival.everyday.core.domain.recruit.ExtraQuestion;
+import com.festival.everyday.core.domain.user.Category;
 import com.festival.everyday.core.domain.user.Company;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CompanyRecruitDto {
-    private PeriodDto periodDto;
-    private String notice;
-    private String preferred;
-    private ApplyStatus applyStatus;
+import java.util.List;
 
-    public static CompanyRecruitDto from(CompanyRecruit companyRecruit, ApplyStatus applyStatus) {
-        return new CompanyRecruitDto(PeriodDto.from(companyRecruit.getPeriod()), companyRecruit.getNotice(), companyRecruit.getPreferred(), applyStatus);
+@Data
+@AllArgsConstructor
+public class CompanyRecruitDto {
+
+    private List<Category> categories;
+    private String etc;
+    private String preferred;
+    private String notice;
+
+    private List<String> extraQuestions;
+
+    private CompanyRecruitDto(List<Category> categories, String preferred, String notice, List<String> extraQuestions) {
+        this.categories = categories;
+        this.preferred = preferred;
+        this.notice = notice;
+        this.extraQuestions = extraQuestions;
+    }
+
+    public static CompanyRecruitDto from(CompanyRecruit companyRecruit) {
+        return new CompanyRecruitDto(companyRecruit.getCategories(), companyRecruit.getPreferred(), companyRecruit.getNotice(),
+                companyRecruit.getExtraQuestions().stream().map(ExtraQuestion::getContent).toList());
     }
 }

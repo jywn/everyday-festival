@@ -15,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +39,7 @@ class ApplicationExtraQuestionRelationTest {
 
     Application application = Application.create(companyRecruit, company, festival);
 
-    String[] str = {"A", "B", "C", "D", "E"};
+    List<String> str = new ArrayList<>(List.of("A", "B", "C"));
 
     LaborRecruit laborRecruit = LaborRecruit.create(period, "공지", "빵 반죽", "일급 15,000원", "힘들다.");
 
