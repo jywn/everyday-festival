@@ -19,14 +19,14 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
     public static final String ATTR_USER_ID = "auth.user_id";
     public static final String ATTR_USER_TYPE = "auth.user_type";
-    public static final String ATTR_SESSION_ID = "auth.session_id"; // [ADD] AT에 sid(세션/RT id) 클레임을 쓴다면 전달용
+    public static final String ATTR_SESSION_ID = "auth.session_id";
 
     private final TokenProvider tokenProvider;
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) { // [ADD] CORS 프리플라이트는 패스
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         return HttpMethod.OPTIONS.matches(request.getMethod());
     }
 
@@ -45,18 +45,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         // 토큰 유효성 먼저 검증
         if (!tokenProvider.validateToken(token)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        // 여기서부터는 항상 attribute 세팅
         Long userId = tokenProvider.getUserId(token);
         request.setAttribute(ATTR_USER_ID, userId);
         request.setAttribute(ATTR_USER_TYPE, tokenProvider.getUserType(token));
         Long sid = tokenProvider.getSessionId(token);
         if (sid != null) request.setAttribute(ATTR_SESSION_ID, sid);
 
-        // Authentication은 비어있을 때만 세팅(원하면 항상 갱신해도 됨)
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);

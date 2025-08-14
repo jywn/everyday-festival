@@ -144,15 +144,21 @@ public class Application extends BaseCreatedAtEntity {
     /**
      * 지원을 수락합니다.
      */
-    public void accept() {
+    public void accept(){
         this.selected = ACCEPTED;
     }
-
     /**
      * 지원을 거절합니다.
      */
     public void deny() {
         this.selected = DENIED;
+    }
+
+    /**
+     * 수락이 되어있는 상태(또는 거절이 되어있는 상태)에서 수락(또는 거절)을 누르면 Neutral 상태로 돌아옵니다.
+     */
+    public void cancel() {
+        this.selected = NEUTRAL;
     }
 
 }

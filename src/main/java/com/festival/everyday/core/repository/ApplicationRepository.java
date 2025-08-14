@@ -36,7 +36,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
         """)
     List<Application> findApplicationByApplicationIdWithDetails(@Param("userId") Long UserId);
 
-    Optional<Application> findApplicationByUserIdAndRecruitId(Long userId, Long recruitId);
 
     Long user(@NotNull User user);
 
