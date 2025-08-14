@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InterestRepository extends JpaRepository<Interest, Long> {
 
-    boolean exitsByFestivalAndCompany(Festival festival, Company company);
+    boolean existsByFestivalAndCompany(Festival festival, Company company);
 }
