@@ -1,12 +1,14 @@
 package com.festival.everyday.core.domain.recruit;
 
 import com.festival.everyday.core.domain.common.value.Period;
+import com.festival.everyday.core.domain.user.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.festival.everyday.core.domain.validate.DomainValidator.*;
@@ -22,21 +24,38 @@ public class CompanyRecruit extends Recruit {
     private String preferred;
 
     /**
+     * 모집하는 업체는 여러 종류를 선택할 수 있습니다.
+     * 엔티티로 설계하기에는, 단순 ENUM 만 저장하고
+     * 둘 사이의 어떠한 부가 정보도 발생하지 않으므로
+     * 컬렉션 테이블로 충분합니다.
+     */
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "company_categoreis",
+            joinColumns = @JoinColumn(name = "recruit_id")
+    )
+    @Column(name = "company_category")
+    private List<Category> categories = new ArrayList<>();
+
+    /**
      * 외부에서 접근 불가능한 메서드입니다.
      * 정적 팩토리 메서드에서 사용합니다.
      */
-    private CompanyRecruit(Period period, String notice, String preferred) {
+    private CompanyRecruit(Period period, String notice, String preferred, List<Category> categories) {
         super(period, notice);
         this.preferred = preferred;
+        this.categories = categories;
     }
 
     /**
      * 단일 공통 진입점입니다.
      * 업체 모집 공고를 생성합니다.
      */
-    public static CompanyRecruit create(Period period, String notice, String preferred) {
+    public static CompanyRecruit create(Period period, String notice, String preferred, List<Category> categories) {
         notNull(preferred, "preferred");
-        return new CompanyRecruit(period, notice, preferred);
+//        notNull(categories, "categories"); validator 수정 필요
+        return new CompanyRecruit(period, notice, preferred, categories);
     }
 
     /**

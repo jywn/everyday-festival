@@ -19,50 +19,47 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @GetMapping("/festivals/{festivalId}/company-applications")
-    public ResponseEntity<ApiResponse> getCompanyApplications(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-                                                              @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
-                                                              @PathVariable Long festivalId)
+    public ResponseEntity<ApiResponse> getCompanyApplications(@PathVariable Long festivalId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
+                                                              @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
     {
-        CompanyApplicationListResponse response=applicationService.getCompanyApplications(festivalId);
+        CompanyApplicationListResponse response=applicationService.getCompanyApplications(festivalId, holderId, userType);
 
         return ResponseEntity
                 .ok()
-                .body(new ApiResponse(true,200,"업체 지원서 목록 조회에 성공했습니다.",response));
+                .body(new ApiResponse(true,200,"업체 지원 목록 조회에 성공했습니다.",response));
     }
 
     @GetMapping("/festivals/{festivalId}/labor-applications")
-    public ResponseEntity<ApiResponse> getLaborApplications(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-                                                            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
-                                                            @PathVariable Long festivalId)
+    public ResponseEntity<ApiResponse> getLaborApplications(@PathVariable Long festivalId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
+                                                            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
     {
-        LaborApplicationListResponse response=applicationService.getLaborApplications(festivalId);
+        LaborApplicationListResponse response=applicationService.getLaborApplications(festivalId, holderId, userType);
 
         return ResponseEntity
                 .ok()
-                .body(new ApiResponse(true,200,"근로자 지원서 목록 조회에 성공했습니다.",response));
+                .body(new ApiResponse(true,200,"근로자 지원 목록 조회에 성공했습니다.",response));
     }
 
-    @GetMapping("/company-applications/{companyApplicationId}")
-    public ResponseEntity<ApiResponse> getCompanyApplicationDetail(@PathVariable Long companyApplicationId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long companyId,
+    @GetMapping("/festivals/{festivalId}/company-applications/{companyApplicationId}")
+    public ResponseEntity<ApiResponse> getCompanyApplicationDetail(@PathVariable Long companyApplicationId, @PathVariable Long festivalId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
                                                                    @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
-        CompanyApplicationDetailResponse response=applicationService.getCompanyApplicationDetail(companyApplicationId, companyId);
+        CompanyApplicationDetailResponse response=applicationService.getCompanyApplicationDetail(companyApplicationId, festivalId, userId, userType);
 
         return ResponseEntity
                 .ok(new ApiResponse(true,200,"업체가 작성한 지원서 조회에 성공하였습니다.",response));
     }
 
-    @GetMapping("/labor-applications/{laborApplicationId}")
-    public ResponseEntity<ApiResponse> getLaborApplicationDetail(@PathVariable Long laborApplicationId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long laborId,
+    @GetMapping("/festivals/{festivalId}/labor-applications/{laborApplicationId}")
+    public ResponseEntity<ApiResponse> getLaborApplicationDetail(@PathVariable Long laborApplicationId, @PathVariable Long festivalId, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
                                                                  @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
-        LaborApplicationDetailResponse response=applicationService.getLaborApplicationDetail(laborApplicationId, laborId);
+        LaborApplicationDetailResponse response=applicationService.getLaborApplicationDetail(laborApplicationId, festivalId, userId, userType);
 
         return ResponseEntity
                 .ok(new ApiResponse(true,200,"근로자가 작성한 지원서 조회에 성공하였습니다.",response));
     }
 
     @GetMapping("/company-applications")
-    public ResponseEntity<ApiResponse> getSentApplicationsForCompany(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long companyId,
-                                                                     @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
+    public ResponseEntity<ApiResponse> getSentApplicationsForCompany(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long companyId) {
         List<CompanySentApplicationResponse> response=applicationService.getSentApplicationsForCompany(companyId);
 
         return ResponseEntity
@@ -70,8 +67,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/labor-applications")
-    public ResponseEntity<ApiResponse> getSentApplicationsForLabor(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long laborId,
-                                                                   @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
+    public ResponseEntity<ApiResponse> getSentApplicationsForLabor(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long laborId) {
         List<LaborSentApplicationResponse> response=applicationService.getSentApplicationsForLabor(laborId);
 
         return ResponseEntity

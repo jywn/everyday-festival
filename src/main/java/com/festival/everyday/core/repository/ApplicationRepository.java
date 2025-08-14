@@ -11,6 +11,7 @@ import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
+//쿼리는 다 제미나이가 짜줌
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     @Query("""
        SELECT a FROM Application a
@@ -26,15 +27,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
        """)
     List<Application> findLaborApplicationsByFestivalId(@Param("festivalId") Long festivalId);
 
-    Optional<Application> findByIdAndUserId(Long id, Long userId);
-
-    @Query("""
-        SELECT a FROM Application a
-        JOIN FETCH a.festival f
-        JOIN FETCH f.holder h
-        WHERE a.user.id=:userId
-        """)
-    List<Application> findApplicationByApplicationIdWithDetails(@Param("userId") Long UserId);
+    List<Application> findByUserId(Long userId);
 
 
     Long user(@NotNull User user);
