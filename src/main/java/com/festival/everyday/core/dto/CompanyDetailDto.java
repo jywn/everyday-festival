@@ -1,5 +1,6 @@
 package com.festival.everyday.core.dto;
 
+import com.festival.everyday.core.domain.interaction.Favorite;
 import com.festival.everyday.core.domain.user.Category;
 import com.festival.everyday.core.domain.user.Company;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.Data;
 @Data
 public class CompanyDetailDto {
     private String name;
+    private FavorStatus favored;
     private AddressDto addressdto;
     private Category category;
     private String introduction;
