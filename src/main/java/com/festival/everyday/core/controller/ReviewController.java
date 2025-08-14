@@ -68,7 +68,7 @@ public class ReviewController {
         FestivalReviewListResponse response=reviewService.getFestivalReviews(festivalId);
 
         return ResponseEntity
-                .ok(new ApiResponse(true, 200, "리뷰 목록 조회에 성공했습니다.", response));
+                .ok(new ApiResponse(true, 200, "축제 리뷰 목록 조회에 성공했습니다.", response));
     }
 
     @GetMapping("/companies/{companyId}/reviews")
@@ -76,7 +76,7 @@ public class ReviewController {
         CompanyReviewListResponse response=reviewService.getCompanyReviews(companyId);
 
         return ResponseEntity
-                .ok(new ApiResponse(true, 200, "리뷰 목록 조회에 성공했습니다.", response));
+                .ok(new ApiResponse(true, 200, "업체 리뷰 목록 조회에 성공했습니다.", response));
     }
 
     @GetMapping("/festivals/{festivalId}/reviews/form")
@@ -88,7 +88,7 @@ public class ReviewController {
                 .ok(new ApiResponse(true,200,"축제 리뷰 작성 폼 조회에 성공하였습니다."));
     }
 
-    @GetMapping("/festivals/{festivalId}/reviews/form")
+    @GetMapping("/companies/{companyId}/reviews/form")
     public ResponseEntity<ApiResponse> getCompanyReviewForm(@PathVariable Long companyId) {
 
         CompanyReviewFormResponse response=reviewService.getCompanyReviewForm(companyId);

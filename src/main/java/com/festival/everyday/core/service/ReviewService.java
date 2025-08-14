@@ -10,10 +10,12 @@ import com.festival.everyday.core.domain.user.User;
 import com.festival.everyday.core.dto.request.CompanyReviewRequest;
 import com.festival.everyday.core.dto.request.FestivalReviewRequest;
 import com.festival.everyday.core.dto.response.*;
-import com.festival.everyday.core.repository.CompanyRepository;
-import com.festival.everyday.core.repository.FestivalRepository;
+
+
 import com.festival.everyday.core.repository.ReviewRepository;
 import com.festival.everyday.core.repository.UserRepository;
+import com.festival.everyday.core.repository.company.CompanyRepository;
+import com.festival.everyday.core.repository.festival.FestivalRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -21,7 +21,7 @@ public class InterestController {
     private final InterestService interestService;
 
     @PostMapping("/companies/{companyId}/interests")
-    public ResponseEntity <ApiResponse> sendInterest(@PathVariable Long companyId, @RequestBody InterestRequest request, @RequestAttribute(name= TokenAuthenticationFilter.ATTR_USER_ID) Long holderId, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
+    public ResponseEntity <ApiResponse> createInterest(@PathVariable Long companyId, @RequestBody InterestRequest request, @RequestAttribute(name= TokenAuthenticationFilter.ATTR_USER_ID) Long holderId, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
     {
         if (!"HOLDER".equals(userType))
         {
@@ -30,11 +30,10 @@ public class InterestController {
 
         Interest savedInterest=interestService.createInterest(holderId,companyId,request);
 
-        InterestResponse responseBody=InterestResponse.of(savedInterest);
-        String redirectURL="/companies/{companyId}"; //관심을 보낸 업체 상세 조회 페이지로
+        InterestResponse response=InterestResponse.of(savedInterest);
 
         return ResponseEntity
-                .created(URI.create(redirectURL))
-                .body(new ApiResponse(true, 200, "관심 보내기에 성공했습니다.",responseBody));
+                .status(HttpStatus.CREATED)
+                .body((new ApiResponse(true,201,"관심 보내기에 성공했습니다.",response)));
     }
 }
