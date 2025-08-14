@@ -10,8 +10,6 @@ import com.festival.everyday.core.domain.user.User;
 import com.festival.everyday.core.dto.request.CompanyReviewRequest;
 import com.festival.everyday.core.dto.request.FestivalReviewRequest;
 import com.festival.everyday.core.dto.response.*;
-
-
 import com.festival.everyday.core.repository.ReviewRepository;
 import com.festival.everyday.core.repository.UserRepository;
 import com.festival.everyday.core.repository.company.CompanyRepository;

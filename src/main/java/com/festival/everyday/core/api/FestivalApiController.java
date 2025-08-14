@@ -1,5 +1,6 @@
 package com.festival.everyday.core.api;
 
+import com.festival.everyday.core.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.dto.FestivalSearchDto;
 import com.festival.everyday.core.dto.request.FestivalFormRequest;
@@ -23,21 +24,25 @@ public class FestivalApiController {
     private final FestivalService festivalService;
 
     @GetMapping("/{festivalId}")
-    public ResponseEntity<ApiResponse<FestivalDetailResponse>> getFestival(@PathVariable Long festivalId) {
-        Long userId = 1L;//수정 필요
+    public ResponseEntity<ApiResponse<FestivalDetailResponse>> getFestival(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                                           @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+                                                                           @PathVariable Long festivalId) {
         FestivalDetailResponse festivalDetailResponse = festivalService.findById(userId, festivalId);
         return ResponseEntity.ok(ApiResponse.success("축제 상세 조회에 성공하였습니다.", festivalDetailResponse));
     }
 
     @PostMapping("/")
-    public ResponseEntity<ApiResponse<Long>> createFestival(@RequestBody FestivalFormRequest festivalFormRequest) {
-        Long holderId = 1L;// 수정 필요
-        Long savedId = festivalService.save(holderId, festivalFormRequest);
+    public ResponseEntity<ApiResponse<Long>> createFestival(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+                                                            @RequestBody FestivalFormRequest festivalFormRequest) {
+        Long savedId = festivalService.save(userId, festivalFormRequest);       //userType is holder
         return ResponseEntity.ok(ApiResponse.success("축제 등록에 성공하였습니다.", savedId));
     }
 
     @PostMapping("/search")
-    public ResponseEntity<ApiResponse<PageResponse<FestivalSearchDto>>> searchFestivals(@RequestBody SearchRequest searchRequest) {
+    public ResponseEntity<ApiResponse<PageResponse<FestivalSearchDto>>> searchFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                                                        @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+                                                                                        @RequestBody SearchRequest searchRequest) {
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
         ApiResponse<PageResponse<FestivalSearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", festivalService.searchByKeyword(searchRequest.getKeyword(), pageRequest));
 

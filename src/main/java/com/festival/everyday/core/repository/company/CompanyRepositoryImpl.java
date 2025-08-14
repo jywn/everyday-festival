@@ -3,8 +3,11 @@ package com.festival.everyday.core.repository.company;
 import com.festival.everyday.core.domain.interaction.ReceiverType;
 import com.festival.everyday.core.domain.user.QCompany;
 import com.festival.everyday.core.dto.*;
+import com.festival.everyday.core.repository.util.TokenToCond;
+import com.festival.everyday.core.repository.util.Tokenizer;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.EnumExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -27,13 +30,9 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
 
     @Override
     public Page<CompanySearchDto> dynamicSearch(Long userId, String keyword, Pageable pageable) {
-        String[] tokens = keyword.trim().split("\\s+");
+        String[] tokens = Tokenizer.getTokens(keyword);
 
-        BooleanExpression andCondition = null;
-        for (String token : tokens) {
-            BooleanExpression tokenExpr = company.name.containsIgnoreCase(token);
-            andCondition = (andCondition == null) ? tokenExpr : andCondition.and(tokenExpr);
-        }
+        BooleanExpression andCondition = TokenToCond.getAndConditions(tokens);
 
         List<CompanySearchDto> listAndCondition = queryFactory
                 .select(Projections.constructor(CompanySearchDto.class,
@@ -41,22 +40,20 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                         company.category,
                         Projections.constructor(AddressDto.class,
                                 company.address.city, company.address.district, company.address.detail),
-                        Expressions.cases().when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
-                                .otherwise(FavorStatus.NOT_FAVORED)
+                        favorStatusField()
                 ))
                 .from(company)
-                .leftJoin(company).on(
-                        favorite.sender.id.eq(userId)
-                                .and(favorite.receiverType.eq(ReceiverType.COMPANY)
-                                        .and(favorite.receiverId.eq(company.id)))
-                )
+                .leftJoin(company).on(favoredCompany(userId))
                 .where(andCondition)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
 
-        BooleanExpression finalAndCondition = andCondition;
+        return getPageByList(userId, pageable, listAndCondition, andCondition);
+    }
+
+    private Page<CompanySearchDto> getPageByList(Long userId, Pageable pageable, List<CompanySearchDto> listAndCondition, BooleanExpression finalAndCondition) {
         return PageableExecutionUtils.getPage(
                 listAndCondition,
                 pageable,
@@ -64,12 +61,21 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                         .select(company.count())
                         .from(company)
                         .leftJoin(favorite).on(
-                                favorite.sender.id.eq(userId)
-                                        .and(favorite.receiverType.eq(ReceiverType.COMPANY)
-                                                .and(favorite.receiverId.eq(company.id)))
+                                favoredCompany(userId)
                         )
                         .where(finalAndCondition)
                         .fetchOne()
                 ).orElse(0L));
+    }
+
+    private static EnumExpression<FavorStatus> favorStatusField() {
+        return Expressions.cases().when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
+                .otherwise(FavorStatus.NOT_FAVORED);
+    }
+
+    private static BooleanExpression favoredCompany(Long userId) {
+        return favorite.sender.id.eq(userId)
+                .and(favorite.receiverType.eq(ReceiverType.COMPANY)
+                        .and(favorite.receiverId.eq(company.id)));
     }
 }

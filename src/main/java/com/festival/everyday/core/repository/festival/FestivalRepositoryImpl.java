@@ -10,8 +10,11 @@ import com.festival.everyday.core.dto.AddressDto;
 import com.festival.everyday.core.dto.FavorStatus;
 import com.festival.everyday.core.dto.FestivalSearchDto;
 import com.festival.everyday.core.dto.PeriodDto;
+import com.festival.everyday.core.repository.util.TokenToCond;
+import com.festival.everyday.core.repository.util.Tokenizer;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.EnumExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -27,6 +30,7 @@ import java.util.Optional;
 import static com.festival.everyday.core.domain.QFestival.*;
 import static com.festival.everyday.core.domain.interaction.QFavorite.*;
 import static com.festival.everyday.core.domain.user.QHolder.*;
+import static com.festival.everyday.core.repository.util.Tokenizer.*;
 
 @RequiredArgsConstructor
 public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
@@ -35,14 +39,14 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
 
     @Override
     public Page<FestivalSearchDto> dynamicSearch(Long userId, String keyword, Pageable pageable) {
-        String[] tokens = keyword.trim().split("\\s+");
 
-        BooleanExpression andCondition = null;
-        for (String token : tokens) {
-            BooleanExpression tokenExpr = festival.name.containsIgnoreCase(token);
-            andCondition = (andCondition == null) ? tokenExpr : andCondition.and(tokenExpr);
-        }
+        // 입력 키워드를 토큰으로 분리합니다.
+        String[] tokens = getTokens(keyword);
 
+        // 입력 키워드 토큰을 바탕으로 AND 검색 조건을 생성합니다.
+        BooleanExpression andConditions = TokenToCond.getAndConditions(tokens);
+
+        // 쿼리를 실행하고, 결과를 DTO 로 변환합니다.
         List<FestivalSearchDto> listAndCondition = queryFactory
                 .select(Projections.constructor(FestivalSearchDto.class,
                         festival.id, festival.name,
@@ -50,23 +54,22 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                                 festival.address.city, festival.address.district, festival.address.detail),
                         Projections.constructor(PeriodDto.class,
                                 festival.period.begin, festival.period.end),
-                        Expressions.cases().when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
-                                .otherwise(FavorStatus.NOT_FAVORED)
+                        favorStatusField()
                 ))
                 .from(festival)
                 .leftJoin(favorite).on(
-                        favorite.sender.id.eq(userId)
-                                .and(favorite.receiverType.eq(ReceiverType.FESTIVAL)
-                                        .and(favorite.receiverId.eq(festival.id)))
+                        favoredFestival(userId)
                 )
-                .where(andCondition)
+                .where(andConditions)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
 
-        BooleanExpression finalAndCondition = andCondition;
+        return getPageByList(userId, pageable, listAndCondition, andConditions);
+    }
 
+    private Page<FestivalSearchDto> getPageByList(Long userId, Pageable pageable, List<FestivalSearchDto> listAndCondition, BooleanExpression andConditions) {
         return PageableExecutionUtils.getPage(
                 listAndCondition,
                 pageable,
@@ -74,12 +77,21 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                         .select(festival.count())
                         .from(festival)
                         .leftJoin(favorite).on(
-                                favorite.sender.id.eq(userId)
-                                        .and(favorite.receiverType.eq(ReceiverType.FESTIVAL)
-                                                .and(favorite.receiverId.eq(festival.id)))
+                                favoredFestival(userId)
                         )
-                        .where(finalAndCondition)
+                        .where(andConditions)
                         .fetchOne()
                 ).orElse(0L));
+    }
+
+    private static EnumExpression<FavorStatus> favorStatusField() {
+        return Expressions.cases().when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
+                .otherwise(FavorStatus.NOT_FAVORED);
+    }
+
+    private static BooleanExpression favoredFestival(Long userId) {
+        return favorite.sender.id.eq(userId)
+                .and(favorite.receiverType.eq(ReceiverType.FESTIVAL)
+                        .and(favorite.receiverId.eq(festival.id)));
     }
 }
