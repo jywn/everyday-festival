@@ -1,8 +1,8 @@
 package com.festival.everyday.core.dto.response;
 
-import com.festival.everyday.core.dto.CompanyRecruitDto;
+import com.festival.everyday.core.dto.CompanyRecruitWithApplyDto;
 import com.festival.everyday.core.dto.FestivalDetailDto;
-import com.festival.everyday.core.dto.LaborRecruitDto;
+import com.festival.everyday.core.dto.LaborRecruitWithApplyDto;
 import com.festival.everyday.core.dto.RecruitStatus;
 import lombok.Data;
 
@@ -12,23 +12,23 @@ public class FestivalDetailResponse {
     private FestivalDetailDto festivalDetailDto;
 
     private RecruitStatus companyRecruitStatus;
-    private CompanyRecruitDto companyRecruitDto;
+    private CompanyRecruitWithApplyDto companyRecruitWithApplyDto;
 
     private RecruitStatus laborRecruitStatus;
-    private LaborRecruitDto laborRecruitDto;
+    private LaborRecruitWithApplyDto laborRecruitWithApplyDto;
 
     private FestivalDetailResponse(FestivalDetailDto festivalDetailDto, RecruitStatus companyRecruitStatus,
-        CompanyRecruitDto companyRecruitDto, RecruitStatus laborRecruitStatus, LaborRecruitDto laborRecruitDto) {
+                                   CompanyRecruitWithApplyDto companyRecruitWithApplyDto, RecruitStatus laborRecruitStatus, LaborRecruitWithApplyDto laborRecruitWithApplyDto) {
         this.festivalDetailDto = festivalDetailDto;
         this.companyRecruitStatus = companyRecruitStatus;
-        this.companyRecruitDto = companyRecruitDto;
+        this.companyRecruitWithApplyDto = companyRecruitWithApplyDto;
         this.laborRecruitStatus = laborRecruitStatus;
-        this.laborRecruitDto = laborRecruitDto;
+        this.laborRecruitWithApplyDto = laborRecruitWithApplyDto;
     }
 
     public static FestivalDetailResponse of(
-            FestivalDetailDto festivalDetailDto, RecruitStatus companyRecruitStatus, CompanyRecruitDto companyRecruitDto,
-            RecruitStatus laborRecruitStatus, LaborRecruitDto laborRecruitDto) {
-        return new FestivalDetailResponse(festivalDetailDto, companyRecruitStatus, companyRecruitDto, laborRecruitStatus, laborRecruitDto);
+            FestivalDetailDto festivalDetailDto, RecruitStatus companyRecruitStatus, CompanyRecruitWithApplyDto companyRecruitWithApplyDto,
+            RecruitStatus laborRecruitStatus, LaborRecruitWithApplyDto laborRecruitWithApplyDto) {
+        return new FestivalDetailResponse(festivalDetailDto, companyRecruitStatus, companyRecruitWithApplyDto, laborRecruitStatus, laborRecruitWithApplyDto);
     }
 }

@@ -52,7 +52,7 @@ public class ExtraQuestion {
      * 질문을 생성합니다.
      * 모집 공고와 연결합니다.
      */
-    public static List<ExtraQuestion> createQuestions(Recruit recruit, String... contents) {
+    public static List<ExtraQuestion> createQuestions(Recruit recruit, List<String> contents) {
         List<ExtraQuestion> extraQuestions = new ArrayList<>();
 
         notNull("recruit", recruit);

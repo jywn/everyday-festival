@@ -72,6 +72,8 @@ public class ApplicationExtraQuestion {
         return applicationExtraQuestions;
     }
 
+
+
     /**
      * ~ 연관 관계 설정 메서드
      * ======================================

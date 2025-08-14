@@ -1,7 +1,6 @@
 package com.festival.everyday.core.service;
 
 import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.application.Application;
 import com.festival.everyday.core.domain.interaction.ReceiverType;
 import com.festival.everyday.core.domain.recruit.CompanyRecruit;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
@@ -13,6 +12,8 @@ import com.festival.everyday.core.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.dto.response.PageResponse;
 import com.festival.everyday.core.repository.*;
 import com.festival.everyday.core.repository.festival.FestivalRepository;
+import com.festival.everyday.core.repository.recruit.CompanyRecruitRepository;
+import com.festival.everyday.core.repository.recruit.LaborRecruitRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -50,18 +51,17 @@ public class FestivalService {
         Optional<Long> companyRecruitId = festivalRepository.findCompanyRecruitIdById(festivalId);
         RecruitStatus companyRecruitStatus = checkRecruitExists(companyRecruitId);
 
-        // 근로자 모집 공고를 조회합니다 모집 여부를 설정합니다.
+        // 근로자 모집 공고를 조회하여 모집 여부를 설정합니다.
         Optional<Long> laborRecruitId = festivalRepository.findLaborRecruitIdById(festivalId);
         RecruitStatus laborRecruitStatus = checkRecruitExists(laborRecruitId);
 
-
         // 업체 모집 공고가 존재하면, 업체 모집 공고를 찾아 DTO 로 변환합니다.
-        CompanyRecruitDto companyRecruitDto = ifCompRecruitExistsToDto(userId, companyRecruitStatus, companyRecruitId.get());
+        CompanyRecruitWithApplyDto companyRecruitWithApplyDto = ifCompRecruitExistsToDto(userId, companyRecruitStatus, companyRecruitId.get());
 
         // 근로자 모집 공고가 존재하면, 근로자 모집 공고를 찾아 DTO 로 변환합니다.
-        LaborRecruitDto laborRecruitDto = ifLaborRecruitExistsToDto(userId, laborRecruitStatus, laborRecruitId.get());
+        LaborRecruitWithApplyDto laborRecruitWithApplyDto = ifLaborRecruitExistsToDto(userId, laborRecruitStatus, laborRecruitId.get());
 
-        return FestivalDetailResponse.of(festivalDetailDto, companyRecruitStatus, companyRecruitDto, laborRecruitStatus, laborRecruitDto);
+        return FestivalDetailResponse.of(festivalDetailDto, companyRecruitStatus, companyRecruitWithApplyDto, laborRecruitStatus, laborRecruitWithApplyDto);
     }
 
     public Long save(Long holderId, FestivalFormRequest festivalFormRequest) {
@@ -96,18 +96,18 @@ public class FestivalService {
         return applicationRepository.existsByUserIdAndRecruitId(userId, recruitId) ? APPLIED : NOT_APPLIED;
     }
 
-    private CompanyRecruitDto ifCompRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long companyRecruitId) {
+    private CompanyRecruitWithApplyDto ifCompRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long companyRecruitId) {
         if (recruitStatus.equals(NOT_RECRUITING)) { return null; }
 
         Optional<CompanyRecruit> findCompanyRecruit = companyRecruitRepository.findById(companyRecruitId);
-        return CompanyRecruitDto.from(findCompanyRecruit.get(), checkApplyStatus(userId, companyRecruitId));
+        return CompanyRecruitWithApplyDto.from(findCompanyRecruit.get(), checkApplyStatus(userId, companyRecruitId));
     }
 
-    private LaborRecruitDto ifLaborRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long laborRecruitId) {
+    private LaborRecruitWithApplyDto ifLaborRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long laborRecruitId) {
         if (recruitStatus.equals(NOT_RECRUITING)) { return null; }
 
         Optional<LaborRecruit> findLaborRecruit = laborRecruitRepository.findById(laborRecruitId);
-        return LaborRecruitDto.from(findLaborRecruit.get(), checkApplyStatus(userId, laborRecruitId));
+        return LaborRecruitWithApplyDto.from(findLaborRecruit.get(), checkApplyStatus(userId, laborRecruitId));
     }
 }
 
