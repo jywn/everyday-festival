@@ -13,7 +13,7 @@ public class CreateCompanyRecruitRequest {
 
     private LocalDateTime begin;
     private LocalDateTime end;
-    private Category category;
+    private List<Category> categories;
     private String etc;
     private String preferred;
     private String notice;

@@ -30,7 +30,7 @@ public class RecruitService {
 
     public Long saveCompanyRecruit(CreateCompanyRecruitRequest request) {
         // 업체 모집 공고를 생성한다.
-        CompanyRecruit companyRecruit = CompanyRecruit.create(Period.create(request.getBegin(), request.getEnd()), request.getNotice(), request.getPreferred());
+        CompanyRecruit companyRecruit = CompanyRecruit.create(Period.create(request.getBegin(), request.getEnd()), request.getNotice(), request.getPreferred(), request.getCategories());
 
         // 추가 질문들과 모집 공고의 연관 관계를 설정한다.
         List<ExtraQuestion> questions = ExtraQuestion.createQuestions(companyRecruit, request.getExtraQuestions());
