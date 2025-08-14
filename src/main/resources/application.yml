@@ -33,5 +33,5 @@ logging:
     org.hibernate.orm.jdbc.bind: trace
 
 jwt:
-  issuer: everyday.festival
-  secret_key: "KWPio$aMNRgJK&Eoo@JNgYIoOY#noOn!"
+  issuer: ${JWT_ISSUER}
+  secret_key: ${JWT_SECRET_KEY}

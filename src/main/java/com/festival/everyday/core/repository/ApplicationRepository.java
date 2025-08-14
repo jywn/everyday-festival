@@ -29,7 +29,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     List<Application> findByUserId(Long userId);
 
-    Optional<Application> findApplicationByUserIdAndRecruitId(Long userId, Long recruitId);
 
     Long user(@NotNull User user);
 
