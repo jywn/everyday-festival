@@ -65,16 +65,4 @@ public class FestivalApiController {
         return ResponseEntity.ok("기획자 인증에 성공하였습니다.");
     }
 
-    @GetMapping("/{festivalId}/company-recruit")
-    public ResponseEntity<ApiResponse<CompanyRecruitResponse>> viewCompanyRecruit(@PathVariable Long festivalId) {
-        CompanyRecruitResponse companyRecruitResponse = CompanyRecruitResponse.from(recruitService.findCompanyRecruit(festivalId));
-        return ResponseEntity.ok(ApiResponse.success("업체 모집 공고 조회에 성공하였습니다.", companyRecruitResponse));
-    }
-
-    @GetMapping("/{festivalId}/labor-recruit")
-    public ResponseEntity<ApiResponse<LaborRecruitResponse>> viewLaborRecruit(@PathVariable Long festivalId) {
-        LaborRecruitResponse laborRecruitResponse = LaborRecruitResponse.from(recruitService.findLaborRecruit(festivalId));
-        return ResponseEntity.ok(ApiResponse.success("근로자 모집 공고 조회에 성공하였습니다.", laborRecruitResponse));
-    }
-
 }

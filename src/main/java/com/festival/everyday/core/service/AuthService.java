@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class AuthService {
 
     private final UserRepository userRepository;
