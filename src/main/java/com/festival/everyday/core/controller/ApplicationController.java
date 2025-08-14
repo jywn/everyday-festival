@@ -19,7 +19,9 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @GetMapping("/festivals/{festivalId}/company-applications")
-    public ResponseEntity<ApiResponse> getCompanyApplications(@PathVariable Long festivalId)
+    public ResponseEntity<ApiResponse> getCompanyApplications(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                              @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+                                                              @PathVariable Long festivalId)
     {
         CompanyApplicationListResponse response=applicationService.getCompanyApplications(festivalId);
 
@@ -29,7 +31,9 @@ public class ApplicationController {
     }
 
     @GetMapping("/festivals/{festivalId}/labor-applications")
-    public ResponseEntity<ApiResponse> getLaborApplications(@PathVariable Long festivalId)
+    public ResponseEntity<ApiResponse> getLaborApplications(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+                                                            @PathVariable Long festivalId)
     {
         LaborApplicationListResponse response=applicationService.getLaborApplications(festivalId);
 
