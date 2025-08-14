@@ -25,7 +25,8 @@ public class CompanyApiController {
     private final FavoriteRepository favoriteRepository;
     // 검색 메서드
     @PostMapping("/search")
-    public ResponseEntity<ApiResponse<PageResponse<CompanySearchDto>>> searchCompanies(@RequestBody SearchRequest searchRequest) {
+    public ResponseEntity<ApiResponse<PageResponse<CompanySearchDto>>> searchCompanies(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                                                       @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,@RequestBody SearchRequest searchRequest) {
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
         ApiResponse<PageResponse<CompanySearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", companyService.searchByKeyword(searchRequest.getKeyword(), pageRequest));
 
@@ -41,7 +42,7 @@ public class CompanyApiController {
         CompanyDetailDto companyDetailDto = CompanyDetailDto.from(company);
         boolean exists = favoriteRepository.existsBySenderIdAndReceiverIdAndReceiverType(       //찜 확인
                 userId, companyId, ReceiverType.COMPANY);
-        companyDetailDto.setFavored(exists ? FavorStatus.FAVORED : FavorStatus.NOT_FAVORED); // 업체 상세에 찜 여부 등록
+        companyDetailDto.setFavorStatus(exists ? FavorStatus.FAVORED : FavorStatus.NOT_FAVORED); // 업체 상세에 찜 여부 등록
 
         return ResponseEntity.ok(ApiResponse.success("업체 상세 정보 조회 성공", companyDetailDto));
     }

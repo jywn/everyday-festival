@@ -29,9 +29,9 @@ public class UserApiController {
      * @return 내가 등록한 축제 목록
      */
     @GetMapping("/me/festivals")
-    public ResponseEntity<ApiResponse<List<FestivalSimpleDto>>> getMyFestivals() {
-        Long holderId = 1L;
-        List<FestivalSimpleDto> festivalsByHolderId = festivalService.findListByHolderId(holderId);
+    public ResponseEntity<ApiResponse<List<FestivalSimpleDto>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+                                                                               @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
+        List<FestivalSimpleDto> festivalsByHolderId = festivalService.findListByHolderId(userId);
         return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", festivalsByHolderId));
     }
 

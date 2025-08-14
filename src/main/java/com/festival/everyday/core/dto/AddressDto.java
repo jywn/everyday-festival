@@ -1,7 +1,9 @@
 package com.festival.everyday.core.dto;
 
 import com.festival.everyday.core.domain.common.value.Address;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 public class AddressDto {

@@ -19,6 +19,7 @@ public class CompanyService {
         Long userId = 1L; // 수정 필요
         return PageResponse.from(companyRepository.dynamicSearch(userId, keyword, pageRequest));
     }
+
     public Company findById(Long companyId){
         return companyRepository.findById(companyId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 업체를 찾을 수 없습니다. ID = " + companyId));

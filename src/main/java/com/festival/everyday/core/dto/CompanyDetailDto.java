@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class CompanyDetailDto {
     private String name;
-    private FavorStatus favored;
+    private FavorStatus favorStatus;
     private AddressDto addressdto;
     private Category category;
     private String introduction;
