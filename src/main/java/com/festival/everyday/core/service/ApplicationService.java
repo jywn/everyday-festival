@@ -1,10 +1,17 @@
 package com.festival.everyday.core.service;
 
 import com.festival.everyday.core.domain.Festival;
+import com.festival.everyday.core.domain.application.Answer;
 import com.festival.everyday.core.domain.application.Application;
+import com.festival.everyday.core.domain.application.ExtraAnswer;
+import com.festival.everyday.core.domain.recruit.Recruit;
+import com.festival.everyday.core.domain.user.User;
+import com.festival.everyday.core.dto.request.ApplicationRequest;
 import com.festival.everyday.core.dto.response.*;
 import com.festival.everyday.core.repository.ApplicationRepository;
+import com.festival.everyday.core.repository.UserRepository;
 import com.festival.everyday.core.repository.festival.FestivalRepository;
+import com.festival.everyday.core.repository.recruit.RecruitRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +29,8 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final FestivalRepository festivalRepository;
+    private final RecruitRepository recruitRepository;
+    private final UserRepository userRepository;
 
     //업체->축제 지원 목록 조회
     public CompanyApplicationListResponse getCompanyApplications(Long festivalId, Long holderId, String userType) {
@@ -131,6 +141,38 @@ public class ApplicationService {
                 .toList();
     }
 
+    // 지원서를 작성합니다.
+    public Long createCompanyApplication(Long userId, Long festivalId, ApplicationRequest request) {
 
+        // 조회 한 번에 쿼리 3방 -> 쿼리 개선 필요
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+        Long recruitId = festivalRepository.findCompanyRecruitIdById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제와 연관된 공고를 찾을 수 없습니다."));
+        Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> new EntityNotFoundException("공고를 찾을 수 없습니다."));
+
+        Application application = Application.create(recruit, user, festival);
+        ExtraAnswer.createExtraAnswers(application, request.getExtraAnswers());
+        Answer.createAnswers(application, request.getAnswers());
+
+        Application saved = applicationRepository.save(application);
+        return saved.getId();
+    }
+
+    // 지원서를 작성합니다.
+    public Long createLaborApplication(Long userId, Long festivalId, ApplicationRequest request) {
+
+        // 조회 한 번에 쿼리 3방 -> 쿼리 개선 필요
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+        Long recruitId = festivalRepository.findLaborRecruitIdById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제와 연관된 공고를 찾을 수 없습니다."));
+        Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> new EntityNotFoundException("공고를 찾을 수 없습니다."));
+
+        Application application = Application.create(recruit, user, festival);
+        ExtraAnswer.createExtraAnswers(application, request.getExtraAnswers());
+        Answer.createAnswers(application, request.getAnswers());
+
+        Application saved = applicationRepository.save(application);
+        return saved.getId();
+    }
 
 }

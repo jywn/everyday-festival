@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class UserService {
     /*
-     * userId(PK)를 기준으로 User를 조회한다.
+     * userId(PK)를 기준으로 User 를 조회한다.
      * SINGLE_TABLE 상속 구조이므로 Holder/Company/Labor 등 하위 타입도 함께 조회된다.
     */
     private final UserRepository userRepository;

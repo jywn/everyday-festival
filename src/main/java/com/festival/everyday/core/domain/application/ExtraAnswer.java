@@ -47,7 +47,7 @@ public class ExtraAnswer {
      * 외부에서 호출 가능합니다.
      * 추가 답변을 생성합니다.
      */
-    public static List<ExtraAnswer> createExtraAnswers(Application application, String... contents) {
+    public static List<ExtraAnswer> createExtraAnswers(Application application, List<String> contents) {
         List<ExtraAnswer> extraAnswers = new ArrayList<>();
 
         notNull("application", application);

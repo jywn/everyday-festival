@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.festival.everyday.core.domain.application.SELECTED.*;
+import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 
 /**
  * 질문, 답변 테이블과
@@ -98,9 +99,9 @@ public class Application extends BaseCreatedAtEntity {
      * 양방향 연관관계를 설정합니다.
      */
     public static Application create(Recruit recruit, User user, Festival festival) {
-        DomainValidator.notNull("recruit", recruit);
-        DomainValidator.notNull("user", user);
-        DomainValidator.notNull("festival", festival);
+        notNull("recruit", recruit);
+        notNull("user", user);
+        notNull("festival", festival);
 
         Application application = new Application(recruit, user, festival);
         user.addApplication(application);

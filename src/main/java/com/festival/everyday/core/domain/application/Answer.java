@@ -52,7 +52,7 @@ public class Answer {
      * 외부에서 호출 가능합니다.
      * 답변을 생성합니다.
      */
-    public static List<Answer> createAnswers(Application application, String... contents) {
+    public static List<Answer> createAnswers(Application application, List<String> contents) {
         List<Answer> answers = new ArrayList<>();
         notNull("application", application);
         for (String content : contents) {
