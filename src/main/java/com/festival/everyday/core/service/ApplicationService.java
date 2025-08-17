@@ -15,6 +15,7 @@ import com.festival.everyday.core.repository.recruit.RecruitRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -174,5 +175,4 @@ public class ApplicationService {
         Application saved = applicationRepository.save(application);
         return saved.getId();
     }
-
 }

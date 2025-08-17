@@ -1,6 +1,7 @@
 package com.festival.everyday.core.domain.image;
 
 import com.festival.everyday.core.domain.Festival;
+import com.festival.everyday.core.domain.common.value.BaseCreatedAtEntity;
 import com.festival.everyday.core.domain.validate.DomainValidator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +20,7 @@ import static com.festival.everyday.core.domain.validate.DomainValidator.*;
 @Getter
 @Table(name ="image")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Image {
+public class Image extends BaseCreatedAtEntity {
 
     /**
      * Image 에서 등록자를 조회할 일은 없으므로, 단방향으로 설게합니다.
@@ -27,6 +28,14 @@ public class Image {
     @Id @GeneratedValue
     @Column(name = "image_id")
     private Long id;
+
+    @NotNull
+    @Column(name = "original_name")
+    private String originalName;
+
+    @NotNull
+    @Column(name = "encoded_name")
+    private String encodedName;
 
     @NotNull
     @Column(name = "image_url", nullable = false)
@@ -44,8 +53,10 @@ public class Image {
      * 외부 호출 불가능한 생성자.
      * 정적 팩토리 메서드에서 사용합니다.
      */
-    private Image(String url, OwnerType ownerType, Long ownerId) {
+    private Image(String url, OwnerType ownerType, Long ownerId, String originalName, String encodedName) {
         this.url = url;
+        this.originalName = originalName;
+        this.encodedName = encodedName;
         this.ownerType = ownerType;
         this.ownerId = ownerId;
     }
@@ -54,14 +65,19 @@ public class Image {
      * 단일 공통 진입점.
      * 이미지를 생성합니다.
      */
-    public static Image create(String url, OwnerType ownerType, Long ownerId) {
+    public static Image create(String url, OwnerType ownerType, Long ownerId, String originalName, String encodedName) {
         notNull("url", url);
         notNull("ownerType", ownerType);
         notNull("ownerId", ownerId);
+        notNull("originalName", originalName);
+        notNull("encodedName", encodedName);
 
-        return new Image(url, ownerType, ownerId);
+        return new Image(url, ownerType, ownerId, originalName, encodedName);
     }
 
+    public String getFullPath() {
+        return url;
+    }
     /**
      * ~ 연관 관계 설정 메서드
      * ======================================
