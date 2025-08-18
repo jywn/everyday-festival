@@ -27,7 +27,6 @@ public class RecruitService {
     private final RecruitRepository recruitRepository;
     private final CompanyRecruitRepository companyRecruitRepository;
     private final LaborRecruitRepository laborRecruitRepository;
-    private final ExtraQuestionRepository extraQuestionRepository;
 
     public Long saveCompanyRecruit(CreateCompanyRecruitRequest request) {
         // 업체 모집 공고를 생성한다.
