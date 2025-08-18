@@ -1,24 +1,23 @@
 package com.festival.everyday.core.domain.application;
 
-import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.common.value.Address;
-import com.festival.everyday.core.domain.common.value.Period;
-import com.festival.everyday.core.domain.recruit.CompanyRecruit;
-import com.festival.everyday.core.domain.recruit.ExtraQuestion;
-import com.festival.everyday.core.domain.recruit.LaborRecruit;
-import com.festival.everyday.core.domain.user.Category;
-import com.festival.everyday.core.domain.user.Company;
-import com.festival.everyday.core.domain.user.Holder;
+import com.festival.everyday.core.application.domain.Application;
+import com.festival.everyday.core.application.domain.ApplicationExtraQuestion;
+import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.common.domain.Address;
+import com.festival.everyday.core.common.domain.Period;
+import com.festival.everyday.core.recruit.domain.CompanyRecruit;
+import com.festival.everyday.core.recruit.domain.ExtraQuestion;
+import com.festival.everyday.core.recruit.domain.LaborRecruit;
+import com.festival.everyday.core.user.domain.Category;
+import com.festival.everyday.core.company.domain.Company;
+import com.festival.everyday.core.user.domain.Holder;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationExtraQuestionRelationTest {
 

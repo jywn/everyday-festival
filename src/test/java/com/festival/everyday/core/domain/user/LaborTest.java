@@ -1,6 +1,8 @@
 package com.festival.everyday.core.domain.user;
 
-import com.festival.everyday.core.domain.common.value.Address;
+import com.festival.everyday.core.common.domain.Address;
+import com.festival.everyday.core.user.domain.Gender;
+import com.festival.everyday.core.user.domain.Labor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

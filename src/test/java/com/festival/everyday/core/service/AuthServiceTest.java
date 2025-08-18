@@ -1,9 +1,11 @@
 package com.festival.everyday.core.service;
 
-import com.festival.everyday.core.dto.request.LoginRequest;
-import com.festival.everyday.core.dto.response.LoginResponse;
-import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.repository.UserRepository;
+import com.festival.everyday.core.token.dto.request.LoginRequest;
+import com.festival.everyday.core.token.dto.response.LoginResponse;
+import com.festival.everyday.core.token.service.AuthService;
+import com.festival.everyday.core.token.service.TokenService;
+import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,9 +25,11 @@ class AuthServiceTest {
 
     @Mock UserRepository userRepository;
     @Mock PasswordEncoder passwordEncoder;
-    @Mock TokenService tokenService;
+    @Mock
+    TokenService tokenService;
 
-    @InjectMocks AuthService authService;
+    @InjectMocks
+    AuthService authService;
 
     @Test
     @DisplayName("login: 계정/비밀번호 OK → TokenService.issueTokens 호출, LoginResponse 반환")

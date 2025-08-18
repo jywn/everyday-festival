@@ -1,8 +1,11 @@
 package com.festival.everyday.core.service;
 
-import com.festival.everyday.core.config.jwt.TokenProvider;
-import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.domain.user.authority.RefreshToken;
+import com.festival.everyday.core.common.config.jwt.TokenProvider;
+import com.festival.everyday.core.token.service.RefreshTokenService;
+import com.festival.everyday.core.token.service.TokenService;
+import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.token.domain.RefreshToken;
+import com.festival.everyday.core.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,10 +26,13 @@ import static org.mockito.Mockito.*;
 class TokenServiceTest {
 
     @Mock TokenProvider tokenProvider;
-    @Mock RefreshTokenService refreshTokenService;
-    @Mock UserService userService;
+    @Mock
+    RefreshTokenService refreshTokenService;
+    @Mock
+    UserService userService;
 
-    @InjectMocks TokenService tokenService;
+    @InjectMocks
+    TokenService tokenService;
 
     @Test
     @DisplayName("유효한 RT → 새 AT 문자열 반환(만료 15분)")
