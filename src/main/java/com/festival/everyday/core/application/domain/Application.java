@@ -161,4 +161,25 @@ public class Application extends BaseCreatedAtEntity {
         this.selected = NEUTRAL;
     }
 
+    public void apply(SELECTED requested) {
+        if (requested == null) return;
+
+        switch (requested) {
+            case ACCEPTED -> {                  //수락일 시
+                if (this.selected == SELECTED.ACCEPTED) {   //수락 두 번 -> cancel
+                    cancel();
+                } else {
+                    accept();
+                }
+            }
+            case DENIED -> {                    //거절일 시
+                if (this.selected == SELECTED.DENIED) {     //거절 두 번 -> cancel
+                    cancel();
+                } else {
+                    deny();
+                }
+            }
+        }
+    }
+
 }

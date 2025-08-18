@@ -1,5 +1,6 @@
 package com.festival.everyday.core.application.service;
 
+import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.response.*;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.application.domain.Answer;
@@ -173,4 +174,70 @@ public class ApplicationService {
         Application saved = applicationRepository.save(application);
         return saved.getId();
     }
+
+    @Transactional
+    public UpdateApplicationStatusResponse updateCompanyApplicationStatus(
+            Long festivalId,    // path variable
+            Long holderId,      // userId
+            String userType,   // "HOLDER" 여야 함
+            Long companyId,    // path variable
+            SELECTED selected // 수락할건지 거절할건지
+    ) {
+        if (selected == null) {
+            throw new IllegalArgumentException("request body에 selected가 없습니다.");
+        }
+        if (!"HOLDER".equals(userType)) {
+            throw new AccessDeniedException("지원서 상태를 변경할 권한이 없습니다.");
+        }
+
+        // 내 축제인지 확인
+        festivalRepository.findByIdAndHolderId(festivalId, holderId)
+                .orElseThrow(() -> new EntityNotFoundException("자신의 축제가 아닙니다."));
+
+        // 해당 업체의 지원서 1건 조회
+        Application app = applicationRepository
+                .findCompanyApplicationByFestivalAndCompany(festivalId, companyId)
+                .orElseThrow(() -> new EntityNotFoundException("업체 지원서를 찾을 수 없습니다."));
+
+        // 상태 전이 (NEUTRAL↔ACCEPTED / NEUTRAL↔DENIED)
+        app.apply(selected);
+
+        return UpdateApplicationStatusResponse.of(app.getId(), app.getSelected());
+    }
+
+    @Transactional
+    public UpdateApplicationStatusResponse updateLaborApplicationStatus(
+            Long festivalId,   // path variable
+            Long holderId,     // userId
+            String userType,   // "HOLDER" 여야 함
+            Long laborId,      // path variable
+            SELECTED selected  // 수락할건지 거절할건지
+    ) {
+        // request body 검증
+        if (selected == null) {
+            throw new IllegalArgumentException("request body에 selected가 없습니다.");
+        }
+
+        // 권한 체크
+        if (!"HOLDER".equals(userType)) {
+            throw new AccessDeniedException("지원서 상태를 변경할 권한이 없습니다.");
+        }
+
+        // 내 축제인지 확인
+        festivalRepository.findByIdAndHolderId(festivalId, holderId)
+                .orElseThrow(() -> new EntityNotFoundException("자신의 축제가 아닙니다."));
+
+        // 해당 근로자의 지원서 1건 조회
+        Application app = applicationRepository
+                .findLaborApplicationByFestivalAndLabor(festivalId, laborId)
+                .orElseThrow(() -> new EntityNotFoundException("근로자 지원서를 찾을 수 없습니다."));
+
+        // 상태 전이 (NEUTRAL↔ACCEPTED / NEUTRAL↔DENIED)
+        app.apply(selected);
+
+        // 응답 DTO 생성 후 반환
+        return UpdateApplicationStatusResponse.of(app.getId(), app.getSelected());
+
+    }
+
 }
