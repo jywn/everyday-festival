@@ -19,9 +19,9 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static com.festival.everyday.core.domain.QFestival.*;
-import static com.festival.everyday.core.domain.interaction.QFavorite.*;
 import static com.festival.everyday.core.common.Tokenizer.*;
+import static com.festival.everyday.core.favorite.domain.QFavorite.*;
+import static com.festival.everyday.core.festival.domain.QFestival.*;
 
 @RequiredArgsConstructor
 public class FestivalRepositoryImpl implements FestivalRepositoryCustom {

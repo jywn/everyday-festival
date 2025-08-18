@@ -22,7 +22,18 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.festival.everyday.core.repository",
+        basePackages = {
+                "com.festival.everyday.core.application.repository",
+                "com.festival.everyday.core.company.repository",
+                "com.festival.everyday.core.favorite.repository",
+                "com.festival.everyday.core.festival.repository",
+                "com.festival.everyday.core.image.repository",
+                "com.festival.everyday.core.interest.repository",
+                "com.festival.everyday.core.recruit.repository",
+                "com.festival.everyday.core.review.repository",
+                "com.festival.everyday.core.token.repository",
+                "com.festival.everyday.core.user.repository",
+        },
         entityManagerFactoryRef = "coreEntityManagerFactory",
         transactionManagerRef = "coreTransactionManager"
 )
@@ -49,7 +60,7 @@ public class CoreDbConfig {
     ) {
         return builder
                 .dataSource(dataSource)
-                .packages("com.festival.everyday.core.domain") // Entity 위치
+                .packages("com.festival.everyday.core") // Entity 위치
                 .persistenceUnit("core")
                 .build();
     }

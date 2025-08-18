@@ -1,8 +1,8 @@
 package com.festival.everyday.core.common;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import static com.festival.everyday.core.festival.domain.QFestival.*;
 
-import static com.festival.everyday.core.domain.QFestival.festival;
 
 public class TokenToCond {
     public static BooleanExpression getAndConditions(String[] tokens) {

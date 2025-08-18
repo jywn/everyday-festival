@@ -5,6 +5,7 @@ import com.festival.everyday.core.application.dto.ApplyStatus;
 import com.festival.everyday.core.application.repository.ApplicationRepository;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
+import com.festival.everyday.core.festival.FestivalMapper;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.recruit.domain.CompanyRecruit;
@@ -13,7 +14,6 @@ import com.festival.everyday.core.user.domain.Holder;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
-import com.festival.everyday.core.dto.mapper.FestivalMapper;
 import com.festival.everyday.core.festival.dto.request.FestivalFormRequest;
 import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.recruit.dto.RecruitStatus;
@@ -53,7 +53,6 @@ public class FestivalService {
     private final FavoriteRepository favoriteRepository;
     private final EmbeddingRepository embeddingRepository;
     private final EmbeddingModel embeddingModel;
-    private final FestivalMapper festivalMapper;
 
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
         // 축제를 찾습니다.
@@ -81,7 +80,7 @@ public class FestivalService {
 
     public Long save(Long holderId, FestivalFormRequest festivalFormRequest) {
         Holder holder = holderRepository.findById(holderId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 기획자입니다."));
-        Festival festival = festivalRepository.save(festivalMapper.toEntity(holder, festivalFormRequest));
+        Festival festival = festivalRepository.save(FestivalMapper.of(holder, festivalFormRequest));
         return festival.getId();
     }
 

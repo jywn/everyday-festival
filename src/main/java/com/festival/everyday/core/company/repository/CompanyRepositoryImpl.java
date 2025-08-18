@@ -2,10 +2,13 @@ package com.festival.everyday.core.company.repository;
 
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.command.AddressDto;
+import com.festival.everyday.core.company.domain.QCompany;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.favorite.domain.QFavorite;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.common.TokenToCond;
 import com.festival.everyday.core.common.Tokenizer;
+import com.festival.everyday.core.festival.domain.QFestival;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.EnumExpression;
@@ -19,11 +22,13 @@ import org.springframework.data.support.PageableExecutionUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static com.festival.everyday.core.domain.interaction.QFavorite.favorite;
-import static com.festival.everyday.core.domain.user.QCompany.*;
+import static com.festival.everyday.core.company.domain.QCompany.*;
+import static com.festival.everyday.core.favorite.domain.QFavorite.*;
+import static com.festival.everyday.core.festival.domain.QFestival.*;
 
 @RequiredArgsConstructor
 public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
+
 
     private final JPAQueryFactory queryFactory;
 
