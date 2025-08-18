@@ -1,6 +1,8 @@
 package com.festival.everyday.core.user.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
+import com.festival.everyday.core.festival.dto.response.MyFestivalResponse;
 import com.festival.everyday.core.festival.service.FestivalQueryService;
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
@@ -29,10 +31,11 @@ public class UserApiController {
      * @return 내가 등록한 축제 목록
      */
     @GetMapping("/me/festivals")
-    public ResponseEntity<ApiResponse<List<FestivalSimpleDto>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+    public ResponseEntity<ApiResponse<List<MyFestivalResponse>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
                                                                                @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
-        List<FestivalSimpleDto> festivalsByHolderId = festivalQueryService.findListByHolderId(userId);
-        return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", festivalsByHolderId));
+        List<MyFestivalResponse> response = festivalQueryService.findListByHolderId(userId).stream().map(MyFestivalResponse::from).toList();
+
+        return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", response));
     }
 
     /**

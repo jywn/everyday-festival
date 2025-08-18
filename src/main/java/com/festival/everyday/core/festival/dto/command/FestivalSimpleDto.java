@@ -17,9 +17,10 @@ public class FestivalSimpleDto {
     private AddressDto address;
     private PeriodDto period;
     private FavorStatus favorStatus;
+    private String imageUrl;
 
-    public static FestivalSimpleDto of(Festival festival, FavorStatus favorStatus) {
+    public static FestivalSimpleDto of(Festival festival, FavorStatus favorStatus, String imageUrl) {
         return new FestivalSimpleDto(festival.getId(), festival.getName(),
-                AddressDto.from(festival.getAddress()), PeriodDto.from(festival.getPeriod()), favorStatus);
+                AddressDto.from(festival.getAddress()), PeriodDto.from(festival.getPeriod()), favorStatus, imageUrl);
     }
 }

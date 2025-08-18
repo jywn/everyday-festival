@@ -12,7 +12,6 @@ import com.festival.everyday.core.festival.dto.request.FestivalFormRequest;
 import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.common.dto.request.SearchRequest;
 import com.festival.everyday.core.ai.service.RecommendService;
-import com.festival.everyday.core.recruit.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;

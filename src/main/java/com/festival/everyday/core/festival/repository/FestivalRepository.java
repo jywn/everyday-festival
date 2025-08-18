@@ -13,7 +13,7 @@ public interface FestivalRepository extends JpaRepository<Festival,Long>, Festiv
     Optional<Festival> findByIdAndHolderId(Long festivalId, Long holderId);
     Optional<Long> findLaborRecruitIdById(Long festivalId);
     Optional<Long> findCompanyRecruitIdById(Long festivalId);
-    List<Festival> findFestivalsByHolderId(Long holderId);
+
     @Query("SELECT f from Festival f "
             + "join fetch f.companyRecruit cr "
             + "where f.id = :festivalId")
