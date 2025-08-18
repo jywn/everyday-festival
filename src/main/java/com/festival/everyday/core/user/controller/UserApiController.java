@@ -1,6 +1,9 @@
 package com.festival.everyday.core.user.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
+import com.festival.everyday.core.favorite.service.FavoriteService;
+import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.festival.dto.response.MyFestivalResponse;
 import com.festival.everyday.core.festival.service.FestivalQueryService;
@@ -25,7 +28,7 @@ public class UserApiController {
 
     private final FestivalQueryService festivalQueryService;
     private final UserService userService;
-
+    private final FavoriteService favoriteService;
     /**
      * 내가 등록한 축제 목록 조회 API
      * @return 내가 등록한 축제 목록
@@ -84,5 +87,30 @@ public class UserApiController {
         Long laborId = userService.laborJoin(request);
 
         return ResponseEntity.ok(ApiResponse.success("근로자 가입에 성공하였습니다.", laborId));
+    }
+
+    @GetMapping("/me/favorite-companies")
+    public ResponseEntity<ApiResponse<List<CompanyDetailDto>>> getCompaniesFavorites(
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
+
+
+        List<CompanyDetailDto> favorites = favoriteService.getCompanyFavorites(userId);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("찜한 업체 목록 조회 성공", favorites)
+        );
+    }
+
+    @GetMapping("/me/favorite-festivals")
+    public ResponseEntity<ApiResponse<List<FestivalDetailDto>>> getFestivalsFavorites(
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
+
+        List<FestivalDetailDto> favorites = favoriteService.getFestivalFavorites(userId);
+
+        return ResponseEntity.ok(
+                ApiResponse.success("찜한 축제 목록 조회 성공", favorites)
+        );
     }
 }
