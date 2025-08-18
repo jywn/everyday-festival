@@ -13,10 +13,13 @@ public class CompanySearchDto {
     private Long id;
     private String name;
     private Category category;
-    private AddressDto address;
-    //private FavorStatus favorStatus;
+
+    // address
+    private String city;
+    private String district;
+    private String detail;
 
     public static CompanySearchDto from(Company company) {
-        return new CompanySearchDto(company.getId(), company.getName(), company.getCategory(), AddressDto.from(company.getAddress()));
+        return new CompanySearchDto(company.getId(), company.getName(), company.getCategory(), company.getAddress().getCity(), company.getAddress().getDistrict(), company.getAddress().getDetail());
     }
 }

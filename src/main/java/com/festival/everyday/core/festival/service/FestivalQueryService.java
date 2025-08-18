@@ -45,71 +45,12 @@ import static com.festival.everyday.core.recruit.dto.RecruitStatus.RECRUITING;
 @RequiredArgsConstructor
 public class FestivalQueryService {
 
-    private final ImageRepository imageRepository;
     private final FestivalRepository festivalRepository;
-    private final ApplicationRepository applicationRepository;
-    private final CompanyRecruitRepository companyRecruitRepository;
-    private final LaborRecruitRepository laborRecruitRepository;
-    private final FavoriteRepository favoriteRepository;
 
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
         // 축제를 찾습니다.
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 축제입니다."));
-        // 이미지 url 을 조회합니다.
-        String url = imageRepository.findUrlByOwnerTypeAndOwnerId(OwnerType.FESTIVAL, festivalId).orElseThrow(() -> new EntityNotFoundException("이미지 url을 찾을 수 없습니다."));
-        // 축제를 DTO 로 변환합니다.
-        FestivalDetailDto festivalDetailDto = FestivalDetailDto.of(festival, url);
-
-        // 업체 모집 공고를 조회하여 모집 여부를 설정합니다.
-        Optional<Long> companyRecruitId = festivalRepository.findCompanyRecruitIdById(festivalId);
-        RecruitStatus companyRecruitStatus = checkRecruitExists(companyRecruitId);
-
-        // 근로자 모집 공고를 조회하여 모집 여부를 설정합니다.
-        Optional<Long> laborRecruitId = festivalRepository.findLaborRecruitIdById(festivalId);
-        RecruitStatus laborRecruitStatus = checkRecruitExists(laborRecruitId);
-
-        // 업체 모집 공고가 존재하면, 업체 모집 공고를 찾아 DTO 로 변환합니다.
-        CompanyRecruitWithApplyDto companyRecruitWithApplyDto = ifCompRecruitExistsToDto(userId, companyRecruitStatus, companyRecruitId.get());
-
-        // 근로자 모집 공고가 존재하면, 근로자 모집 공고를 찾아 DTO 로 변환합니다.
-        LaborRecruitWithApplyDto laborRecruitWithApplyDto = ifLaborRecruitExistsToDto(userId, laborRecruitStatus, laborRecruitId.get());
-
-        return FestivalDetailResponse.of(festivalDetailDto, companyRecruitStatus, companyRecruitWithApplyDto, laborRecruitStatus, laborRecruitWithApplyDto, url);
-    }
-
-
-    // 모집 여부를 확인합니다.
-    private RecruitStatus checkRecruitExists(Optional<Long> id) {
-        return id.isPresent() ? RECRUITING : NOT_RECRUITING;
-    }
-
-    // 지원 여부를 확인합니다.
-    private ApplyStatus checkApplyStatus(Long userId, Long recruitId) {
-
-        // 사용자 ID 와 모집 공고 ID 를 사용해 지원서 존재를 확인합니다.
-        return applicationRepository.existsByUserIdAndRecruitId(userId, recruitId) ? APPLIED : NOT_APPLIED;
-    }
-
-    // 업체 모집 공고가 존재하면 지원 여부를 찾아 DTO 로 변환합니다.
-    private CompanyRecruitWithApplyDto ifCompRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long companyRecruitId) {
-        if (recruitStatus.equals(NOT_RECRUITING)) { return null; }
-
-        // 모집 공고를 조회합니다.
-        CompanyRecruit companyRecruit = companyRecruitRepository.findById(companyRecruitId).orElseThrow(() -> new EntityNotFoundException("업체 모집 공고 조회에 실패하였습니다."));
-
-        // 모집 공고를 지원 여부와 함께 DTO 로 변환하여 반환합니다.
-        return CompanyRecruitWithApplyDto.from(companyRecruit, checkApplyStatus(userId, companyRecruitId));
-    }
-
-    // 근로자 모집 공고가 존재하면 지원 여부를 찾아 DTO 로 변환합니다.
-    private LaborRecruitWithApplyDto ifLaborRecruitExistsToDto(Long userId, RecruitStatus recruitStatus, Long laborRecruitId) {
-        if (recruitStatus.equals(NOT_RECRUITING)) { return null; }
-
-        // 모집 공고를 조회합니다.
-        LaborRecruit laborRecruit = laborRecruitRepository.findById(laborRecruitId).orElseThrow(() -> new EntityNotFoundException("근로자 모집 공고 조회에 실패하였습니다."));
-
-        // 모집 공고를 지원 여부와 함께 DTO 로 변환하여 반환합니다.
-        return LaborRecruitWithApplyDto.from(laborRecruit, checkApplyStatus(userId, laborRecruitId));
+        FestivalDetailDto festivalDetail = festivalRepository.findFestivalDetail(festivalId, userId);
+        return FestivalDetailResponse.from(festivalDetail);
     }
 
     // 기획자 id 를 이용해 축제 목록을 조회합니다.
@@ -119,14 +60,8 @@ public class FestivalQueryService {
         return  festivalRepository.findFestivalsByHolderIdWithUrl(holderId);
     }
 
-    // 축제의 찜 여부를 확인합니다.
-    private boolean isFavoredFestival(Long userId, Long festivalId) {
-        return favoriteRepository.existsBySenderIdAndReceiverIdAndReceiverType(userId, festivalId, ReceiverType.FESTIVAL);
-    }
-
     // 사용자 ID 를 통해 찜 여부와 함께 축제 목록 페이지를 검색합니다.
-    public PageResponse<FestivalSearchDto> searchByKeyword(String keyword, PageRequest pageRequest) {
-        Long userId = 1L; // 수정 필요
-        return PageResponse.from(festivalRepository.dynamicSearch(userId, keyword, pageRequest));
+    public PageResponse<FestivalSearchDto> searchByKeyword(Long userId, String keyword, PageRequest pageRequest) {
+        return PageResponse.from(festivalRepository.searchByKeyword(userId, keyword, pageRequest));
     }
 }

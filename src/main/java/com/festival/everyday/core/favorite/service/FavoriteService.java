@@ -67,9 +67,7 @@ public class FavoriteService {
         // repository 조회
         List<Festival> festivals = favoriteRepository.findFavoredFestivalsByUserId(userId, ReceiverType.FESTIVAL);
 
-        return festivals.stream()
-                .map(FestivalDetailDto::from)
-                .toList();
+        return null; // 수정 필요
     }
 
 }

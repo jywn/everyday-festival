@@ -37,7 +37,4 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     """)
     List<Festival> findFavoredFestivalsByUserId(@Param("userId") Long userId,
                                                 @Param("type") ReceiverType type);
-
-
-    boolean existsByUser_IdAndCompany_Id(Long userId, Long companyId);
 }
