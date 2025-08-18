@@ -1,14 +1,12 @@
 package com.festival.everyday.core.controller;
 
 import com.festival.everyday.core.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.dto.request.UpdateApplicationStatusRequest;
 import com.festival.everyday.core.dto.response.*;
 import com.festival.everyday.core.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -72,6 +70,38 @@ public class ApplicationController {
 
         return ResponseEntity
                 .ok(new ApiResponse(true,200, "근로자가 지원한 축제 목록 조회에 성공했습니다."));
+    }
+
+    //업체 수락/거절하기
+    @PatchMapping("/festivals/{festivalId}/company-applications/{companyId}/status")
+    public ResponseEntity<UpdateApplicationStatusResponse> updateCompanyStatus(
+            @PathVariable Long festivalId,
+            @PathVariable Long companyId,
+            @RequestBody UpdateApplicationStatusRequest req,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType
+    ) {
+        return ResponseEntity.ok(
+                applicationService.updateCompanyApplicationStatus(
+                        festivalId, holderId, userType, companyId, req.getSelected()
+                )
+        );
+    }
+
+    //근로자 수락/거절하기
+    @PatchMapping("/festivals/{festivalId}/labor-applications/{laborId}/status")
+    public ResponseEntity<UpdateApplicationStatusResponse> updateLaborStatus(
+            @PathVariable Long festivalId,
+            @PathVariable Long laborId,
+            @RequestBody UpdateApplicationStatusRequest req,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType
+    ) {
+        return ResponseEntity.ok(
+                applicationService.updateLaborApplicationStatus(
+                        festivalId, holderId, userType, laborId, req.getSelected()
+                )
+        );
     }
 
 }
