@@ -3,9 +3,11 @@ package com.festival.everyday.core.favorite.service;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
+import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.domain.Favorite;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
+import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.favorite.dto.request.FavoriteRequest;
 import com.festival.everyday.core.favorite.dto.response.FavoriteResponse;
@@ -54,20 +56,14 @@ public class FavoriteService {
         }
     }
 
-    public List<CompanyDetailDto> getCompanyFavorites(Long userId) {
+    public List<CompanySearchDto> getFavoriteCompanyList(Long userId) {
         // repository 조회
-        List<Company> companies = favoriteRepository.findFavoredCompaniesByUserId(userId, ReceiverType.COMPANY);
-
-        return companies.stream()
-                .map(CompanyDetailDto::from)
-                .toList();
+        return favoriteRepository.findFavoredCompaniesByUserId(userId, ReceiverType.COMPANY);
     }
 
-    public List<FestivalDetailDto> getFestivalFavorites(Long userId) {
+    public List<FestivalSearchDto> getFavoriteFestivalList(Long userId) {
         // repository 조회
-        List<Festival> festivals = favoriteRepository.findFavoredFestivalsByUserId(userId, ReceiverType.FESTIVAL);
-
-        return null; // 수정 필요
+        return favoriteRepository.findFavoredFestivalsByUserId(userId, ReceiverType.FESTIVAL);
     }
 
 }
