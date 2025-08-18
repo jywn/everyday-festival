@@ -1,17 +1,15 @@
 package com.festival.everyday.core.domain;
 
-import com.festival.everyday.core.domain.common.value.Address;
-import com.festival.everyday.core.domain.common.value.Period;
-import com.festival.everyday.core.domain.user.Holder;
-import io.jsonwebtoken.lang.Assert;
-import org.junit.jupiter.api.Assertions;
+import com.festival.everyday.core.common.domain.Address;
+import com.festival.everyday.core.common.domain.Period;
+import com.festival.everyday.core.user.domain.Holder;
+import com.festival.everyday.core.festival.domain.Festival;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class FestivalRelationTest {
 

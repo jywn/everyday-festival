@@ -1,7 +1,9 @@
 package com.festival.everyday.core.config.jwt;
 
-import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.domain.user.UserType;
+import com.festival.everyday.core.common.config.jwt.JwtProperties;
+import com.festival.everyday.core.common.config.jwt.TokenProvider;
+import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.user.domain.UserType;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

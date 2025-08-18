@@ -1,7 +1,8 @@
 package com.festival.everyday.core.service;
 
-import com.festival.everyday.core.domain.user.User;
-import com.festival.everyday.core.repository.UserRepository;
+import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.user.repository.UserRepository;
+import com.festival.everyday.core.user.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

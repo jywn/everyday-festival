@@ -1,5 +1,6 @@
 package com.festival.everyday.core.config.jwt;
 
+import com.festival.everyday.core.common.config.jwt.JwtProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

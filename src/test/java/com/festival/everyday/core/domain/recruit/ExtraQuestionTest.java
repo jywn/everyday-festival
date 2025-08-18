@@ -1,7 +1,10 @@
 package com.festival.everyday.core.domain.recruit;
 
-import com.festival.everyday.core.domain.common.value.Period;
-import com.festival.everyday.core.domain.user.Category;
+import com.festival.everyday.core.common.domain.Period;
+import com.festival.everyday.core.user.domain.Category;
+import com.festival.everyday.core.recruit.domain.CompanyRecruit;
+import com.festival.everyday.core.recruit.domain.ExtraQuestion;
+import com.festival.everyday.core.recruit.domain.LaborRecruit;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
