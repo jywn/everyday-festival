@@ -1,10 +1,16 @@
 package com.festival.everyday.core.favorite.service;
 
+import com.festival.everyday.core.common.dto.ReceiverType;
+import com.festival.everyday.core.company.domain.Company;
+import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.favorite.domain.Favorite;
+import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.favorite.dto.request.FavoriteRequest;
 import com.festival.everyday.core.favorite.dto.response.FavoriteResponse;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
+import com.festival.everyday.core.user.dto.response.CompanyFavoriteResponse;
 import com.festival.everyday.core.user.repository.UserRepository;
 import com.festival.everyday.core.company.repository.CompanyRepository;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
@@ -13,6 +19,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.festival.everyday.core.favorite.dto.FavorStatus.*;
@@ -46,4 +53,23 @@ public class FavoriteService {
             return FavoriteResponse.of(newFavorite,FAVORED);
         }
     }
+
+    public List<CompanyDetailDto> getCompanyFavorites(Long userId) {
+        // repository 조회
+        List<Company> companies = favoriteRepository.findFavoredCompaniesByUserId(userId, ReceiverType.COMPANY);
+
+        return companies.stream()
+                .map(CompanyDetailDto::from)
+                .toList();
+    }
+
+    public List<FestivalDetailDto> getFestivalFavorites(Long userId) {
+        // repository 조회
+        List<Festival> festivals = favoriteRepository.findFavoredFestivalsByUserId(userId, ReceiverType.FESTIVAL);
+
+        return festivals.stream()
+                .map(FestivalDetailDto::from)
+                .toList();
+    }
+
 }
