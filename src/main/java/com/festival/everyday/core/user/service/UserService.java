@@ -56,8 +56,8 @@ public class UserService {
         return holderRepository.save(holder).getId();
     }
 
-    private void checkRedundant(String request) {
-        if (userRepository.existsByAccount(request)) {
+    private void checkRedundant(String account) {
+        if (userRepository.existsByAccount(account)) {
             throw new EntityExistsException("중복 계정입니다.");
         }
     }

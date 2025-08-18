@@ -1,6 +1,7 @@
 package com.festival.everyday.core.user.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.festival.service.FestivalQueryService;
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
 import com.festival.everyday.core.user.dto.request.CompanyRegisterRequest;
@@ -8,7 +9,6 @@ import com.festival.everyday.core.user.dto.request.HolderRegisterRequest;
 import com.festival.everyday.core.user.dto.request.LaborRegisterRequest;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
 import com.festival.everyday.core.user.dto.response.MyProfileResponse;
-import com.festival.everyday.core.festival.service.FestivalService;
 import com.festival.everyday.core.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserApiController {
 
-    private final FestivalService festivalService;
+    private final FestivalQueryService festivalQueryService;
     private final UserService userService;
 
     /**
@@ -31,7 +31,7 @@ public class UserApiController {
     @GetMapping("/me/festivals")
     public ResponseEntity<ApiResponse<List<FestivalSimpleDto>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
                                                                                @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
-        List<FestivalSimpleDto> festivalsByHolderId = festivalService.findListByHolderId(userId);
+        List<FestivalSimpleDto> festivalsByHolderId = festivalQueryService.findListByHolderId(userId);
         return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", festivalsByHolderId));
     }
 
