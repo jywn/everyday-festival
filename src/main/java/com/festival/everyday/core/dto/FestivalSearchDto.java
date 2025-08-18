@@ -16,5 +16,4 @@ public class FestivalSearchDto {
     private PeriodDto period;
     private FavorStatus favorStatus;
 
-
 }

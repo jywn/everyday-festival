@@ -1,6 +1,7 @@
 package com.festival.everyday.core.domain.recruit;
 
 import com.festival.everyday.core.domain.common.value.Period;
+import com.festival.everyday.core.domain.user.Category;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExtraQuestionRelationTest {
 
     Period period = Period.create(LocalDateTime.MIN, LocalDateTime.MAX);
-    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정");
+    List<Category> categories = List.of(Category.ART);
+    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정", categories);
     List<String> str = new ArrayList<>(List.of("A", "B", "C"));
 
     @Test

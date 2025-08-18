@@ -1,6 +1,7 @@
 package com.festival.everyday.core.domain.recruit;
 
 import com.festival.everyday.core.domain.common.value.Period;
+import com.festival.everyday.core.domain.user.Category;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,9 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExtraQuestionTest {
 
+    List<Category> categories = List.of(Category.ART);
     Period period = Period.create(LocalDateTime.MIN, LocalDateTime.MAX);
     LaborRecruit laborRecruit = LaborRecruit.create(period, "공지", "빵 반죽", "일급 15,000원", "힘들다.");
-    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정");
+    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정", categories);
     List<String> str = new ArrayList<>(List.of("A", "B", "C"));
 
     @Test
@@ -31,7 +33,7 @@ class ExtraQuestionTest {
 
         Assertions.assertThat(extraQuestions)
                 .extracting(ExtraQuestion::getContent)
-                .containsExactly(str);
+                .containsExactly("A", "B", "C");
     }
 
     @Test
@@ -47,7 +49,7 @@ class ExtraQuestionTest {
 
         Assertions.assertThat(extraQuestions)
                 .extracting(ExtraQuestion::getContent)
-                .containsExactly(str);
+                .containsExactly("A", "B", "C");
     }
 
     @Test

@@ -12,10 +12,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationRelationTest {
+
+    List<Category> categories = List.of(Category.ART);
 
     Holder holder = Holder.create("H001", "H001", "H001", "1234-5678", "H001@gmail.com",
             Address.create("서울특별시", "마포구", "월드컵로 1길 2"));
@@ -30,7 +33,7 @@ class ApplicationRelationTest {
 
     Period period = Period.create(LocalDateTime.MIN, LocalDateTime.MAX);
 
-    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정");
+    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정", categories);
 
     @Test
     @DisplayName("사용자가 축제 공고에 지원합니다.")

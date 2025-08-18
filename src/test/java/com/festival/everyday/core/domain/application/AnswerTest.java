@@ -38,7 +38,6 @@ class AnswerTest {
 
     Application application = Application.create(companyRecruit, company, festival);
 
-    String[] str = {"A", "B", "C", "D", "E"};
 
     @Test
     @DisplayName("정상 생성")
