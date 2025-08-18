@@ -4,6 +4,7 @@ import com.festival.everyday.core.domain.Festival;
 import com.festival.everyday.core.domain.interaction.ReceiverType;
 import com.festival.everyday.core.domain.recruit.CompanyRecruit;
 import com.festival.everyday.core.domain.recruit.LaborRecruit;
+import com.festival.everyday.core.domain.user.Company;
 import com.festival.everyday.core.domain.user.Holder;
 import com.festival.everyday.core.dto.*;
 import com.festival.everyday.core.dto.mapper.FestivalMapper;
@@ -11,11 +12,13 @@ import com.festival.everyday.core.dto.request.FestivalFormRequest;
 import com.festival.everyday.core.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.dto.response.PageResponse;
 import com.festival.everyday.core.repository.*;
+import com.festival.everyday.core.repository.company.CompanyRepository;
 import com.festival.everyday.core.repository.festival.FestivalRepository;
 import com.festival.everyday.core.repository.recruit.CompanyRecruitRepository;
 import com.festival.everyday.core.repository.recruit.LaborRecruitRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +36,14 @@ import static com.festival.everyday.core.dto.RecruitStatus.*;
 public class FestivalService {
 
     private final FestivalRepository festivalRepository;
+    private final CompanyRepository companyRepository;
     private final HolderRepository holderRepository;
     private final CompanyRecruitRepository companyRecruitRepository;
     private final LaborRecruitRepository laborRecruitRepository;
     private final ApplicationRepository applicationRepository;
     private final FavoriteRepository favoriteRepository;
+    private final EmbeddingRepository embeddingRepository;
+    private final EmbeddingModel embeddingModel;
     private final FestivalMapper festivalMapper;
 
     public FestivalDetailResponse findById(Long userId, Long festivalId) {

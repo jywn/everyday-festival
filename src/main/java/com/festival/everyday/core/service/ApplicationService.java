@@ -69,7 +69,7 @@ public class ApplicationService {
     //업체->축제 제출한 지원서 하나 조회
     public CompanyApplicationDetailResponse getCompanyApplicationDetail(Long applicationId, Long festivalId, Long userId, String userType) {
 
-        Application application=applicationRepository.findById(applicationId)
+        Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(()->new EntityNotFoundException("업체가 작성한 지원서를 찾을 수 없습니다."));
 
         if (!application.getFestival().getId().equals(festivalId)) {

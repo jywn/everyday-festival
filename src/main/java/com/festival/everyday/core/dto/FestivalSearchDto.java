@@ -16,5 +16,5 @@ public class FestivalSearchDto {
     private PeriodDto period;
     private FavorStatus favorStatus;
 
-
+    public static FestivalSearchDto from(Festival festival) {}
 }

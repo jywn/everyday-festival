@@ -9,6 +9,7 @@ import com.festival.everyday.core.dto.request.FestivalFormRequest;
 import com.festival.everyday.core.dto.request.SearchRequest;
 import com.festival.everyday.core.dto.response.*;
 import com.festival.everyday.core.service.FestivalService;
+import com.festival.everyday.core.service.RecommendService;
 import com.festival.everyday.core.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.festival.everyday.core.domain.user.UserType.*;
 
 @RestController
@@ -26,6 +29,7 @@ import static com.festival.everyday.core.domain.user.UserType.*;
 public class FestivalApiController {
 
     private final FestivalService festivalService;
+    private final RecommendService recommendService;
     private final RecruitService recruitService;
 
     @GetMapping("/{festivalId}")
@@ -52,6 +56,12 @@ public class FestivalApiController {
         ApiResponse<PageResponse<FestivalSearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", festivalService.searchByKeyword(searchRequest.getKeyword(), pageRequest));
 
         return ResponseEntity.ok(success);
+    }
+
+    @GetMapping("/{festival_id}/recommended-companies")
+    public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> recommendCompanies(@PathVariable Long festival_id) {
+        List<CompanySimpleResponse> result = recommendService.recommendCompany(festival_id).stream().map(CompanySimpleResponse::from).toList();
+        return ResponseEntity.ok(ApiResponse.success("추천 업체 목록 조회에 성공했습니다.", result));
     }
 
     // 기획자인지 확인합니다.

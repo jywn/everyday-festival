@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,10 +27,10 @@ class ApplicationTest {
     Company company = Company.create("C001", "C001", "C001", "1234-5678", "C001@gmail.com",
             Address.create("서울특별시", "마포구", "월드컵로 1길 2"),
             "맛집입니다.", "ig.com", "원종윤", Category.FOOD, "1234a567");
-
+    List<Category> categories = List.of(Category.ART);
     Period period = Period.create(LocalDateTime.MIN, LocalDateTime.MAX);
 
-    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정");
+    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정", categories);
 
     @Test
     @DisplayName("정상 생성")

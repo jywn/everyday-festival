@@ -63,7 +63,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'org.mockito:mockito-core:5.12.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
-    testImplementation 'org.springframework.security:spring-security-core:6.3.1'
 	// 스프링 시큐리티 + 토큰 의존성
 
 	// === BOM을 각 구성에 명시 적용 ===
