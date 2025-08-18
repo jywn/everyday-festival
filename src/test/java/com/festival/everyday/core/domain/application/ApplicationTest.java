@@ -1,16 +1,18 @@
 package com.festival.everyday.core.domain.application;
 
-import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.common.value.Address;
-import com.festival.everyday.core.domain.common.value.Period;
-import com.festival.everyday.core.domain.recruit.CompanyRecruit;
-import com.festival.everyday.core.domain.user.Category;
-import com.festival.everyday.core.domain.user.Company;
-import com.festival.everyday.core.domain.user.Holder;
+import com.festival.everyday.core.application.domain.Application;
+import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.common.domain.Address;
+import com.festival.everyday.core.common.domain.Period;
+import com.festival.everyday.core.recruit.domain.CompanyRecruit;
+import com.festival.everyday.core.user.domain.Category;
+import com.festival.everyday.core.company.domain.Company;
+import com.festival.everyday.core.user.domain.Holder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,10 +28,10 @@ class ApplicationTest {
     Company company = Company.create("C001", "C001", "C001", "1234-5678", "C001@gmail.com",
             Address.create("서울특별시", "마포구", "월드컵로 1길 2"),
             "맛집입니다.", "ig.com", "원종윤", Category.FOOD, "1234a567");
-
+    List<Category> categories = List.of(Category.ART);
     Period period = Period.create(LocalDateTime.MIN, LocalDateTime.MAX);
 
-    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정");
+    CompanyRecruit companyRecruit = CompanyRecruit.create(period, "공지", "용모단정", categories);
 
     @Test
     @DisplayName("정상 생성")

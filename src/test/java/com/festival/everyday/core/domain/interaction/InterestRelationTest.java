@@ -1,18 +1,17 @@
 package com.festival.everyday.core.domain.interaction;
 
-import com.festival.everyday.core.domain.Festival;
-import com.festival.everyday.core.domain.common.value.Address;
-import com.festival.everyday.core.domain.common.value.Period;
-import com.festival.everyday.core.domain.user.Category;
-import com.festival.everyday.core.domain.user.Company;
-import com.festival.everyday.core.domain.user.Holder;
+import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.common.domain.Address;
+import com.festival.everyday.core.common.domain.Period;
+import com.festival.everyday.core.interest.domain.Interest;
+import com.festival.everyday.core.user.domain.Category;
+import com.festival.everyday.core.company.domain.Company;
+import com.festival.everyday.core.user.domain.Holder;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class InterestRelationTest {
 

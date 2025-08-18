@@ -1,11 +1,11 @@
 package com.festival.everyday.core.domain.recruit;
 
-import com.festival.everyday.core.domain.common.value.Period;
+import com.festival.everyday.core.common.domain.Period;
+import com.festival.everyday.core.recruit.domain.LaborRecruit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

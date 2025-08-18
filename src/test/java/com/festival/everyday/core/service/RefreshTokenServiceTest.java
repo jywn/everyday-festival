@@ -1,7 +1,8 @@
 package com.festival.everyday.core.service;
 
-import com.festival.everyday.core.domain.user.authority.RefreshToken;
-import com.festival.everyday.core.repository.RefreshTokenRepository;
+import com.festival.everyday.core.token.domain.RefreshToken;
+import com.festival.everyday.core.token.repository.RefreshTokenRepository;
+import com.festival.everyday.core.token.service.RefreshTokenService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
