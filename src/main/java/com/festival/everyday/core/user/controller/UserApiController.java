@@ -1,6 +1,9 @@
 package com.festival.everyday.core.user.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
+import com.festival.everyday.core.favorite.service.FavoriteService;
+import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.service.FestivalQueryService;
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
