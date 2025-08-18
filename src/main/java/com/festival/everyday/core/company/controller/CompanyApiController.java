@@ -10,7 +10,7 @@ import com.festival.everyday.core.common.dto.request.SearchRequest;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
 import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
-import com.festival.everyday.core.company.service.CompanyService;
+import com.festival.everyday.core.company.service.CompanyQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -21,24 +21,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/companies")
 public class CompanyApiController {
 
-    private final CompanyService companyService;
+    private final CompanyQueryService companyQueryService;
     private final FavoriteRepository favoriteRepository;
-    // 검색 메서드
+
+    // 업체 검색 메서드
     @PostMapping("/search")
     public ResponseEntity<ApiResponse<PageResponse<CompanySearchDto>>> searchCompanies(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-                                                                                       @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,@RequestBody SearchRequest searchRequest) {
+                                                                                       @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+                                                                                       @RequestBody SearchRequest searchRequest) {
+        // 리퀘스트를 바탕으로 페이지 객체를 생성합니다.
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
-        ApiResponse<PageResponse<CompanySearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", companyService.searchByKeyword(searchRequest.getKeyword(), pageRequest));
+
+        // 업체 목록을 검색하여 반환합니다.
+        ApiResponse<PageResponse<CompanySearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", companyQueryService.searchByKeyword(searchRequest.getKeyword(), pageRequest));
 
         return ResponseEntity.ok(success);
     }
 
+    // 업체를 상세 조회합니다.
     @GetMapping("/{companyId}")
     public ResponseEntity<ApiResponse<CompanyDetailDto>> getCompanyDetail(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
                                                                           @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
                                                                           @PathVariable Long companyId) {
 
-        Company company = companyService.findById(companyId);
+        Company company = companyQueryService.findById(companyId);
         CompanyDetailDto companyDetailDto = CompanyDetailDto.from(company);
         boolean exists = favoriteRepository.existsBySenderIdAndReceiverIdAndReceiverType(       //찜 확인
                 userId, companyId, ReceiverType.COMPANY);

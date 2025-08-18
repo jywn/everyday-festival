@@ -139,38 +139,4 @@ public class ApplicationService {
                 .map(application->LaborSentApplicationResponse.of(application))
                 .toList();
     }
-
-    // 지원서를 작성합니다.
-    public Long createCompanyApplication(Long userId, Long festivalId, ApplicationRequest request) {
-
-        // 조회 한 번에 쿼리 3방 -> 쿼리 개선 필요
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
-        Long recruitId = festivalRepository.findCompanyRecruitIdById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제와 연관된 공고를 찾을 수 없습니다."));
-        Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> new EntityNotFoundException("공고를 찾을 수 없습니다."));
-
-        Application application = Application.create(recruit, user, festival);
-        ExtraAnswer.createExtraAnswers(application, request.getExtraAnswers());
-        Answer.createAnswers(application, request.getAnswers());
-
-        Application saved = applicationRepository.save(application);
-        return saved.getId();
-    }
-
-    // 지원서를 작성합니다.
-    public Long createLaborApplication(Long userId, Long festivalId, ApplicationRequest request) {
-
-        // 조회 한 번에 쿼리 3방 -> 쿼리 개선 필요
-        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
-        Long recruitId = festivalRepository.findLaborRecruitIdById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제와 연관된 공고를 찾을 수 없습니다."));
-        Recruit recruit = recruitRepository.findById(recruitId).orElseThrow(() -> new EntityNotFoundException("공고를 찾을 수 없습니다."));
-
-        Application application = Application.create(recruit, user, festival);
-        ExtraAnswer.createExtraAnswers(application, request.getExtraAnswers());
-        Answer.createAnswers(application, request.getAnswers());
-
-        Application saved = applicationRepository.save(application);
-        return saved.getId();
-    }
 }
