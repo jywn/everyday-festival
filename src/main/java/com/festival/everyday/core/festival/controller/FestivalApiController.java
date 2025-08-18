@@ -46,7 +46,7 @@ public class FestivalApiController {
                                                             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
                                                             @RequestBody FestivalFormRequest festivalFormRequest) {
         // 축제를 등록합니다.
-        Long savedId = festivalCommandService.save(userId, festivalFormRequest);       //userType is holder
+        Long savedId = festivalCommandService.save(userId, festivalFormRequest);
         return ResponseEntity.ok(ApiResponse.success("축제 등록에 성공하였습니다.", savedId));
     }
 
@@ -58,7 +58,7 @@ public class FestivalApiController {
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
 
         // 검색어와 페이지를 전달해 검색합니다.
-        ApiResponse<PageResponse<FestivalSearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", festivalQueryService.searchByKeyword(searchRequest.getKeyword(), pageRequest));
+        ApiResponse<PageResponse<FestivalSearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", festivalQueryService.searchByKeyword(1L, searchRequest.getKeyword(), pageRequest));
 
         return ResponseEntity.ok(success);
     }

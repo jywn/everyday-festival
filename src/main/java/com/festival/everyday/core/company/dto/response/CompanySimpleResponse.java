@@ -17,6 +17,7 @@ public class CompanySimpleResponse {
     //private FavorStatus favorStatus;
 
     public static CompanySimpleResponse from(CompanySearchDto companySearchDto) {
-        return new CompanySimpleResponse(companySearchDto.getId(), companySearchDto.getName(), companySearchDto.getCategory(), companySearchDto.getAddress());
+        return new CompanySimpleResponse(companySearchDto.getId(), companySearchDto.getName(), companySearchDto.getCategory(),
+                AddressDto.of(companySearchDto.getCity(), companySearchDto.getDistrict(), companySearchDto.getDetail()));
     }
 }
