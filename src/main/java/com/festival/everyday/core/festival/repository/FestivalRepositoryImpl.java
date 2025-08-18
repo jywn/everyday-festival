@@ -3,9 +3,14 @@ package com.festival.everyday.core.festival.repository;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
+import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
 import com.festival.everyday.core.common.TokenToCond;
+import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
+import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
+import com.festival.everyday.core.image.domain.OwnerType;
+import com.festival.everyday.core.image.domain.QImage;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.EnumExpression;
@@ -14,6 +19,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
@@ -22,6 +28,7 @@ import java.util.Optional;
 import static com.festival.everyday.core.common.Tokenizer.*;
 import static com.festival.everyday.core.favorite.domain.QFavorite.*;
 import static com.festival.everyday.core.festival.domain.QFestival.*;
+import static com.festival.everyday.core.image.domain.QImage.*;
 
 @RequiredArgsConstructor
 public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
@@ -58,6 +65,19 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
 
 
         return getPageByList(userId, pageable, listAndCondition, andConditions);
+    }
+
+    @Override
+    public List<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId) {
+
+        return queryFactory
+                .select(Projections.constructor(MyFestivalDto.class,
+                        festival.id, festival.name, festival.address.city, festival.address.district, festival.address.detail,
+                        festival.period.begin, festival.period.end, image.url))
+                .from(festival)
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+                .where(festival.holder.id.eq(holderId))
+                .fetch();
     }
 
     private Page<FestivalSearchDto> getPageByList(Long userId, Pageable pageable, List<FestivalSearchDto> listAndCondition, BooleanExpression andConditions) {

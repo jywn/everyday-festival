@@ -14,4 +14,8 @@ public class AddressDto {
     public static AddressDto from(Address address) {
         return new AddressDto(address.getCity(), address.getDistrict(), address.getDetail());
     }
+
+    public static AddressDto of(String city, String district, String detail) {
+        return new AddressDto(city, district, detail);
+    }
 }

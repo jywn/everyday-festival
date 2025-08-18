@@ -10,8 +10,12 @@ import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
+import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
+import com.festival.everyday.core.image.domain.Image;
+import com.festival.everyday.core.image.domain.OwnerType;
+import com.festival.everyday.core.image.repository.ImageRepository;
 import com.festival.everyday.core.recruit.domain.CompanyRecruit;
 import com.festival.everyday.core.recruit.domain.LaborRecruit;
 import com.festival.everyday.core.recruit.dto.RecruitStatus;
@@ -41,6 +45,7 @@ import static com.festival.everyday.core.recruit.dto.RecruitStatus.RECRUITING;
 @RequiredArgsConstructor
 public class FestivalQueryService {
 
+    private final ImageRepository imageRepository;
     private final FestivalRepository festivalRepository;
     private final ApplicationRepository applicationRepository;
     private final CompanyRecruitRepository companyRecruitRepository;
@@ -50,9 +55,10 @@ public class FestivalQueryService {
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
         // 축제를 찾습니다.
         Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 축제입니다."));
-
+        // 이미지 url 을 조회합니다.
+        String url = imageRepository.findUrlByOwnerTypeAndOwnerId(OwnerType.FESTIVAL, festivalId).orElseThrow(() -> new EntityNotFoundException("이미지 url을 찾을 수 없습니다."));
         // 축제를 DTO 로 변환합니다.
-        FestivalDetailDto festivalDetailDto = FestivalDetailDto.from(festival);
+        FestivalDetailDto festivalDetailDto = FestivalDetailDto.of(festival, url);
 
         // 업체 모집 공고를 조회하여 모집 여부를 설정합니다.
         Optional<Long> companyRecruitId = festivalRepository.findCompanyRecruitIdById(festivalId);
@@ -68,7 +74,7 @@ public class FestivalQueryService {
         // 근로자 모집 공고가 존재하면, 근로자 모집 공고를 찾아 DTO 로 변환합니다.
         LaborRecruitWithApplyDto laborRecruitWithApplyDto = ifLaborRecruitExistsToDto(userId, laborRecruitStatus, laborRecruitId.get());
 
-        return FestivalDetailResponse.of(festivalDetailDto, companyRecruitStatus, companyRecruitWithApplyDto, laborRecruitStatus, laborRecruitWithApplyDto);
+        return FestivalDetailResponse.of(festivalDetailDto, companyRecruitStatus, companyRecruitWithApplyDto, laborRecruitStatus, laborRecruitWithApplyDto, url);
     }
 
 
@@ -107,15 +113,10 @@ public class FestivalQueryService {
     }
 
     // 기획자 id 를 이용해 축제 목록을 조회합니다.
-    public List<FestivalSimpleDto> findListByHolderId(Long holderId) {
+    public List<MyFestivalDto> findListByHolderId(Long holderId) {
 
         // 조회한 축제 목록을 찜 여부와 함께 DTO 로 변환합니다.
-        return  festivalRepository.findFestivalsByHolderId(holderId)
-                .stream()
-                .map(festival -> {
-                    FavorStatus favorStatus = isFavoredFestival(holderId, festival.getId()) ? FAVORED : NOT_FAVORED;
-                    return FestivalSimpleDto.of(festival, favorStatus);
-                }).toList();
+        return  festivalRepository.findFestivalsByHolderIdWithUrl(holderId);
     }
 
     // 축제의 찜 여부를 확인합니다.
