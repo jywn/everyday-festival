@@ -49,8 +49,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                 .select(Projections.constructor(CompanySearchDto.class,
                         company.id, company.name, company.category,
                         company.address.city, company.address.district, company.address.detail,
-                        favorStatus(), image.url
-                ))
+                        favorStatus(), image.url))
                 .from(company)
                 .leftJoin(favorite).on(favorite.sender.id.eq(userId)
                         .and(favorite.receiverType.eq(ReceiverType.COMPANY)
