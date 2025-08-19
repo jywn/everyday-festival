@@ -1,11 +1,16 @@
 package com.festival.everyday.core.review.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.common.dto.SenderType;
 import com.festival.everyday.core.review.domain.Review;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
+import com.festival.everyday.core.review.dto.command.CompanyReviewFormDto;
+import com.festival.everyday.core.review.dto.command.FestivalReviewFormDto;
 import com.festival.everyday.core.review.dto.request.CompanyReviewRequest;
 import com.festival.everyday.core.review.dto.request.FestivalReviewRequest;
 import com.festival.everyday.core.review.dto.response.*;
+import com.festival.everyday.core.review.service.ReviewCommandService;
+import com.festival.everyday.core.review.service.ReviewQueryService;
 import com.festival.everyday.core.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,86 +19,75 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.net.URI;
+import java.util.List;
+
+import static com.festival.everyday.core.common.dto.SenderType.*;
 
 
 @RestController
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final ReviewService reviewService;
+    private final ReviewCommandService reviewCommandService;
+    private final ReviewQueryService reviewQueryService;
 
     @PostMapping("festivals/{festivalId}/reviews")
-    public ResponseEntity<ApiResponse> createFestivalReview(@PathVariable Long festivalId, @RequestBody FestivalReviewRequest request, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+    public ResponseEntity<ApiResponse<Long>> createFestivalReview(@PathVariable Long festivalId, @RequestBody FestivalReviewRequest request,
+                                                            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
                                                             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
-        Review savedReview=reviewService.createFestivalReview(festivalId, userId, userType, request);
 
-        ReviewResponse responseBody=ReviewResponse.of(savedReview);
+        Long id = reviewCommandService.createFestivalReview(festivalId, userId, userType, FestivalReviewFormDto.from(request));
 
-        String redirectURL="/";
-        if ("COMPANY".equals(userType))
-        {
-            redirectURL = "/company-applications"; //업체라면 자신이 지원한 축제들 목록으로
-
-        }
-        else if ("LABOR".equals(userType))
-        {
-            redirectURL = "/labor-applications"; //근로자라면 자신이 지원한 축제 목록으로
-        }
-
-        return ResponseEntity
-                .created(URI.create(redirectURL))
-                .body(new ApiResponse(true, 200, "축제에게 리뷰를 등록하였습니다!", responseBody));
+        return ResponseEntity.ok(ApiResponse.success("축제에 리뷰를 작성하였습니다.", id));
     }
 
     @PostMapping("/companies/{companyId}/reviews")
-    public ResponseEntity<ApiResponse> createCompanyReview(@PathVariable Long companyId, @RequestBody CompanyReviewRequest request, @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
+    public ResponseEntity<ApiResponse<Long>> createCompanyReview(@PathVariable Long companyId, @RequestBody CompanyReviewRequest request,
+                                                           @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
                                                            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
-        if (!"HOLDER".equals(userType)) {
-            throw new AccessDeniedException("리뷰 작성 권한이 없습니다.");
-        }
 
-        Review savedReview=reviewService.createCompanyReview(companyId, holderId, request);
+        Long id = reviewCommandService.createCompanyReview(companyId, CompanyReviewFormDto.from(request));
 
-        ReviewResponse responseBody=ReviewResponse.of(savedReview);
-
-        String redirectURL="/festivals/{festivalId}/company-applications"; //자신에게 지원한 현황 페이지로 (디폴트는 company로)
-
-        return ResponseEntity
-                .created(URI.create(redirectURL))
-                .body(new ApiResponse(true, 200, "업체에게 리뷰를 등록하였습니다!", responseBody));
+        return ResponseEntity.ok(ApiResponse.success("업체에 리뷰를 작성하였습니다.", id));
     }
 
     @GetMapping("/festivals/{festivalId}/reviews")
-    public ResponseEntity<ApiResponse> getFestivalReviews(@PathVariable Long festivalId) {
-        FestivalReviewListResponse response=reviewService.getFestivalReviews(festivalId);
+    public ResponseEntity<ApiResponse<List<ReviewAndSenderResponse>>> getFestivalReviews(@PathVariable Long festivalId,
+                                                                                   @RequestParam SenderNotFestival senderType) {
+        // 리뷰 작성자에 따라 구분한다.
+        List<ReviewAndSenderResponse> result = switch (senderType) {
+            case COMPANY -> reviewQueryService.getFestivalReviewsByCompanies(festivalId);
+            case LABOR -> reviewQueryService.getFestivalReviewsByLabors(festivalId);
+        };
 
-        return ResponseEntity
-                .ok(new ApiResponse(true, 200, "축제 리뷰 목록 조회에 성공했습니다.", response));
+        return ResponseEntity.ok(ApiResponse.success("축제 리뷰 목록 조회에 성공했습니다.", result));
     }
 
     @GetMapping("/companies/{companyId}/reviews")
-    public ResponseEntity<ApiResponse> getCompanyReviews(@PathVariable Long companyId) {
-        CompanyReviewListResponse response=reviewService.getCompanyReviews(companyId);
+    public ResponseEntity<ApiResponse<List<ReviewAndSenderResponse>>> getCompanyReviews(@PathVariable Long companyId) {
 
-        return ResponseEntity
-                .ok(new ApiResponse(true, 200, "업체 리뷰 목록 조회에 성공했습니다.", response));
+        List<ReviewAndSenderResponse> result = reviewQueryService.getCompanyReviews(companyId);
+
+        return ResponseEntity.ok(ApiResponse.success("업체 리뷰 목록 조회에 성공했습니다.", result));
     }
 
     @GetMapping("/festivals/{festivalId}/reviews/form")
-    public ResponseEntity<ApiResponse> getFestivalReviewForm(@PathVariable Long festivalId) {
+    public ResponseEntity<ApiResponse<FestivalReviewFormResponse>> getFestivalReviewForm(@PathVariable Long festivalId) {
 
-        FestivalReviewFormResponse response=reviewService.getFestivalReviewForm(festivalId);
+        FestivalReviewFormResponse response = reviewQueryService.getFestivalReviewForm(festivalId);
 
-        return ResponseEntity
-                .ok(new ApiResponse(true,200,"축제 리뷰 작성 폼 조회에 성공하였습니다."));
+        return ResponseEntity.ok(ApiResponse.success("축제 리뷰 작성 폼 조회에 성공하였습니다.", response));
     }
 
     @GetMapping("/companies/{companyId}/reviews/form")
-    public ResponseEntity<ApiResponse> getCompanyReviewForm(@PathVariable Long companyId) {
+    public ResponseEntity<ApiResponse<CompanyReviewFormResponse>> getCompanyReviewForm(@PathVariable Long companyId) {
 
-        CompanyReviewFormResponse response=reviewService.getCompanyReviewForm(companyId);
+        CompanyReviewFormResponse response = reviewQueryService.getCompanyReviewForm(companyId);
 
-        return ResponseEntity
-                .ok(new ApiResponse(true,200,"업체 리뷰 작성 폼 조회에 성공하였습니다."));
+        return ResponseEntity.ok(ApiResponse.success("업체 리뷰 작성 폼 조회에 성공하였습니다.", response));
+    }
+
+    public enum SenderNotFestival {
+        COMPANY, LABOR
     }
 }

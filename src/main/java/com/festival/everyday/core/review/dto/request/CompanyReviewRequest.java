@@ -10,10 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CompanyReviewRequest {
 
-    private String content;
     private Long festivalId;
-
-    public Review toEntity(SenderType senderType, Long companyId, ReceiverType receiverType) {
-        return Review.create(this.festivalId, senderType, companyId, receiverType, this.content);
-    }
+    private String content;
 }
