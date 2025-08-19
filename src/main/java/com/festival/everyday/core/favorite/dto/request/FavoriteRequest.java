@@ -14,9 +14,4 @@ public class FavoriteRequest {
 
     private Long receiverId;
     private ReceiverType receiverType;
-
-    public Favorite toEntity(User sender, ReceiverType receiverType, Long receiverId)
-    {
-        return Favorite.create(sender, receiverType, receiverId);
-    }
 }

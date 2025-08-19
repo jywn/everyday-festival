@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface FestivalRepository extends JpaRepository<Festival,Long>, FestivalRepositoryCustom{
 
+    Boolean existsByIdAndHolderId(Long id, Long holderId);
+
     Optional<Festival> findByIdAndHolderId(Long festivalId, Long holderId);
 
     @Query("SELECT f from Festival f "

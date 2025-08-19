@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ApplicationRepository extends JpaRepository<Application, Long> {
+public interface ApplicationRepository extends JpaRepository<Application, Long>, ApplicationRepositoryCustom {
     //축제에 지원한 업체 목록
     @Query("""
        SELECT a FROM Application a
@@ -55,4 +55,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     Long user(@NotNull User user);
 
     boolean existsByUserIdAndRecruitId(Long userId, Long recruitId);
+
 }

@@ -1,73 +1,57 @@
 package com.festival.everyday.core.application.service;
 
-import com.festival.everyday.core.application.domain.SELECTED;
-import com.festival.everyday.core.application.dto.response.*;
-import com.festival.everyday.core.festival.domain.Festival;
-import com.festival.everyday.core.application.domain.Answer;
 import com.festival.everyday.core.application.domain.Application;
-import com.festival.everyday.core.application.domain.ExtraAnswer;
-import com.festival.everyday.core.recruit.domain.Recruit;
-import com.festival.everyday.core.user.domain.User;
-import com.festival.everyday.core.application.dto.request.ApplicationRequest;
+import com.festival.everyday.core.application.dto.ApplicationDetailDto;
+import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
+import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
+import com.festival.everyday.core.application.dto.command.MyApplicationSimpleDto;
+import com.festival.everyday.core.application.dto.response.*;
 import com.festival.everyday.core.application.repository.ApplicationRepository;
-import com.festival.everyday.core.user.repository.UserRepository;
+import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
-import com.festival.everyday.core.recruit.repository.RecruitRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
-public class ApplicationService {
+public class ApplicationQueryService {
 
     private final ApplicationRepository applicationRepository;
     private final FestivalRepository festivalRepository;
-    private final RecruitRepository recruitRepository;
-    private final UserRepository userRepository;
 
-    //업체->축제 지원 목록 조회
-    public CompanyApplicationListResponse getCompanyApplications(Long festivalId, Long holderId, String userType) {
-
-        // 기획자가 아니면 예외가 발생한다.
+    public List<CompanyApplicationSimpleDto> getCompanyApplications(Long festivalId, Long holderId, String userType) {
+        // 기획자가 아니면 예외 발생
         if (!userType.equals("HOLDER")) {
             throw new AccessDeniedException("축제에 대한 권한이 없습니다.");
         }
 
-        // 축제를 조회한다.
-        Festival festival = festivalRepository.findByIdAndHolderId(festivalId, holderId).orElseThrow(() -> new EntityNotFoundException("해당 축제가 존재하지 않습니다."));
+        // 기획자가 등록한 축제가 존재하지 않음.
+        if (!festivalRepository.existsByIdAndHolderId(festivalId, holderId)) {
+            throw new EntityNotFoundException("해당 축제에 대한 권한이 존재하지 않습니다.");
+        }
 
-        //
-
-        List<Application> applications = applicationRepository.findCompanyApplicationsByFestivalId(festivalId);
-
-        List<CompanyApplicationResponse> companyList = applications.stream()
-                .map(application -> CompanyApplicationResponse.from(application))
-                .toList();
-
-        return CompanyApplicationListResponse.of(festival, companyList);
+        // 업체 지원 목록 조회
+        return applicationRepository.findCompanyApplicationList(festivalId);
     }
+
     //근로자->축제 지원 목록 조회
-    public LaborApplicationListResponse getLaborApplications(Long festivalId, Long holderId, String userType) {
-        if (!"HOLDER".equals(userType)) {
+    public List<LaborApplicationSimpleDto> getLaborApplications(Long festivalId, Long holderId, String userType) {
+        // 기획자가 아니면 예외 발생
+        if (!userType.equals("HOLDER")) {
             throw new AccessDeniedException("축제에 대한 권한이 없습니다.");
         }
-        Festival festival = festivalRepository.findByIdAndHolderId(festivalId, holderId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 축제에 대한 권한이 없습니다."));
 
-        List<Application> applications = applicationRepository.findLaborApplicationsByFestivalId(festivalId);
+        // 기획자가 등록한 축제가 존재하지 않음.
+        if (!festivalRepository.existsByIdAndHolderId(festivalId, holderId)) {
+            throw new EntityNotFoundException("해당 축제에 대한 권한이 존재하지 않습니다.");
+        }
 
-        List<LaborApplicationResponse> laborList = applications.stream()
-                .map(application -> LaborApplicationResponse.from(application))
-                .toList();
-
-        return LaborApplicationListResponse.of(festival, laborList);
+        // 근로자 지원 목록 조회
+        return applicationRepository.findLaborApplicationList(festivalId);
     }
 
     //업체->축제 제출한 지원서 하나 조회
@@ -146,36 +130,12 @@ public class ApplicationService {
                 .toList();
     }
 
-    @Transactional
-    public UpdateApplicationStatusResponse updateCompanyApplicationStatus(
-            Long festivalId,    // path variable
-            Long holderId,      // userId
-            String userType,   // "HOLDER" 여야 함
-            Long companyId,    // path variable
-            SELECTED selected // 수락할건지 거절할건지
-    ) {
-        if (selected == null) {
-            throw new IllegalArgumentException("request body에 selected가 없습니다.");
-        }
-        if (!"HOLDER".equals(userType)) {
-            throw new AccessDeniedException("지원서 상태를 변경할 권한이 없습니다.");
-        }
-
-        // 내 축제인지 확인
-        festivalRepository.findByIdAndHolderId(festivalId, holderId)
-                .orElseThrow(() -> new EntityNotFoundException("자신의 축제가 아닙니다."));
-
-        // 해당 업체의 지원서 1건 조회
-        Application app = applicationRepository
-                .findCompanyApplicationByFestivalAndCompany(festivalId, companyId)
-                .orElseThrow(() -> new EntityNotFoundException("업체 지원서를 찾을 수 없습니다."));
-
-        // 상태 전이 (NEUTRAL↔ACCEPTED / NEUTRAL↔DENIED)
-        app.apply(selected);
-
-        return UpdateApplicationStatusResponse.of(app.getId(), app.getSelected());
+    public List<MyApplicationSimpleDto> getMyApplications(Long userId) {
+        return applicationRepository.findMyApplicationList(userId);
     }
 
-
+    public ApplicationDetailDto getApplicationDetail(Long applicationId, Long festivalId, Long userId) {
+        applicationRepository
+    }
 
 }
