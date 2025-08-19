@@ -3,6 +3,7 @@ package com.festival.everyday.core.company.repository;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.QCompany;
+import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.domain.QFavorite;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
@@ -79,6 +80,22 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
                 .where(company.id.in(companyIds))
                 .fetch();
+    }
+
+    @Override
+    public CompanyDetailDto findCompanyDetailById(Long userId, Long companyId) {
+        return queryFactory
+                .select(Projections.constructor(CompanyDetailDto.class,
+                        company.name, company.category, company.introduction, company.ceoName, company.tel, company.email, company.link,
+                        company.address.city, company.address.district, company.address.detail,
+                        favorStatus(), image.url))
+                .from(company)
+                .leftJoin(favorite).on(favorite.sender.id.eq(userId)
+                        .and(favorite.receiverType.eq(ReceiverType.COMPANY)
+                                .and(favorite.receiverId.eq(company.id))))
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
+                .where(company.id.eq(companyId))
+                .fetchOne();
     }
 
     // 카운트 쿼리를 날려 페이지 객체를 생성합니다.

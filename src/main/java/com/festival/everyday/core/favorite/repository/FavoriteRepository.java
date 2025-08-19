@@ -16,4 +16,5 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long>, Favor
     boolean existsBySenderIdAndReceiverIdAndReceiverType(Long senderId, Long receiverId, ReceiverType receiverType);
 
     Optional<Favorite> findBySenderAndReceiverIdAndReceiverType(User sender, Long receiverId, ReceiverType receiverType);
+    Optional<Favorite> findBySenderIdAndReceiverIdAndReceiverType(Long senderId, Long receiverId, ReceiverType receiverType);
 }
