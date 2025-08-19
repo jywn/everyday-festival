@@ -1,10 +1,8 @@
 package com.festival.everyday.core.user.service;
 
 import com.festival.everyday.core.common.domain.Address;
-import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
-import com.festival.everyday.core.favorite.service.FavoriteService;
 import com.festival.everyday.core.user.domain.Holder;
 import com.festival.everyday.core.user.domain.Labor;
 import com.festival.everyday.core.user.domain.User;
@@ -12,7 +10,6 @@ import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.user.dto.request.CompanyRegisterRequest;
 import com.festival.everyday.core.user.dto.request.HolderRegisterRequest;
 import com.festival.everyday.core.user.dto.request.LaborRegisterRequest;
-import com.festival.everyday.core.user.dto.response.CompanyFavoriteResponse;
 import com.festival.everyday.core.user.repository.HolderRepository;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -22,8 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service

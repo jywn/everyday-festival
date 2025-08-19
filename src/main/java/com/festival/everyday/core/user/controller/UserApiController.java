@@ -1,18 +1,13 @@
 package com.festival.everyday.core.user.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
-import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
-import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.company.dto.response.CompanySimpleResponse;
-import com.festival.everyday.core.favorite.service.FavoriteService;
-import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
+import com.festival.everyday.core.favorite.service.FavoriteQueryService;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
-import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.festival.dto.response.FestivalSimpleResponse;
 import com.festival.everyday.core.festival.dto.response.MyFestivalResponse;
 import com.festival.everyday.core.festival.service.FestivalQueryService;
 import com.festival.everyday.core.user.domain.User;
-import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
 import com.festival.everyday.core.user.dto.request.CompanyRegisterRequest;
 import com.festival.everyday.core.user.dto.request.HolderRegisterRequest;
 import com.festival.everyday.core.user.dto.request.LaborRegisterRequest;
@@ -25,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static java.util.Arrays.stream;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -32,7 +29,7 @@ public class UserApiController {
 
     private final FestivalQueryService festivalQueryService;
     private final UserService userService;
-    private final FavoriteService favoriteService;
+    private final FavoriteQueryService favoriteQueryService;
     /**
      * 내가 등록한 축제 목록 조회 API
      * @return 내가 등록한 축제 목록
@@ -98,20 +95,27 @@ public class UserApiController {
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
 
-        List<CompanySimpleResponse> result = favoriteService.getFavoriteCompanyList(userId).stream().map(CompanySimpleResponse::from).toList();
+        List<CompanySimpleResponse> result = favoriteQueryService.getFavoriteCompanyList(userId).stream().map(CompanySimpleResponse::from).toList();
 
         return ResponseEntity.ok(ApiResponse.success("찜한 업체 목록 조회 성공", result));
     }
 
+    // 진행중, 종료 여부를 구분합니다.
     @GetMapping("/me/favorite-festivals")
     public ResponseEntity<ApiResponse<List<FestivalSimpleResponse>>> getFestivalsFavorites(
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
-            @RequestParam(name = "holdStatus") String holdStatus)       //holdStatus
+            @RequestParam(name = "holdStatus") HoldStatus holdStatus)       //holdStatus
     {
-
-        List<FestivalSimpleResponse> result = favoriteService.getFavoriteFestivalList(userId,holdStatus).stream().map(FestivalSimpleResponse::from).toList();
+        List<FestivalSimpleResponse> result =  (switch (holdStatus) {
+            case ONGOING -> favoriteQueryService.getOnGoingFestivalList(userId);
+            case ENDED -> favoriteQueryService.getEndedFestivalList(userId);
+        }).stream().map(FestivalSimpleResponse::from).toList();
 
         return ResponseEntity.ok(ApiResponse.success("찜한 축제 목록 조회 성공", result));
+    }
+
+    public enum HoldStatus {
+        ONGOING, ENDED;
     }
 }
