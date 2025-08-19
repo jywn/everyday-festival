@@ -106,9 +106,11 @@ public class UserApiController {
     @GetMapping("/me/favorite-festivals")
     public ResponseEntity<ApiResponse<List<FestivalSimpleResponse>>> getFestivalsFavorites(
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
-            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
+            @RequestParam(name = "holdStatus") String holdStatus)       //holdStatus
+    {
 
-        List<FestivalSimpleResponse> result = favoriteService.getFavoriteFestivalList(userId).stream().map(FestivalSimpleResponse::from).toList();
+        List<FestivalSimpleResponse> result = favoriteService.getFavoriteFestivalList(userId,holdStatus).stream().map(FestivalSimpleResponse::from).toList();
 
         return ResponseEntity.ok(ApiResponse.success("찜한 축제 목록 조회 성공", result));
     }

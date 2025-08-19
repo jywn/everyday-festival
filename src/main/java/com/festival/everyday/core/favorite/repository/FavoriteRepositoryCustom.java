@@ -8,11 +8,14 @@ import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface FavoriteRepositoryCustom {
 
-    List<CompanySearchDto> findFavoredCompaniesByUserId(@Param("userId") Long userId, @Param("type") ReceiverType type);
+    List<CompanySearchDto> findFavoredCompaniesByUserId(Long userId);
 
-    List<FestivalSearchDto> findFavoredFestivalsByUserId(@Param("userId") Long userId, @Param("type") ReceiverType type);
+    List<FestivalSearchDto> findFavoredFestivalsByUserIdOngoing(Long userId, LocalDateTime now);
+    List<FestivalSearchDto> findFavoredFestivalsByUserIdEnded(Long userId, LocalDateTime now);
 }

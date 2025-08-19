@@ -21,6 +21,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,12 +63,19 @@ public class FavoriteService {
 
     public List<CompanySearchDto> getFavoriteCompanyList(Long userId) {
         // repository 조회
-        return favoriteRepository.findFavoredCompaniesByUserId(userId, ReceiverType.COMPANY);
+        return favoriteRepository.findFavoredCompaniesByUserId(userId);
     }
 
-    public List<FestivalSearchDto> getFavoriteFestivalList(Long userId) {
-        // repository 조회
-        return favoriteRepository.findFavoredFestivalsByUserId(userId, ReceiverType.FESTIVAL);
+    public List<FestivalSearchDto> getFavoriteFestivalList(Long userId, String holdStatus) {
+        LocalDateTime now = LocalDateTime.now();
+
+        if ("ONGOING".equalsIgnoreCase(holdStatus)) {
+            return favoriteRepository.findFavoredFestivalsByUserIdOngoing(userId, now);
+        } else if ("ENDED".equalsIgnoreCase(holdStatus)) {
+            return favoriteRepository.findFavoredFestivalsByUserIdEnded(userId, now);
+        } else {
+            throw new IllegalArgumentException("올바르지 않은 holdStatus 값입니다");
+        }
     }
 
 }

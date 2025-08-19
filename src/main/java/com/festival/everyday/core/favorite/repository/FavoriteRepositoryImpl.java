@@ -16,6 +16,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.festival.everyday.core.company.domain.QCompany.*;
@@ -30,7 +31,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CompanySearchDto> findFavoredCompaniesByUserId(Long userId, ReceiverType type) {
+    public List<CompanySearchDto> findFavoredCompaniesByUserId(Long userId) {
             return queryFactory
                     .select(Projections.constructor(CompanySearchDto.class,
                             company.id, company.name, company.category,
@@ -44,8 +45,46 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                     .fetch();
     }
 
+    // status="ONGOING", status="ENDED"로 나눠야함
+//    @Override
+//    public List<FestivalSearchDto> findFavoredFestivalsByUserId(Long userId) {
+//        return queryFactory
+//                .select(Projections.constructor(FestivalSearchDto.class,
+//                        festival.id, festival.name,
+//                        festival.holder.name,
+//                        festival.address.city, festival.address.district, festival.address.detail,
+//                        festival.period.begin, festival.period.end,
+//                        favorStatus(), image.url))
+//                .from(festival)
+//                .leftJoin(festival.holder, holder)
+//                .join(favorite).on(favorite.sender.id.eq(userId)
+//                        .and(favorite.receiverType.eq(ReceiverType.FESTIVAL)
+//                                .and(favorite.receiverId.eq(festival.id))))
+//                .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+//                .fetch();
+//    }
+
+        @Override
+        public List<FestivalSearchDto> findFavoredFestivalsByUserIdOngoing(Long userId, LocalDateTime now) {
+            return queryFactory
+                .select(Projections.constructor(FestivalSearchDto.class,
+                        festival.id, festival.name,
+                        festival.holder.name,
+                        festival.address.city, festival.address.district, festival.address.detail,
+                        festival.period.begin, festival.period.end,
+                        favorStatus(), image.url))
+                .from(festival)
+                .leftJoin(festival.holder, holder)
+                .join(favorite).on(favorite.sender.id.eq(userId)
+                        .and(favorite.receiverType.eq(ReceiverType.FESTIVAL)
+                                .and(favorite.receiverId.eq(festival.id))))
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+                    .where(festival.period.end.after(now))
+                .fetch();
+    }
+
     @Override
-    public List<FestivalSearchDto> findFavoredFestivalsByUserId(Long userId, ReceiverType type) {
+    public List<FestivalSearchDto> findFavoredFestivalsByUserIdEnded(Long userId, LocalDateTime now) {
         return queryFactory
                 .select(Projections.constructor(FestivalSearchDto.class,
                         festival.id, festival.name,
@@ -59,9 +98,9 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                         .and(favorite.receiverType.eq(ReceiverType.FESTIVAL)
                                 .and(favorite.receiverId.eq(festival.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+                .where(festival.period.end.before(now))
                 .fetch();
     }
-
     private static EnumExpression<FavorStatus> favorStatus() {
         return Expressions.cases()
                 .when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
