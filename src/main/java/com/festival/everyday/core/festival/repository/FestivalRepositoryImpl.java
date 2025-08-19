@@ -1,22 +1,13 @@
 package com.festival.everyday.core.festival.repository;
 
-import com.festival.everyday.core.application.domain.QApplication;
 import com.festival.everyday.core.application.dto.ApplyStatus;
 import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
-import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
-import com.festival.everyday.core.common.dto.command.PeriodDto;
 import com.festival.everyday.core.common.TokenToCond;
-import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.image.domain.OwnerType;
-import com.festival.everyday.core.image.domain.QImage;
-import com.festival.everyday.core.recruit.domain.LaborRecruit;
-import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
-import com.festival.everyday.core.recruit.domain.QLaborRecruit;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.EnumExpression;
@@ -25,7 +16,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
@@ -60,7 +50,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                         festival.id, festival.name,
                         festival.address.city, festival.address.district, festival.address.detail,
                         festival.period.begin, festival.period.end,
-                        FavorStatus(),
+                        favorStatus(),
                         image.url
                 ))
                 .from(festival)
@@ -98,11 +88,11 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                         festival.holder.name,
                         festival.period.begin, festival.period.end,
                         festival.address.city, festival.address.district, festival.address.detail,
-                        FavorStatus(),
+                        favorStatus(),
                         image.url,
                         companyRecruit.period.begin, companyRecruit.period.end, companyRecruit.notice, companyRecruit.preferred, companyRecruit.categories,
                         laborRecruit.period.begin, laborRecruit.period.end, laborRecruit.notice,laborRecruit.job, laborRecruit.wage, laborRecruit.remark,
-                        ApplyStatus()))
+                        applyStatus()))
                 .from(festival)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .leftJoin(favorite).on(favorite.receiverType.eq(ReceiverType.FESTIVAL).and(favorite.receiverId.eq(festival.id)).and(favorite.sender.id.eq(userId)))
@@ -112,13 +102,13 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .fetchOne();
     }
 
-    private static EnumExpression<FavorStatus> FavorStatus() {
+    private static EnumExpression<FavorStatus> favorStatus() {
         return Expressions.cases()
                 .when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
                 .otherwise(FavorStatus.NOT_FAVORED);
     }
 
-    private static EnumExpression<ApplyStatus> ApplyStatus() {
+    private static EnumExpression<ApplyStatus> applyStatus() {
         return Expressions.cases()
                 .when(application.id.isNotNull()).then(ApplyStatus.APPLIED)
                 .otherwise(ApplyStatus.NOT_APPLIED);

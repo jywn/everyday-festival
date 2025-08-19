@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter.*;
 import static com.festival.everyday.core.user.domain.UserType.*;
 
 @RestController
@@ -32,18 +33,17 @@ public class FestivalApiController {
     private final RecommendService recommendService;
 
     @GetMapping("/{festivalId}")
-    public ResponseEntity<ApiResponse<FestivalDetailResponse>> getFestival(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-                                                                           @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+    public ResponseEntity<ApiResponse<FestivalDetailResponse>> getFestival(@RequestAttribute(name = ATTR_USER_ID) Long userId,
+                                                                           @RequestAttribute(name = ATTR_USER_TYPE) String userType,
                                                                            @PathVariable Long festivalId) {
-
         // 축제 상세 정보를 조회합니다.
         FestivalDetailResponse festivalDetailResponse = festivalQueryService.findById(userId, festivalId);
         return ResponseEntity.ok(ApiResponse.success("축제 상세 조회에 성공하였습니다.", festivalDetailResponse));
     }
 
     @PostMapping("/")
-    public ResponseEntity<ApiResponse<Long>> createFestival(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-                                                            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+    public ResponseEntity<ApiResponse<Long>> createFestival(@RequestAttribute(name = ATTR_USER_ID) Long userId,
+                                                            @RequestAttribute(name = ATTR_USER_TYPE) String userType,
                                                             @RequestBody FestivalFormRequest festivalFormRequest) {
         // 축제를 등록합니다.
         Long savedId = festivalCommandService.save(userId, festivalFormRequest);
@@ -51,8 +51,8 @@ public class FestivalApiController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<ApiResponse<PageResponse<FestivalSearchDto>>> searchFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-                                                                                        @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+    public ResponseEntity<ApiResponse<PageResponse<FestivalSearchDto>>> searchFestivals(@RequestAttribute(name = ATTR_USER_ID) Long userId,
+                                                                                        @RequestAttribute(name = ATTR_USER_TYPE) String userType,
                                                                                         @RequestBody SearchRequest searchRequest) {
         // 리퀘스트로부터 페이지 객체를 생성합니다.
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
@@ -67,7 +67,7 @@ public class FestivalApiController {
     public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> recommendCompanies(@PathVariable Long festival_id) {
 
         // 추천 업체 목록을 조회한 결과를 목록으로 반환합니다.
-        List<CompanySimpleResponse> result = recommendService.recommendCompany(festival_id).stream().map(CompanySimpleResponse::from).toList();
+        List<CompanySimpleResponse> result = recommendService.recommendCompany(1L, festival_id).stream().map(CompanySimpleResponse::from).toList();// 수정 필요
 
         return ResponseEntity.ok(ApiResponse.success("추천 업체 목록 조회에 성공했습니다.", result));
     }

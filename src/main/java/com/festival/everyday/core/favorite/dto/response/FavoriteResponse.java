@@ -7,18 +7,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 @AllArgsConstructor
 public class FavoriteResponse {
 
     private Long favoriteId;
-    private FavorStatus favored;
 
-    public static FavoriteResponse of(Favorite favorite, FavorStatus favored)
+    public static FavoriteResponse from(Long id)
     {
-        return FavoriteResponse.builder()
-                .favoriteId(favorite.getId())
-                .favored(favored)
-                .build();
+        return new FavoriteResponse(id);
     }
 }

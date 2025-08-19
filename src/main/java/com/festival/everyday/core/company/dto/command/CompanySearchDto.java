@@ -1,5 +1,6 @@
 package com.festival.everyday.core.company.dto.command;
 
+import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.user.domain.Category;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.common.dto.command.AddressDto;
@@ -19,7 +20,10 @@ public class CompanySearchDto {
     private String district;
     private String detail;
 
-    public static CompanySearchDto from(Company company) {
-        return new CompanySearchDto(company.getId(), company.getName(), company.getCategory(), company.getAddress().getCity(), company.getAddress().getDistrict(), company.getAddress().getDetail());
-    }
+    // favor
+    private FavorStatus favorStatus;
+
+    // image
+    private String imageUrl;
+
 }

@@ -12,17 +12,30 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/favorites")
 public class FavoriteController {
 
     private final FavoriteService favoriteService;
 
-    @PatchMapping("/favorites")
-    public ResponseEntity<ApiResponse> createFavorite(@RequestBody FavoriteRequest request, @RequestAttribute(name= TokenAuthenticationFilter.ATTR_USER_ID) Long userId, @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
+    @PutMapping
+    public ResponseEntity<ApiResponse<Long>> createFavorite (
+            @RequestBody FavoriteRequest request,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+            @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
     {
-        FavoriteResponse response=favoriteService.createFavorite(userId, request);
+        Long id = favoriteService.favor(userId, request);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body((new ApiResponse(true,201,"찜 등록/취소에 성공했습니다.",response)));
+        return ResponseEntity.ok((ApiResponse.success("찜 등록에 성공했습니다.", id)));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteFavorite (
+            @RequestBody FavoriteRequest request,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+            @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
+    {
+        favoriteService.unFavor(userId, request);
+
+        return ResponseEntity.noContent().build();
     }
 }
