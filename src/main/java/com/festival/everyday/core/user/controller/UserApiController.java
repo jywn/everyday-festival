@@ -115,7 +115,7 @@ public class UserApiController {
         return ResponseEntity.ok(ApiResponse.success("찜한 축제 목록 조회 성공", result));
     }
 
-    public static enum HoldStatus {
+    public enum HoldStatus {
         ONGOING, ENDED;
     }
 }
