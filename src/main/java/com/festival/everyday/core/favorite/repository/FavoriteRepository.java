@@ -12,31 +12,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
+public interface FavoriteRepository extends JpaRepository<Favorite, Long>, FavoriteRepositoryCustom {
     boolean existsBySenderIdAndReceiverIdAndReceiverType(Long senderId, Long receiverId, ReceiverType receiverType);
 
     Optional<Favorite> findBySenderAndReceiverIdAndReceiverType(User sender, Long receiverId, ReceiverType receiverType);
 
-    @Query("""
-     SELECT c
-     FROM Favorite f, Company c
-     WHERE f.sender.id = :userId
-     AND f.receiverType = :type
-     AND c.id = f.receiverId
-     ORDER BY f.createdAt DESC
-    """)
-    List<Company> findFavoredCompaniesByUserId(@Param("userId") Long userId,
-                                                 @Param("type") ReceiverType type);
-    @Query("""
-     SELECT c
-     FROM Favorite f, Company c
-     WHERE f.sender.id = :userId
-     AND f.receiverType = :type
-     AND c.id = f.receiverId
-     ORDER BY f.createdAt DESC
-    """)
-    List<Festival> findFavoredFestivalsByUserId(@Param("userId") Long userId,
-                                                @Param("type") ReceiverType type);
-
-
+    Optional<Favorite> findBySenderIdAndReceiverIdAndReceiverType(Long senderId, Long receiverId, ReceiverType receiverType);
 }

@@ -16,22 +16,16 @@ public class RecommendService {
     private final CompanyRepository companyRepository;
     private final EmbeddingRepository embeddingRepository;
 
-    public List<CompanySearchDto> recommendCompany(Long festivalId) {
+    public List<CompanySearchDto> recommendCompany(Long userId, Long festivalId) {
 
-        // 축제의 임베딩 값을 문자열로 반환받는다.
-        String strEmbeddings = embeddingRepository.findFestivalEmbeddings(festivalId);
-
-        // 반환 받은 임베딩 값을 float 배열로 변환한다.
-        float[] floatEmbeddings = toFloat(strEmbeddings);
+        // 축제의 임베딩 값을 문자열로 조회하고, float 배열로 변환한다.
+        float[] embedding = toFloat(embeddingRepository.findFestivalEmbeddings(festivalId));
 
         // 축제 임베딩 값을 바탕으로 가장 유사한 업체 ID 를 찾는다.
-        List<Long> recommendedCompanies = embeddingRepository.findRecommendedCompanies(toPgVector(floatEmbeddings), 5);
+        List<Long> recommendedCompanies = embeddingRepository.findRecommendedCompanies(toPgVector(embedding), 6);
 
         // 추천 축제 목록을 조회한다.
-        List<Company> allById = companyRepository.findAllById(recommendedCompanies);
-
-        // 추천 축제 목록을 DTO 로 변환하여 반환한다.
-        return allById.stream().map(CompanySearchDto::from).toList();
+        return companyRepository.findSimpleCompanyList(userId, recommendedCompanies);
     }
 
     private float[] toFloat(String str) {

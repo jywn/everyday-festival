@@ -5,6 +5,7 @@ import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.company.dto.response.CompanyDetailResponse;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.common.dto.request.SearchRequest;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
@@ -40,16 +41,12 @@ public class CompanyApiController {
 
     // 업체를 상세 조회합니다.
     @GetMapping("/{companyId}")
-    public ResponseEntity<ApiResponse<CompanyDetailDto>> getCompanyDetail(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+    public ResponseEntity<ApiResponse<CompanyDetailResponse>> getCompanyDetail(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
                                                                           @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
                                                                           @PathVariable Long companyId) {
 
-        Company company = companyQueryService.findById(companyId);
-        CompanyDetailDto companyDetailDto = CompanyDetailDto.from(company);
-        boolean exists = favoriteRepository.existsBySenderIdAndReceiverIdAndReceiverType(       //찜 확인
-                userId, companyId, ReceiverType.COMPANY);
-        companyDetailDto.setFavorStatus(exists ? FavorStatus.FAVORED : FavorStatus.NOT_FAVORED); // 업체 상세에 찜 여부 등록
+        CompanyDetailResponse result = CompanyDetailResponse.from(companyQueryService.findById(userId, companyId));
 
-        return ResponseEntity.ok(ApiResponse.success("업체 상세 정보 조회 성공", companyDetailDto));
+        return ResponseEntity.ok(ApiResponse.success("업체 상세 정보 조회 성공", result));
     }
 }

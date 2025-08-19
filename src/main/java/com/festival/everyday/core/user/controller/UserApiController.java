@@ -2,8 +2,14 @@ package com.festival.everyday.core.user.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
+import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.company.dto.response.CompanySimpleResponse;
 import com.festival.everyday.core.favorite.service.FavoriteService;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
+import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
+import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
+import com.festival.everyday.core.festival.dto.response.FestivalSimpleResponse;
+import com.festival.everyday.core.festival.dto.response.MyFestivalResponse;
 import com.festival.everyday.core.festival.service.FestivalQueryService;
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
@@ -32,10 +38,11 @@ public class UserApiController {
      * @return 내가 등록한 축제 목록
      */
     @GetMapping("/me/festivals")
-    public ResponseEntity<ApiResponse<List<FestivalSimpleDto>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
+    public ResponseEntity<ApiResponse<List<MyFestivalResponse>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
                                                                                @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
-        List<FestivalSimpleDto> festivalsByHolderId = festivalQueryService.findListByHolderId(userId);
-        return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", festivalsByHolderId));
+        List<MyFestivalResponse> response = festivalQueryService.findListByHolderId(userId).stream().map(MyFestivalResponse::from).toList();
+
+        return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", response));
     }
 
     /**
@@ -87,29 +94,24 @@ public class UserApiController {
     }
 
     @GetMapping("/me/favorite-companies")
-    public ResponseEntity<ApiResponse<List<CompanyDetailDto>>> getCompaniesFavorites(
-            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
+    public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> getCompaniesFavorites(
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
 
+        List<CompanySimpleResponse> result = favoriteService.getFavoriteCompanyList(userId).stream().map(CompanySimpleResponse::from).toList();
 
-        List<CompanyDetailDto> favorites = favoriteService.getCompanyFavorites(userId);
-
-        return ResponseEntity.ok(
-                ApiResponse.success("찜한 업체 목록 조회 성공", favorites)
-        );
+        return ResponseEntity.ok(ApiResponse.success("찜한 업체 목록 조회 성공", result));
     }
 
     @GetMapping("/me/favorite-festivals")
-    public ResponseEntity<ApiResponse<List<FestivalDetailDto>>> getFestivalsFavorites(
-            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
-             @RequestParam(name = "holdStatus", required = true)String holdStatus
-    ) {
+    public ResponseEntity<ApiResponse<List<FestivalSimpleResponse>>> getFestivalsFavorites(
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
+            @RequestParam(name = "holdStatus") String holdStatus)       //holdStatus
+    {
 
-        List<FestivalDetailDto> favorites = favoriteService.getFestivalFavorites(userId,holdStatus);
+        List<FestivalSimpleResponse> result = favoriteService.getFavoriteFestivalList(userId,holdStatus).stream().map(FestivalSimpleResponse::from).toList();
 
-        return ResponseEntity.ok(
-                ApiResponse.success("찜한 축제 목록 조회 성공", favorites)
-        );
+        return ResponseEntity.ok(ApiResponse.success("찜한 축제 목록 조회 성공", result));
     }
 }
