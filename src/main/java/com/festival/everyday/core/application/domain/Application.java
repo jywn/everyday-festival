@@ -70,6 +70,7 @@ public class Application extends BaseCreatedAtEntity {
     @OrderColumn(name = "answer_order")
     private List<Answer> answers = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "application", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderColumn(name = "extra_answer_order")
     private List<ExtraAnswer> extraAnswers = new ArrayList<>();

@@ -1,22 +1,15 @@
 package com.festival.everyday.core.application.repository;
 
-import com.festival.everyday.core.application.domain.QApplication;
-import com.festival.everyday.core.application.dto.ApplicationDetailDto;
-import com.festival.everyday.core.application.dto.ApplyStatus;
+import com.festival.everyday.core.application.domain.Application;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.MyApplicationSimpleDto;
 import com.festival.everyday.core.company.domain.QCompany;
-import com.festival.everyday.core.festival.domain.QFestival;
-import com.festival.everyday.core.image.domain.OwnerType;
-import com.festival.everyday.core.image.domain.QImage;
+import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
+import com.festival.everyday.core.recruit.domain.QLaborRecruit;
+import com.festival.everyday.core.recruit.domain.QRecruit;
 import com.festival.everyday.core.user.domain.QLabor;
-import com.festival.everyday.core.user.domain.QUser;
-import com.festival.everyday.core.user.domain.User;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.EnumExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -27,9 +20,11 @@ import static com.festival.everyday.core.company.domain.QCompany.*;
 import static com.festival.everyday.core.festival.domain.QFestival.*;
 import static com.festival.everyday.core.image.domain.OwnerType.*;
 import static com.festival.everyday.core.image.domain.QImage.*;
+import static com.festival.everyday.core.recruit.domain.QCompanyRecruit.*;
+import static com.festival.everyday.core.recruit.domain.QLaborRecruit.*;
+import static com.festival.everyday.core.recruit.domain.QRecruit.*;
 import static com.festival.everyday.core.user.domain.QHolder.holder;
 import static com.festival.everyday.core.user.domain.QLabor.*;
-import static com.festival.everyday.core.user.domain.QUser.*;
 
 @RequiredArgsConstructor
 public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
@@ -77,8 +72,12 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     }
 
     @Override
-    public  findApplicationDetail(Long festivalId, Long applicationId) {
-//        queryFactory
-//                .select(Projections.constructor())
+    public Application findApplicationDetail(Long applicationId) {
+        return queryFactory
+                .selectFrom(application)
+                .join(application.recruit, recruit).fetchJoin()
+                .where(application.id.eq(applicationId))
+                .distinct()
+                .fetchOne();
     }
 }

@@ -48,6 +48,7 @@ public abstract class Recruit {
      * 질문의 순서가 중요하므로, 값 타입 컬렉션 대신 별도의 엔티티로 설계하였다.
      */
     @OneToMany(mappedBy = "recruit", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "extra_question_order")
     private List<ExtraQuestion> extraQuestions = new ArrayList<>();
 
     /**
