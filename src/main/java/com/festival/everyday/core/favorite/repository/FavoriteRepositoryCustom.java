@@ -14,8 +14,7 @@ import java.util.List;
 
 public interface FavoriteRepositoryCustom {
 
-    List<CompanySearchDto> findFavoredCompaniesByUserId(Long userId);
-
+    List<CompanySearchDto> findFavoriteCompaniesOfUser(Long userId);
     List<FestivalSearchDto> findFavoredFestivalsByUserIdOngoing(Long userId, LocalDateTime now);
     List<FestivalSearchDto> findFavoredFestivalsByUserIdEnded(Long userId, LocalDateTime now);
 }
