@@ -5,7 +5,7 @@ import com.festival.everyday.core.token.service.RefreshTokenService;
 import com.festival.everyday.core.token.service.TokenService;
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.token.domain.RefreshToken;
-import com.festival.everyday.core.user.service.UserService;
+import com.festival.everyday.core.user.service.UserQueryService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class TokenServiceTest {
     @Mock
     RefreshTokenService refreshTokenService;
     @Mock
-    UserService userService;
+    UserQueryService userQueryService;
 
     @InjectMocks
     TokenService tokenService;
@@ -43,7 +43,7 @@ class TokenServiceTest {
         User user = mock(User.class);
 
         when(refreshTokenService.getActiveByTokenOrThrow(rtValue)).thenReturn(rt);
-        when(userService.findById(userId)).thenReturn(user);
+        when(userQueryService.findById(userId)).thenReturn(user);
 
         ArgumentCaptor<Duration> dur = ArgumentCaptor.forClass(Duration.class);
         when(tokenProvider.generateRefreshToken(eq(user), dur.capture())).thenReturn("AT_new");
@@ -53,7 +53,7 @@ class TokenServiceTest {
 
         assertEquals("AT_new", result);
         assertEquals(Duration.ofMinutes(15), dur.getValue());
-        verifyNoMoreInteractions(refreshTokenService, userService, tokenProvider);
+        verifyNoMoreInteractions(refreshTokenService, userQueryService, tokenProvider);
     }
 
     @Test
@@ -64,7 +64,7 @@ class TokenServiceTest {
                 .thenThrow(new IllegalArgumentException("Invalid refresh token"));
 
         assertThrows(IllegalArgumentException.class, () -> tokenService.createNewAccessToken(bad));
-        verifyNoInteractions(userService, tokenProvider);
+        verifyNoInteractions(userQueryService, tokenProvider);
     }
 
     @Test
@@ -75,7 +75,7 @@ class TokenServiceTest {
         RefreshToken rt = new RefreshToken(uid, rtVal, Instant.now(), Instant.now().plusSeconds(3600));
 
         when(refreshTokenService.getActiveByTokenOrThrow(rtVal)).thenReturn(rt);
-        when(userService.findById(uid)).thenThrow(new EntityNotFoundException("Unexpected User"));
+        when(userQueryService.findById(uid)).thenThrow(new EntityNotFoundException("Unexpected User"));
 
         assertThrows(EntityNotFoundException.class, () -> tokenService.createNewAccessToken(rtVal));
         verifyNoInteractions(tokenProvider);

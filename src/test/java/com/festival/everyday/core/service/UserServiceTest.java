@@ -2,7 +2,7 @@ package com.festival.everyday.core.service;
 
 import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.user.repository.UserRepository;
-import com.festival.everyday.core.user.service.UserService;
+import com.festival.everyday.core.user.service.UserQueryService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ class UserServiceTest {
     UserRepository userRepository;
 
     @InjectMocks
-    UserService userService;
+    UserQueryService userQueryService;
 
     @Test
     @DisplayName("findById: 존재하면 User 반환")
@@ -34,7 +34,7 @@ class UserServiceTest {
         when(userRepository.findById(id)).thenReturn(Optional.of(mockUser));
 
         // when
-        User result = userService.findById(id);
+        User result = userQueryService.findById(id);
 
         // then
         assertNotNull(result);
@@ -52,7 +52,7 @@ class UserServiceTest {
         // when & then
         EntityNotFoundException ex = assertThrows(
                 EntityNotFoundException.class,
-                () -> userService.findById(id)
+                () -> userQueryService.findById(id)
         );
         assertEquals("Unexpected User", ex.getMessage());
         verify(userRepository).findById(id);
