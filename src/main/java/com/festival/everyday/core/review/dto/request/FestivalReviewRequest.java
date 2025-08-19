@@ -10,10 +10,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class FestivalReviewRequest {
-
     private String content;
-
-    public Review toEntity(User sender, SenderType senderType, Long festivalId, ReceiverType receiverType) {
-        return Review.create(sender.getId(), senderType, festivalId, receiverType, this.content);
-    }
 }
