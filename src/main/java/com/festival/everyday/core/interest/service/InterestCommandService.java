@@ -1,0 +1,42 @@
+package com.festival.everyday.core.interest.service;
+
+import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.interest.domain.Interest;
+import com.festival.everyday.core.company.domain.Company;
+import com.festival.everyday.core.company.repository.CompanyRepository;
+import com.festival.everyday.core.festival.repository.FestivalRepository;
+import com.festival.everyday.core.interest.repository.InterestRepository;
+import com.sun.jdi.request.DuplicateRequestException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class InterestCommandService
+{
+    private final InterestRepository interestRepository;
+    private final FestivalRepository festivalRepository;
+    private final CompanyRepository companyRepository;
+
+    public Long createInterest(Long festivalId, Long companyId) {
+
+        // 이미 관심을 보냈으면 예외를 발생
+        if (interestRepository.existsByFestivalIdAndCompanyId(festivalId, companyId)) {
+            throw new DuplicateRequestException("이미 관심을 보냈습니다.");
+        }
+
+        // 관심을 주고 받는 축제와 업체를 조회
+        Company company = companyRepository.findById(companyId).orElseThrow(() -> new EntityNotFoundException("업체를 찾을 수 없습니다."));
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+
+        // 관심 엔티티 생성 후 DB 저장
+        Interest interest = Interest.create(company, festival);
+        interestRepository.save(interest);
+
+        return interest.getId();
+    }
+
+}
