@@ -1,42 +1,28 @@
 package com.festival.everyday.core.user.service;
 
 import com.festival.everyday.core.common.domain.Address;
+import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
 import com.festival.everyday.core.user.domain.Holder;
 import com.festival.everyday.core.user.domain.Labor;
-import com.festival.everyday.core.user.domain.User;
-import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.user.dto.request.CompanyRegisterRequest;
 import com.festival.everyday.core.user.dto.request.HolderRegisterRequest;
 import com.festival.everyday.core.user.dto.request.LaborRegisterRequest;
 import com.festival.everyday.core.user.repository.HolderRepository;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@RequiredArgsConstructor
 @Service
-@Transactional
-@Slf4j
-public class UserService {
-    /*
-     * userId(PK)를 기준으로 User 를 조회한다.
-     * SINGLE_TABLE 상속 구조이므로 Holder/Company/Labor 등 하위 타입도 함께 조회된다.
-    */
+@RequiredArgsConstructor
+public class UserCommandService {
+
     private final UserRepository userRepository;
     private final HolderRepository holderRepository;
     private final PasswordEncoder passwordEncoder;
-    private final FavoriteRepository favoriteRepository;
-    public User findById(Long userId){
-        return userRepository.findById(userId)
-                .orElseThrow(()-> new EntityNotFoundException("Unexpected User"));
-    }
 
     public Long holderJoin(HolderRegisterRequest request) {
 
@@ -55,12 +41,6 @@ public class UserService {
 
         // 엔티티를 영속화(DB에 저장)한다.
         return holderRepository.save(holder).getId();
-    }
-
-    private void checkRedundant(String account) {
-        if (userRepository.existsByAccount(account)) {
-            throw new EntityExistsException("중복 계정입니다.");
-        }
     }
 
     public Long companyJoin(CompanyRegisterRequest request) {
@@ -102,6 +82,10 @@ public class UserService {
         return userRepository.save(labor).getId();
     }
 
-
+    private void checkRedundant(String account) {
+        if (userRepository.existsByAccount(account)) {
+            throw new EntityExistsException("중복 계정입니다.");
+        }
+    }
 
 }
