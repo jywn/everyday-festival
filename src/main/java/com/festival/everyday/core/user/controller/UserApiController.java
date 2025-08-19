@@ -102,9 +102,11 @@ public class UserApiController {
     @GetMapping("/me/favorite-festivals")
     public ResponseEntity<ApiResponse<List<FestivalDetailDto>>> getFestivalsFavorites(
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID)Long userId,
-            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType) {
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE)String userType,
+             @RequestParam(name = "holdStatus", required = true)String holdStatus
+    ) {
 
-        List<FestivalDetailDto> favorites = favoriteService.getFestivalFavorites(userId);
+        List<FestivalDetailDto> favorites = favoriteService.getFestivalFavorites(userId,holdStatus);
 
         return ResponseEntity.ok(
                 ApiResponse.success("찜한 축제 목록 조회 성공", favorites)

@@ -19,6 +19,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,10 +64,20 @@ public class FavoriteService {
                 .toList();
     }
 
-    public List<FestivalDetailDto> getFestivalFavorites(Long userId) {
+    public List<FestivalDetailDto> getFestivalFavorites(Long userId, String holdStatus) {
         // repository 조회
         List<Festival> festivals = favoriteRepository.findFavoredFestivalsByUserId(userId, ReceiverType.FESTIVAL);
 
+        LocalDateTime now = LocalDateTime.now();
+        if ("ONGOING".equalsIgnoreCase(holdStatus)) {
+            festivals = festivals.stream()
+                    .filter(f -> f.getPeriod().getEnd().isAfter(now))
+                    .toList();
+        } else if ("ENDED".equalsIgnoreCase(holdStatus)) {
+            festivals = festivals.stream()
+                    .filter(f -> f.getPeriod().getEnd().isBefore(now))
+                    .toList();
+        }
         return festivals.stream()
                 .map(FestivalDetailDto::from)
                 .toList();

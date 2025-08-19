@@ -39,5 +39,4 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
                                                 @Param("type") ReceiverType type);
 
 
-    boolean existsByUser_IdAndCompany_Id(Long userId, Long companyId);
 }
