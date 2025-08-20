@@ -1,6 +1,5 @@
 package com.festival.everyday.core.notice.service;
 
-import com.festival.everyday.core.notice.domain.Notice;
 import com.festival.everyday.core.notice.dto.command.NoticeDto;
 import com.festival.everyday.core.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
