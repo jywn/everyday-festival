@@ -17,8 +17,7 @@ public class CompanyQueryService {
 
     private final CompanyRepository companyRepository;
 
-    public PageResponse<CompanySearchDto> searchByKeyword(String keyword, PageRequest pageRequest) {
-        Long userId = 1L; // 수정 필요
+    public PageResponse<CompanySearchDto> searchByKeyword(Long userId, String keyword, PageRequest pageRequest) {
 
         // 찜 여부와 함께 검색 결과를 반환합니다.
         return PageResponse.from(companyRepository.searchByKeyword(userId, keyword, pageRequest));
