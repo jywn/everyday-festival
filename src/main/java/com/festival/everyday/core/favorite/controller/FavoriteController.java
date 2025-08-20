@@ -29,13 +29,13 @@ public class FavoriteController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteFavorite (
+    public ResponseEntity<ApiResponse<Void>> deleteFavorite (
             @RequestBody FavoriteRequest request,
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
             @RequestAttribute(name=TokenAuthenticationFilter.ATTR_USER_TYPE) String userType)
     {
         favoriteCommandService.unFavor(userId, request);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok((ApiResponse.success("찜 철회에 성공했습니다.")));
     }
 }

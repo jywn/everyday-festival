@@ -58,16 +58,18 @@ public class FestivalApiController {
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
 
         // 검색어와 페이지를 전달해 검색합니다.
-        ApiResponse<PageResponse<FestivalSearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", festivalQueryService.searchByKeyword(1L, searchRequest.getKeyword(), pageRequest));
+        ApiResponse<PageResponse<FestivalSearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", festivalQueryService.searchByKeyword(userId, searchRequest.getKeyword(), pageRequest));
 
         return ResponseEntity.ok(success);
     }
 
     @GetMapping("/{festival_id}/recommended-companies")
-    public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> recommendCompanies(@PathVariable Long festival_id) {
+    public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> recommendCompanies(@RequestAttribute(name = ATTR_USER_ID) Long userId,
+                                                                                       @RequestAttribute(name = ATTR_USER_TYPE) String userType,
+                                                                                       @PathVariable Long festival_id) {
 
         // 추천 업체 목록을 조회한 결과를 목록으로 반환합니다.
-        List<CompanySimpleResponse> result = recommendService.recommendCompany(1L, festival_id).stream().map(CompanySimpleResponse::from).toList();// 수정 필요
+        List<CompanySimpleResponse> result = recommendService.recommendCompany(userId, festival_id).stream().map(CompanySimpleResponse::from).toList();// 수정 필요
 
         return ResponseEntity.ok(ApiResponse.success("추천 업체 목록 조회에 성공했습니다.", result));
     }

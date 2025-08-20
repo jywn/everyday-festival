@@ -34,7 +34,7 @@ public class CompanyApiController {
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
 
         // 업체 목록을 검색하여 반환합니다.
-        ApiResponse<PageResponse<CompanySearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", companyQueryService.searchByKeyword(searchRequest.getKeyword(), pageRequest));
+        ApiResponse<PageResponse<CompanySearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", companyQueryService.searchByKeyword(userId, searchRequest.getKeyword(), pageRequest));
 
         return ResponseEntity.ok(success);
     }

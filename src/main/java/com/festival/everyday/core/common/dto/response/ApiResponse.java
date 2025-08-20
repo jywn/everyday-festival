@@ -32,4 +32,7 @@ public class ApiResponse<T> {
         return new ApiResponse<>(false, 500, message, data);
     }
 
+    public static <T> ApiResponse<T> success(String message) {
+        return new ApiResponse<>(true, 200, message, null);
+    }
 }
