@@ -26,7 +26,7 @@ public class DummyUserRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // 업체 더미 데이터 저장
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             CompanyRegisterRequest request = new CompanyRegisterRequest(
                     "C_acc_" + i,
                     "C_pwd_" + i,
@@ -43,7 +43,7 @@ public class DummyUserRunner implements CommandLineRunner {
         }
 
         // 근로자 더미 데이터 저장
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             LaborRegisterRequest request = new LaborRegisterRequest(
                     "L_acc_" + i,
                     "L_pwd_" + i,
@@ -58,7 +58,7 @@ public class DummyUserRunner implements CommandLineRunner {
         }
 
         // 기획자 더미 데이터 저장
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 30; i++) {
             HolderRegisterRequest request = new HolderRegisterRequest(
                     "H_acc_" + i,
                     "H_pwd_" + i,
