@@ -14,4 +14,5 @@ import java.util.Optional;
 
 public interface FavoriteRepository extends JpaRepository<Favorite, Long>, FavoriteRepositoryCustom {
     Optional<Favorite> findBySenderIdAndReceiverIdAndReceiverType(Long senderId, Long receiverId, ReceiverType receiverType);
+    List<Favorite> findByReceiverIdAndReceiverType(Long receiverId, ReceiverType receiverType);
 }

@@ -5,6 +5,7 @@ import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
 import com.festival.everyday.core.festival.dto.request.FestivalFormRequest;
 import com.festival.everyday.core.festival.service.FestivalCommandService;
+import com.festival.everyday.core.image.service.ImageCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -18,6 +19,8 @@ import java.time.LocalDateTime;
 public class DummyFestivalRunner implements CommandLineRunner {
 
     private final FestivalCommandService festivalCommandService;
+    private final ImageCommandService imageCommandService;
+
 
     @Override
     public void run(String... args) throws Exception {
