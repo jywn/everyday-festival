@@ -1,6 +1,8 @@
 package com.festival.everyday.core.common.dummy;
 
 import com.festival.everyday.core.common.dto.command.AddressDto;
+import com.festival.everyday.core.image.dto.common.ImageDto;
+import com.festival.everyday.core.image.service.ImageCommandService;
 import com.festival.everyday.core.user.domain.Category;
 import com.festival.everyday.core.user.domain.Gender;
 import com.festival.everyday.core.user.dto.request.CompanyRegisterRequest;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 @Order(1)
 @Component
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class DummyUserRunner implements CommandLineRunner {
 
     private final UserCommandService userCommandService;
+    private final ImageCommandService imageCommandService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -66,6 +70,4 @@ public class DummyUserRunner implements CommandLineRunner {
             userCommandService.holderJoin(request);
         }
     }
-
-
 }

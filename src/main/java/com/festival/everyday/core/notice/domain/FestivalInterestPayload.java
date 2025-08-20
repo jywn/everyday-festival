@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FestivalDuePayload implements NoticePayload {
+public class FestivalInterestPayload implements NoticePayload{
     private Long festivalId;
     private String festivalName;
 }
