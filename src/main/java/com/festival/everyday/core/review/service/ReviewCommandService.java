@@ -18,6 +18,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.festival.everyday.core.common.dto.ReceiverType.*;
 import static com.festival.everyday.core.common.dto.SenderType.*;
@@ -25,6 +26,7 @@ import static com.festival.everyday.core.common.dto.SenderType.COMPANY;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ReviewCommandService {
 
     private final ReviewRepository reviewRepository;

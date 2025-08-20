@@ -71,6 +71,9 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .fetch();
     }
 
+    // 엔티티 직접 조회
+    // 배치 사이즈
+    // DTO Projection 고려
     @Override
     public Application findApplicationDetail(Long applicationId) {
         return queryFactory
