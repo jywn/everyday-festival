@@ -1,6 +1,7 @@
 package com.festival.everyday.core.review.service;
 
 import com.festival.everyday.core.common.dto.ReceiverType;
+import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.repository.CompanyRepository;
 import com.festival.everyday.core.festival.domain.Festival;
@@ -14,6 +15,9 @@ import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,23 +31,22 @@ import static com.festival.everyday.core.common.dto.ReceiverType.*;
 public class ReviewQueryService {
 
     private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final FestivalRepository festivalRepository;
 
-    public List<ReviewAndSenderResponse> getFestivalReviewsByCompanies(Long festivalId) {
+    public Page<ReviewAndSenderDto> getFestivalReviewsByCompanies(Long festivalId, Pageable pageable) {
 
-        return reviewRepository.findReviewsByCompanies(festivalId, FESTIVAL).stream().map(ReviewAndSenderResponse::from).toList();
+        return reviewRepository.findReviewsByCompanies(festivalId, FESTIVAL, pageable);
     }
 
-    public List<ReviewAndSenderResponse> getFestivalReviewsByLabors(Long festivalId) {
+    public Page<ReviewAndSenderDto> getFestivalReviewsByLabors(Long festivalId, Pageable pageable) {
 
-        return reviewRepository.findReviewsByLabors(festivalId, FESTIVAL).stream().map(ReviewAndSenderResponse::from).toList();
+        return reviewRepository.findReviewsByLabors(festivalId, FESTIVAL, pageable);
     }
 
-    public List<ReviewAndSenderResponse> getCompanyReviews(Long companyId) {
+    public Page<ReviewAndSenderDto> getCompanyReviews(Long companyId, Pageable pageable) {
 
-        return reviewRepository.findReviewsByFestivals(companyId, COMPANY).stream().map(ReviewAndSenderResponse::from).toList();
+        return reviewRepository.findReviewsByFestivals(companyId, COMPANY, pageable);
     }
 
     public FestivalReviewFormResponse getFestivalReviewForm(Long festivalId) {

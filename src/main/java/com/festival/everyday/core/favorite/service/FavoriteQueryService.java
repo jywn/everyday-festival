@@ -1,9 +1,13 @@
 package com.festival.everyday.core.favorite.service;
 
+import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +21,16 @@ public class FavoriteQueryService {
 
     private final FavoriteRepository favoriteRepository;
 
-    public List<CompanySearchDto> getFavoriteCompanyList(Long userId) {
+    public Page<CompanySearchDto> getFavoriteCompanyList(Long userId, Pageable pageable) {
         // repository 조회
-        return favoriteRepository.findFavoriteCompaniesOfUser(userId);
+        return favoriteRepository.findFavoriteCompaniesOfUser(userId, pageable);
     }
 
-    public List<FestivalSearchDto> getOnGoingFestivalList(Long userId) {
-        return favoriteRepository.findFavoredFestivalsByUserIdOngoing(userId, LocalDateTime.now());
+    public Page<FestivalSearchDto> getOnGoingFestivalList(Long userId, Pageable pageable) {
+        return favoriteRepository.findFavoredFestivalsByUserIdOngoing(userId, LocalDateTime.now(), pageable);
     }
 
-    public List<FestivalSearchDto> getEndedFestivalList(Long userId) {
-        return favoriteRepository.findFavoredFestivalsByUserIdEnded(userId, LocalDateTime.now());
+    public Page<FestivalSearchDto> getEndedFestivalList(Long userId, Pageable pageable) {
+        return favoriteRepository.findFavoredFestivalsByUserIdEnded(userId, LocalDateTime.now(), pageable);
     }
 }

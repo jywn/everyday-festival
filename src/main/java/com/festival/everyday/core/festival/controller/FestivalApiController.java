@@ -1,6 +1,8 @@
 package com.festival.everyday.core.festival.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.festival.dto.response.FestivalSearchResponse;
 import com.festival.everyday.core.festival.service.FestivalCommandService;
 import com.festival.everyday.core.festival.service.FestivalQueryService;
 import com.festival.everyday.core.user.domain.UserType;
@@ -13,6 +15,7 @@ import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.common.dto.request.SearchRequest;
 import com.festival.everyday.core.ai.service.RecommendService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,16 +54,15 @@ public class FestivalApiController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<ApiResponse<PageResponse<FestivalSearchDto>>> searchFestivals(@RequestAttribute(name = ATTR_USER_ID) Long userId,
+    public ResponseEntity<ApiResponse<PageResponse<FestivalSearchResponse>>> searchFestivals(@RequestAttribute(name = ATTR_USER_ID) Long userId,
                                                                                         @RequestAttribute(name = ATTR_USER_TYPE) String userType,
                                                                                         @RequestBody SearchRequest searchRequest) {
         // 리퀘스트로부터 페이지 객체를 생성합니다.
         PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), searchRequest.getSize());
 
-        // 검색어와 페이지를 전달해 검색합니다.
-        ApiResponse<PageResponse<FestivalSearchDto>> success = ApiResponse.success("검색에 성공하였습니다.", festivalQueryService.searchByKeyword(userId, searchRequest.getKeyword(), pageRequest));
+        PageResponse<FestivalSearchResponse> response = PageResponse.from(festivalQueryService.searchByKeyword(userId, searchRequest.getKeyword(), pageRequest).map(FestivalSearchResponse::from));
 
-        return ResponseEntity.ok(success);
+        return ResponseEntity.ok(ApiResponse.success("축제 검색에 성공하였습니다.", response));
     }
 
     @GetMapping("/{festival_id}/recommended-companies")
@@ -69,9 +71,9 @@ public class FestivalApiController {
                                                                                        @PathVariable Long festival_id) {
 
         // 추천 업체 목록을 조회한 결과를 목록으로 반환합니다.
-        List<CompanySimpleResponse> result = recommendService.recommendCompany(userId, festival_id).stream().map(CompanySimpleResponse::from).toList();// 수정 필요
+        List<CompanySimpleResponse> response = recommendService.recommendCompany(userId, festival_id).stream().map(CompanySimpleResponse::from).toList();
 
-        return ResponseEntity.ok(ApiResponse.success("추천 업체 목록 조회에 성공했습니다.", result));
+        return ResponseEntity.ok(ApiResponse.success("추천 업체 목록 조회에 성공했습니다.", response));
     }
 
     // 기획자인지 확인합니다.
