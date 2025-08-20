@@ -1,8 +1,6 @@
 package com.festival.everyday.core.review.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
-import com.festival.everyday.core.common.dto.SenderType;
-import com.festival.everyday.core.review.domain.Review;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
 import com.festival.everyday.core.review.dto.command.CompanyReviewFormDto;
 import com.festival.everyday.core.review.dto.command.FestivalReviewFormDto;
@@ -11,17 +9,11 @@ import com.festival.everyday.core.review.dto.request.FestivalReviewRequest;
 import com.festival.everyday.core.review.dto.response.*;
 import com.festival.everyday.core.review.service.ReviewCommandService;
 import com.festival.everyday.core.review.service.ReviewQueryService;
-import com.festival.everyday.core.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.security.access.AccessDeniedException;
-
-import java.net.URI;
 import java.util.List;
-
-import static com.festival.everyday.core.common.dto.SenderType.*;
 
 
 @RestController
