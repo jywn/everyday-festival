@@ -2,14 +2,17 @@ package com.festival.everyday.core.review.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
+import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.review.dto.command.CompanyReviewFormDto;
 import com.festival.everyday.core.review.dto.command.FestivalReviewFormDto;
+import com.festival.everyday.core.review.dto.command.ReviewAndSenderDto;
 import com.festival.everyday.core.review.dto.request.CompanyReviewRequest;
 import com.festival.everyday.core.review.dto.request.FestivalReviewRequest;
 import com.festival.everyday.core.review.dto.response.*;
 import com.festival.everyday.core.review.service.ReviewCommandService;
 import com.festival.everyday.core.review.service.ReviewQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,21 +47,22 @@ public class ReviewController {
     }
 
     @GetMapping("/festivals/{festivalId}/reviews")
-    public ResponseEntity<ApiResponse<List<ReviewAndSenderResponse>>> getFestivalReviews(@PathVariable Long festivalId,
-                                                                                   @RequestParam SenderNotFestival senderType) {
+    public ResponseEntity<ApiResponse<PageResponse<ReviewAndSenderResponse>>> getFestivalReviews(@PathVariable Long festivalId,
+                                                                                   @RequestParam SenderNotFestival senderType,
+                                                                                         Pageable pageable) {
         // 리뷰 작성자에 따라 구분한다.
-        List<ReviewAndSenderResponse> result = switch (senderType) {
-            case COMPANY -> reviewQueryService.getFestivalReviewsByCompanies(festivalId);
-            case LABOR -> reviewQueryService.getFestivalReviewsByLabors(festivalId);
-        };
+        PageResponse<ReviewAndSenderResponse> result = PageResponse.from((switch (senderType) {
+            case COMPANY -> reviewQueryService.getFestivalReviewsByCompanies(festivalId, pageable);
+            case LABOR -> reviewQueryService.getFestivalReviewsByLabors(festivalId, pageable);
+        }).map(ReviewAndSenderResponse::from));
 
         return ResponseEntity.ok(ApiResponse.success("축제 리뷰 목록 조회에 성공했습니다.", result));
     }
 
     @GetMapping("/companies/{companyId}/reviews")
-    public ResponseEntity<ApiResponse<List<ReviewAndSenderResponse>>> getCompanyReviews(@PathVariable Long companyId) {
+    public ResponseEntity<ApiResponse<PageResponse<ReviewAndSenderResponse>>> getCompanyReviews(@PathVariable Long companyId, Pageable pageable) {
 
-        List<ReviewAndSenderResponse> result = reviewQueryService.getCompanyReviews(companyId);
+        PageResponse<ReviewAndSenderResponse> result = PageResponse.from(reviewQueryService.getCompanyReviews(companyId, pageable).map(ReviewAndSenderResponse::from));
 
         return ResponseEntity.ok(ApiResponse.success("업체 리뷰 목록 조회에 성공했습니다.", result));
     }

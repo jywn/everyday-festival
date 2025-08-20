@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PageResponse<T> {
 
-    private List<T> data;
+    private List<T> content;
     private int page;             // 현재 페이지 번호 (0-based)
     private int size;             // 페이지당 항목 수
     private long totalElements;   // 전체 항목 수

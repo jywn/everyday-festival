@@ -12,7 +12,7 @@ import java.util.List;
 public interface FestivalRepositoryCustom {
     Page<FestivalSearchDto> searchByKeyword(Long userId, String keyword, Pageable pageable);
 
-    List<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId);
+    Page<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId, Pageable pageable);
 
     FestivalDetailDto findFestivalDetail(Long festivalId, Long userId);
 }

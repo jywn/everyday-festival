@@ -5,12 +5,14 @@ import com.festival.everyday.core.application.dto.command.CompanyApplicationSimp
 import com.festival.everyday.core.application.dto.command.LaborApplicationDetailDto;
 import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.MyApplicationSimpleDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ApplicationRepositoryCustom {
-    public List<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId);
-    public List<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId);
-    public List<MyApplicationSimpleDto> findMyApplicationList(Long userId);
+    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable);
+    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable);
+    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable);
     public Application findApplicationDetail(Long applicationId);
 }
