@@ -1,4 +1,4 @@
-package com.festival.everyday.core.notice.domain;
+package com.festival.everyday.core.notice.domain.payload;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
