@@ -2,60 +2,93 @@ package com.festival.everyday.core.image.service;
 
 import com.festival.everyday.core.image.domain.Image;
 import com.festival.everyday.core.image.dto.common.ImageDto;
+import com.festival.everyday.core.image.dto.response.ImageResponse;
 import com.festival.everyday.core.image.repository.ImageRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
-@Transactional
-public class ImageCommandService {
+public class ImageService {
 
     private final ImageRepository imageRepository;
 
+    // 이미지 저장 디렉토리 (application.properties에 IMAGE_URL 설정)
     @Value("${IMAGE_URL}")
     private String url;
 
-    public Long upload(ImageDto imageDto, MultipartFile file) {
+    /**
+     * 이미지 조회
+     */
+    public ImageResponse getImage(Long id) {
+        Image image = imageRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("이미지를 찾을 수 없습니다."));
 
-        // 빈 파일이면 예외를 발생시킵니다.
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("파일이 존재하지 않습니다.");
+        String imageUrl = url + image.getEncodedName();
+
+        return ImageResponse.of(
+                image.getId(),
+                image.getOriginalName(),
+                imageUrl
+        );
+    }
+
+    /**
+     * 이미지 업로드
+     */
+    public Long upload(ImageDto imageDto, MultipartFile file) {
+        String originalName = file.getOriginalFilename();
+        if (originalName == null || originalName.isBlank()) {
+            throw new RuntimeException("파일 이름이 유효하지 않습니다.");
         }
 
-        // 파일의 이름을 저장합니다.
-        String originalName = file.getOriginalFilename();
+        String ext = extractExt(originalName);
+        String baseName = originalName.substring(0, originalName.lastIndexOf("."));
 
-        // 파일의 이름을 암호화합니다.
-        String encodedName = UUID.randomUUID().toString() + "_" + originalName + "." + extractExt(originalName);
+        // uuid_원본이름.확장자
+        String encodedName = UUID.randomUUID().toString() + "_" + baseName + "." + ext;
 
-        // 이미지 엔티티를 생성합니다.
+        // Image 엔티티 생성 (url은 디렉토리 경로까지만 저장됨)
         Image image = Image.create(url, imageDto.getOwnerType(), imageDto.getOwnerId(), originalName, encodedName);
 
-        // 파일을 저장 공간에 저장합니다.
         try {
-            file.transferTo(new File(image.getFullPath()));
+            // 디렉토리 생성 보장
+            File dir = new File(url);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            // 최종 파일 경로 = 디렉토리 + 파일명
+            File dest = new File(dir, encodedName);
+            file.transferTo(dest);
+
         } catch (IOException e) {
             throw new RuntimeException("파일 저장에 실패했습니다.", e);
         }
 
-        // 이미지 엔티티를 DB에 저장합니다.
-        Image save = imageRepository.save(image);
-
-        return save.getId();
+        return imageRepository.save(image).getId();
     }
 
-    // 파일 확장자를 추출합니다.
-    private String extractExt(String name) {
+    /**
+     * 확장자 추출
+     */
+    public String extractExt(String name) {
         int pos = name.lastIndexOf(".");
         return name.substring(pos + 1);
     }
-
 }
