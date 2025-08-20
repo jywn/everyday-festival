@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InterestRepository extends JpaRepository<Interest, Long> {
 
     boolean existsByFestivalAndCompany(Festival festival, Company company);
+    boolean existsByFestivalIdAndCompanyId(Long festivalId, Long companyId);
 }

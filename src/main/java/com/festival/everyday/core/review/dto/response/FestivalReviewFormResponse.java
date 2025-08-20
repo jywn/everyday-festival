@@ -1,30 +1,32 @@
 package com.festival.everyday.core.review.dto.response;
 
+import com.festival.everyday.core.common.dto.command.AddressDto;
+import com.festival.everyday.core.common.dto.command.PeriodDto;
 import com.festival.everyday.core.festival.domain.Festival;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Builder
+@Data
 @AllArgsConstructor
 public class FestivalReviewFormResponse {
 
-    private final Long festivalId;
-    private final String festivalName;
-    private final String holderName;
-    private final LocalDateTime festivalBegin;
-    private final LocalDateTime festivalEnd;
+    private String festivalName;
 
-    public static FestivalReviewFormResponse of(Festival festival) {
-        return FestivalReviewFormResponse.builder()
-                .festivalId(festival.getId())
-                .festivalName(festival.getName())
-                .holderName(festival.getHolder().getName())
-                .festivalBegin(festival.getPeriod().getBegin())
-                .festivalEnd(festival.getPeriod().getEnd())
-                .build();
+    // address
+    private AddressDto addressDto;
+
+    // period
+    private PeriodDto periodDto;
+
+    public static FestivalReviewFormResponse from(Festival festival) {
+        return new FestivalReviewFormResponse(
+                festival.getName(),
+                AddressDto.from(festival.getAddress()),
+                PeriodDto.of(festival.getPeriod().getBegin(), festival.getPeriod().getEnd())
+        );
     }
 }

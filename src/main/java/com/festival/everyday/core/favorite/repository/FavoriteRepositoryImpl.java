@@ -31,7 +31,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CompanySearchDto> findFavoredCompaniesByUserId(Long userId) {
+    public List<CompanySearchDto> findFavoriteCompaniesOfUser(Long userId) {
             return queryFactory
                     .select(Projections.constructor(CompanySearchDto.class,
                             company.id, company.name, company.category,
@@ -101,6 +101,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                 .where(festival.period.end.before(now))
                 .fetch();
     }
+
     private static EnumExpression<FavorStatus> favorStatus() {
         return Expressions.cases()
                 .when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)

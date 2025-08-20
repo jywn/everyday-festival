@@ -46,4 +46,14 @@ public class Notice extends BaseCreatedAtEntity {
     @Type(JsonType.class)
     @Column(columnDefinition = "json", name = "data")
     private NoticePayload data;
+
+    public static Notice create(Long senderId, String senderName, Long receiverId, NoticeType type, NoticePayload data) {
+        Notice notice = new Notice();
+        notice.senderId = senderId;
+        notice.senderName = senderName;
+        notice.receiverId = receiverId;
+        notice.type = type;
+        notice.data = data;
+        return notice;
+    }
 }

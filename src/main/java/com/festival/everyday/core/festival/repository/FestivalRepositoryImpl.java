@@ -90,6 +90,8 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                         festival.address.city, festival.address.district, festival.address.detail,
                         favorStatus(),
                         image.url,
+                        // categories 수정 필요
+                        // 쿼리 분리하여 2회 조회후, 서비스에서 합성
                         companyRecruit.period.begin, companyRecruit.period.end, companyRecruit.notice, companyRecruit.preferred, companyRecruit.categories,
                         laborRecruit.period.begin, laborRecruit.period.end, laborRecruit.notice,laborRecruit.job, laborRecruit.wage, laborRecruit.remark,
                         applyStatus()))

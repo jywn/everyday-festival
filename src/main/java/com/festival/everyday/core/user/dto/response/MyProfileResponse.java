@@ -1,20 +1,19 @@
 package com.festival.everyday.core.user.dto.response;
 
+import com.festival.everyday.core.user.domain.UserType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class MyProfileResponse {
     Long id;
-    String userType;
-    String userName;
+    UserType userType;
+    String name;
 
-    public MyProfileResponse(Long Id, String userType, String userName) {
-        this.id = Id;
-        this.userType = userType;
-        this.userName = userName;
+    public static MyProfileResponse of(Long id, UserType userType, String name) {
+        return new MyProfileResponse(id, userType, name);
     }
 }

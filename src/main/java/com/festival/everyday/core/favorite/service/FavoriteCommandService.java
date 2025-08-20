@@ -1,36 +1,21 @@
 package com.festival.everyday.core.favorite.service;
 
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.company.domain.Company;
-import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
-import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.domain.Favorite;
-import com.festival.everyday.core.festival.domain.Festival;
-import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
-import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
-import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.favorite.dto.request.FavoriteRequest;
-import com.festival.everyday.core.favorite.dto.response.FavoriteResponse;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
-import com.festival.everyday.core.user.dto.response.CompanyFavoriteResponse;
+import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.user.repository.UserRepository;
-import com.festival.everyday.core.company.repository.CompanyRepository;
-import com.festival.everyday.core.festival.repository.FestivalRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
-import static com.festival.everyday.core.favorite.dto.FavorStatus.*;
-
 @Service
-@Transactional
 @RequiredArgsConstructor
-public class FavoriteService {
+@Transactional
+public class FavoriteCommandService {
 
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
@@ -60,22 +45,4 @@ public class FavoriteService {
 
         favoriteRepository.delete(existingFavorite.get());
     }
-
-    public List<CompanySearchDto> getFavoriteCompanyList(Long userId) {
-        // repository 조회
-        return favoriteRepository.findFavoredCompaniesByUserId(userId);
-    }
-
-    public List<FestivalSearchDto> getFavoriteFestivalList(Long userId, String holdStatus) {
-        LocalDateTime now = LocalDateTime.now();
-
-        if ("ONGOING".equalsIgnoreCase(holdStatus)) {
-            return favoriteRepository.findFavoredFestivalsByUserIdOngoing(userId, now);
-        } else if ("ENDED".equalsIgnoreCase(holdStatus)) {
-            return favoriteRepository.findFavoredFestivalsByUserIdEnded(userId, now);
-        } else {
-            throw new IllegalArgumentException("올바르지 않은 holdStatus 값입니다");
-        }
-    }
-
 }

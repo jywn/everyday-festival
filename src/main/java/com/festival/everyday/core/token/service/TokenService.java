@@ -5,7 +5,7 @@ import com.festival.everyday.core.user.domain.User;
 import com.festival.everyday.core.token.domain.RefreshToken;
 import com.festival.everyday.core.token.dto.response.LoginResponse;
 import com.festival.everyday.core.token.repository.RefreshTokenRepository;
-import com.festival.everyday.core.user.service.UserService;
+import com.festival.everyday.core.user.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ public class TokenService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenService refreshTokenService;
-    private final UserService userService;
+    private final UserQueryService userQueryService;
 
     // access token은 15분 refresh token은 14일
     private static final Duration ACCESS_EXPIRES  = Duration.ofMinutes(1000);
@@ -45,8 +45,8 @@ public class TokenService {
     // 재발급 메서드(유효 RT로 새 AT 발급)
     public String createNewAccessToken(String refreshToken) {
         RefreshToken rt = refreshTokenService.getActiveByTokenOrThrow(refreshToken);    //RT 유효한지 체크
-        User user = userService.findById(rt.getUserId());                               //RT로 User를 찾기
-        // 기존 세션 유지: AT에 sid로 rt.getTokenId() 포함
+        User user = userQueryService.findById(rt.getUserId());                               //RT로 User를 찾기
+        // 기존 세션 유지: AT에 sid 로 rt.getTokenId() 포함
         return tokenProvider.generateAccessToken(user, ACCESS_EXPIRES, rt.getTokenId()); //Access token 지급
     }
 }

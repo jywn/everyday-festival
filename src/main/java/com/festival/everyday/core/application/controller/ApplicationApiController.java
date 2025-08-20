@@ -3,7 +3,6 @@ package com.festival.everyday.core.application.controller;
 import com.festival.everyday.core.application.dto.request.ApplicationRequest;
 import com.festival.everyday.core.application.service.ApplicationCommandService;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
-import com.festival.everyday.core.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
