@@ -1,10 +1,12 @@
 package com.festival.everyday.core.image.controller;
 
+import com.festival.everyday.core.image.domain.Image;
+import com.festival.everyday.core.image.domain.OwnerType;
 import com.festival.everyday.core.image.dto.common.ImageDto;
 import com.festival.everyday.core.image.dto.request.ImageRequest;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
-import com.festival.everyday.core.image.service.ImageCommandService;
-import com.festival.everyday.core.image.service.ImageQueryService;
+import com.festival.everyday.core.image.dto.response.ImageResponse;
+import com.festival.everyday.core.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -18,23 +20,30 @@ import java.net.MalformedURLException;
 @RequestMapping("/images")
 public class ImageApiController {
 
-    private final ImageQueryService imageQueryService;
-    private final ImageCommandService imageCommandService;
+    private final ImageService imageService;
 
-    // 이미지를 단건 조회합니다. 가능한 호출하지 않습니다.
     @GetMapping
-    public ResponseEntity<ApiResponse<Resource>> viewImage(@RequestParam("id") Long id) throws MalformedURLException {
-        Resource image = imageQueryService.getImage(id);
-        return ResponseEntity.ok(ApiResponse.success("이미지 조회에 성공하였습니다.", image));
+    public ResponseEntity<ApiResponse<ImageResponse>> viewImage(@RequestParam("id") Long id) {
+        ImageResponse imageResponse = imageService.getImage(id);
+        return ResponseEntity.ok(ApiResponse.success("이미지 조회 성공", imageResponse));
     }
 
-    // 이미지를 저장합니다.
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> uploadImage(
-            @RequestPart("owner") ImageRequest imageRequest,
+            @RequestPart("ownerId") String ownerId,
+            @RequestPart("ownerType") String ownerType,
             @RequestPart("image") MultipartFile image) {
 
-        Long id = imageCommandService.upload(ImageDto.from(imageRequest), image);
+        OwnerType type = switch (ownerType) {
+            case "FESTIVAL" -> OwnerType.FESTIVAL;
+            case "HOLDER" -> OwnerType.HOLDER;
+            case "LABOR" -> OwnerType.LABOR;
+            case "COMPANY" -> OwnerType.COMPANY;
+            default -> throw new IllegalStateException("Unexpected value: " + ownerType);
+        };
+
+        ImageRequest imageRequest = new ImageRequest(Long.parseLong(ownerId), type);
+        Long id = imageService.upload(ImageDto.from(imageRequest), image);
 
         return ResponseEntity.ok(ApiResponse.success("이미지 저장에 성공했습니다.", id));
     }

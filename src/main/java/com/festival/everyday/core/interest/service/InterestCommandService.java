@@ -6,10 +6,12 @@ import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.repository.CompanyRepository;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
 import com.festival.everyday.core.interest.repository.InterestRepository;
+import com.festival.everyday.core.notice.handler.event.InterestCreatedEvent;
 import com.sun.jdi.request.DuplicateRequestException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +22,7 @@ public class InterestCommandService
     private final InterestRepository interestRepository;
     private final FestivalRepository festivalRepository;
     private final CompanyRepository companyRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Long createInterest(Long festivalId, Long companyId) {
 
@@ -35,6 +38,9 @@ public class InterestCommandService
         // 관심 엔티티 생성 후 DB 저장
         Interest interest = Interest.create(company, festival);
         interestRepository.save(interest);
+
+        // 알림을 발생시킨다.
+        eventPublisher.publishEvent(InterestCreatedEvent.of(festival.getId(), festival.getName(), company.getId()));
 
         return interest.getId();
     }

@@ -55,7 +55,7 @@ public class ApplicationController {
     @PatchMapping("applications/{applicationId}/accept")
     public ResponseEntity<Void> acceptApplication(@PathVariable Long applicationId)
     {
-        applicationCommandService.selectApplication(applicationId);
+        applicationCommandService.acceptApplication(applicationId);
         return ResponseEntity.ok().build();
     }
 

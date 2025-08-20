@@ -26,7 +26,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         // 더미 축제를 저장한다
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 60; i++) {
             FestivalFormRequest request = new FestivalFormRequest(
                     "F_name_" + i,
                     PeriodDto.of(LocalDateTime.now(), LocalDateTime.now()),
@@ -39,7 +39,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
             );
 
             // 1인 2축제
-            festivalCommandService.save((long) (201 + (i % 100)), request);
+            festivalCommandService.save((long) (61 + (i % 30)), request);
         }
     }
 }

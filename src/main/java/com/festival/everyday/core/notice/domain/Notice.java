@@ -1,6 +1,7 @@
 package com.festival.everyday.core.notice.domain;
 
 import com.festival.everyday.core.common.domain.BaseCreatedAtEntity;
+import com.festival.everyday.core.notice.domain.payload.NoticePayload;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ public class Notice extends BaseCreatedAtEntity {
     @Column(name = "sender_name")
     private String senderName;
 
+    // 알림은 사용자만 받으므로 타입을 구별하지 않는다.
     @NotNull
     @Column(name = "receiver_id")
     private Long receiverId;
@@ -44,16 +46,18 @@ public class Notice extends BaseCreatedAtEntity {
      * 알람 종류에 맞춰 JSON 이 payload 로 변환됩니다.
      */
     @Type(JsonType.class)
-    @Column(columnDefinition = "json", name = "data")
-    private NoticePayload data;
+    @Column(columnDefinition = "json", name = "payload")
+    private NoticePayload payload;
 
-    public static Notice create(Long senderId, String senderName, Long receiverId, NoticeType type, NoticePayload data) {
-        Notice notice = new Notice();
-        notice.senderId = senderId;
-        notice.senderName = senderName;
-        notice.receiverId = receiverId;
-        notice.type = type;
-        notice.data = data;
-        return notice;
+    private Notice(Long senderId, String senderName, Long receiverId, NoticeType type, NoticePayload payload) {
+        this.senderId = senderId;
+        this.senderName = senderName;
+        this.receiverId = receiverId;
+        this.type = type;
+        this.payload = payload;
+    }
+
+    public static Notice create(Long senderId, String senderName, Long receiverId, NoticeType type, NoticePayload payload) {
+        return new Notice(senderId, senderName, receiverId, type, payload);
     }
 }
