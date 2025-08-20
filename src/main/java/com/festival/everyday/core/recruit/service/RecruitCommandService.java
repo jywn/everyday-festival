@@ -9,11 +9,13 @@ import com.festival.everyday.core.recruit.dto.request.CreateLaborRecruitRequest;
 import com.festival.everyday.core.recruit.repository.RecruitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RecruitCommandService {
 
     private final RecruitRepository recruitRepository;
