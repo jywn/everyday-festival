@@ -66,4 +66,6 @@ public class DummyUserRunner implements CommandLineRunner {
             userCommandService.holderJoin(request);
         }
     }
+
+
 }
