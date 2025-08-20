@@ -73,7 +73,7 @@ public class Image extends BaseCreatedAtEntity {
     }
 
     public String getFullPath() {
-        return url;
+        return this.url;
     }
     /**
      * ~ 연관 관계 설정 메서드

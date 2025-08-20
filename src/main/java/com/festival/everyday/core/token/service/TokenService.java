@@ -24,7 +24,7 @@ public class TokenService {
     private final UserService userService;
 
     // access token은 15분 refresh token은 14일
-    private static final Duration ACCESS_EXPIRES  = Duration.ofMinutes(15);
+    private static final Duration ACCESS_EXPIRES  = Duration.ofMinutes(1000);
     private static final Duration REFRESH_EXPIRES = Duration.ofDays(14);
 
     // [MOD] 로그인 시 AT,RT 제공 (sid 사용 시)
