@@ -1,5 +1,6 @@
 package com.festival.everyday.core.notice.handler;
 
+import com.festival.everyday.core.notice.domain.Notice;
 import com.festival.everyday.core.notice.dto.command.*;
 import com.festival.everyday.core.notice.handler.event.*;
 import com.festival.everyday.core.notice.service.NoticeCommandService;
@@ -12,49 +13,59 @@ import org.springframework.stereotype.Component;
 public class NoticeEventHandler {
 
     private final NoticeCommandService noticeCommandService;
+    private final SseNotificationSender sseNotificationSender;
 
     @EventListener
     public void handleCompanyApplicationCreated(CompanyApplicationCreatedEvent event) {
-        noticeCommandService.createCompanyAppliedNotice(CompanyApplicationCreatedDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createCompanyAppliedNotice(CompanyApplicationCreatedDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleLaborApplicationCreated(LaborApplicationCreatedEvent event) {
-        noticeCommandService.createLaborAppliedNotice(LaborApplicationCreatedDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createLaborAppliedNotice(LaborApplicationCreatedDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleInterestCreated(InterestCreatedEvent event) {
-        noticeCommandService.createInterestNotice(InterestCreatedDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createInterestNotice(InterestCreatedDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleApplyAccepted(ApplyAcceptedEvent event) {
-        noticeCommandService.createApplyAcceptedNotice(ApplyAcceptedDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createApplyAcceptedNotice(ApplyAcceptedDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleApplyDenied(ApplyDeniedEvent event) {
-        noticeCommandService.createApplyDeniedNotice(ApplyDeniedDto.from(event));
+        NotificationDto notificationDto = NotificationDto.from(noticeCommandService.createApplyDeniedNotice(ApplyDeniedDto.from(event)));
+        sseNotificationSender.send(notificationDto);
     }
 
     @EventListener
     public void handleCompanyRecruitDead(CompanyRecruitDeadEvent event) {
-        noticeCommandService.createCompanyRecruitDeadNotice(CompanyRecruitDeadDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createCompanyRecruitDeadNotice(CompanyRecruitDeadDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleLaborRecruitDead(LaborRecruitDeadEvent event) {
-        noticeCommandService.createLaborRecruitDeadNotice(LaborRecruitDeadDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createLaborRecruitDeadNotice(LaborRecruitDeadDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleCompanyRecruitDue(CompanyDueEvent event) {
-        noticeCommandService.createCompanyDueNotice(CompanyDueDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createCompanyDueNotice(CompanyDueDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleLaborDue(LaborDueEvent event) {
-        noticeCommandService.createLaborDueNotice(LaborDueDto.from(event));
+        NotificationDto notification = NotificationDto.from(noticeCommandService.createLaborDueNotice(LaborDueDto.from(event)));
+        sseNotificationSender.send(notification);
     }
 }
