@@ -7,15 +7,12 @@ import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.domain.QFavorite;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
-import com.festival.everyday.core.common.TokenToCond;
 import com.festival.everyday.core.common.Tokenizer;
 import com.festival.everyday.core.festival.domain.QFestival;
 import com.festival.everyday.core.image.domain.OwnerType;
 import com.festival.everyday.core.image.domain.QImage;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.EnumExpression;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -112,9 +109,10 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
     }
 
     // 찜 여부를 확인합니다.
-    private static EnumExpression<FavorStatus> favorStatus() {
-        return Expressions.cases().when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
-                .otherwise(FavorStatus.NOT_FAVORED);
+    private static SimpleExpression<FavorStatus> favorStatus() {
+        return new CaseBuilder()
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
     }
 
     public static BooleanExpression getAndConditions(String[] tokens) {
