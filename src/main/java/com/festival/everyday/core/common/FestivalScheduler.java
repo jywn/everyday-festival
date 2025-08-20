@@ -11,12 +11,9 @@ import com.festival.everyday.core.notice.handler.event.CompanyDueEvent;
 import com.festival.everyday.core.notice.handler.event.CompanyRecruitDeadEvent;
 import com.festival.everyday.core.notice.handler.event.LaborDueEvent;
 import com.festival.everyday.core.notice.handler.event.LaborRecruitDeadEvent;
-import com.festival.everyday.core.notice.service.NoticeService;
 import com.festival.everyday.core.recruit.domain.CompanyRecruit;
 import com.festival.everyday.core.recruit.domain.LaborRecruit;
-import com.festival.everyday.core.recruit.dto.RecruitType;
 import com.festival.everyday.core.user.domain.Labor;
-import com.festival.everyday.core.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,7 +28,6 @@ import java.util.List;
 public class FestivalScheduler {
 
     private final FestivalRepository festivalRepository;
-    private final NoticeService noticeService;
     private final FavoriteRepository favoriteRepository;
     private final ApplicationEventPublisher eventPublisher;
 

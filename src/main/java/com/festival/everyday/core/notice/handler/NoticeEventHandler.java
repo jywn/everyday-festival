@@ -3,7 +3,6 @@ package com.festival.everyday.core.notice.handler;
 import com.festival.everyday.core.notice.dto.command.*;
 import com.festival.everyday.core.notice.handler.event.*;
 import com.festival.everyday.core.notice.service.NoticeCommandService;
-import com.festival.everyday.core.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

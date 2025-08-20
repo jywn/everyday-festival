@@ -2,11 +2,8 @@ package com.festival.everyday.core.notice.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
-import com.festival.everyday.core.notice.domain.Notice;
 import com.festival.everyday.core.notice.dto.response.NoticeResponse;
-import com.festival.everyday.core.notice.service.NoticeCommandService;
 import com.festival.everyday.core.notice.service.NoticeQueryService;
-import com.festival.everyday.core.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
