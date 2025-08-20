@@ -6,8 +6,6 @@
 //import com.festival.everyday.core.recruit.dto.command.LaborRecruitDto;
 //import com.festival.everyday.core.recruit.repository.CompanyRecruitRepository;
 //import com.festival.everyday.core.recruit.repository.LaborRecruitRepository;
-//import com.festival.everyday.core.recruit.repository.RecruitRepository;
-//import jakarta.persistence.EntityNotFoundException;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.stereotype.Service;
 //

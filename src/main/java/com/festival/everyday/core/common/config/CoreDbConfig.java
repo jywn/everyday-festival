@@ -33,6 +33,7 @@ import javax.sql.DataSource;
                 "com.festival.everyday.core.review.repository",
                 "com.festival.everyday.core.token.repository",
                 "com.festival.everyday.core.user.repository",
+                "com.festival.everyday.core.notice.repository",
         },
         entityManagerFactoryRef = "coreEntityManagerFactory",
         transactionManagerRef = "coreTransactionManager"
