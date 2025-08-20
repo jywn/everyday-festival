@@ -5,13 +5,10 @@ import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
-import com.festival.everyday.core.common.TokenToCond;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.image.domain.OwnerType;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.EnumExpression;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +40,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
         String[] tokens = getTokens(keyword);
 
         // 입력 키워드 토큰을 바탕으로 AND 검색 조건을 생성합니다.
-        BooleanExpression andConditions = TokenToCond.getAndConditions(tokens);
+        BooleanExpression andConditions = getAndConditions(tokens);
 
         // 쿼리를 실행하고, 결과를 DTO 로 변환합니다.
         List<FestivalSearchDto> queryResult = queryFactory
@@ -120,15 +117,24 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .fetchOne();
     }
 
-    private static EnumExpression<FavorStatus> favorStatus() {
-        return Expressions.cases()
-                .when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
-                .otherwise(FavorStatus.NOT_FAVORED);
+    private static SimpleExpression<FavorStatus> favorStatus() {
+        return new CaseBuilder()
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
     }
 
-    private static EnumExpression<ApplyStatus> applyStatus() {
-        return Expressions.cases()
-                .when(application.id.isNotNull()).then(ApplyStatus.APPLIED)
-                .otherwise(ApplyStatus.NOT_APPLIED);
+    private static SimpleExpression<ApplyStatus> applyStatus() {
+        return new CaseBuilder()
+                .when(application.id.isNotNull()).then(Expressions.constant(ApplyStatus.APPLIED))
+                .otherwise(Expressions.constant(ApplyStatus.NOT_APPLIED));
+    }
+
+    public static BooleanExpression getAndConditions(String[] tokens) {
+        BooleanExpression andCondition = null;
+        for (String token : tokens) {
+            BooleanExpression tokenExpr = festival.name.containsIgnoreCase(token);
+            andCondition = (andCondition == null) ? tokenExpr : andCondition.and(tokenExpr);
+        }
+        return andCondition;
     }
 }

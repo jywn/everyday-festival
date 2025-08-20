@@ -11,8 +11,9 @@ import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.image.domain.OwnerType;
 import com.festival.everyday.core.image.domain.QImage;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.EnumExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -138,9 +139,9 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
-    private static EnumExpression<FavorStatus> favorStatus() {
-        return Expressions.cases()
-                .when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
-                .otherwise(FavorStatus.NOT_FAVORED);
+    private static SimpleExpression<FavorStatus> favorStatus() {
+        return new CaseBuilder()
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
     }
 }
