@@ -17,55 +17,55 @@ public class NoticeEventHandler {
 
     @EventListener
     public void handleCompanyApplicationCreated(CompanyApplicationCreatedEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createCompanyAppliedNotice(CompanyApplicationCreatedDto.from(event)));
+        NotificationDto notification = noticeCommandService.createCompanyAppliedNotice(CompanyApplicationCreatedDto.from(event));
         sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleLaborApplicationCreated(LaborApplicationCreatedEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createLaborAppliedNotice(LaborApplicationCreatedDto.from(event)));
+        NotificationDto notification = noticeCommandService.createLaborAppliedNotice(LaborApplicationCreatedDto.from(event));
         sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleInterestCreated(InterestCreatedEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createInterestNotice(InterestCreatedDto.from(event)));
+        NotificationDto notification = noticeCommandService.createInterestNotice(InterestCreatedDto.from(event));
         sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleApplyAccepted(ApplyAcceptedEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createApplyAcceptedNotice(ApplyAcceptedDto.from(event)));
+        NotificationDto notification = noticeCommandService.createApplyAcceptedNotice(ApplyAcceptedDto.from(event));
         sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleApplyDenied(ApplyDeniedEvent event) {
-        NotificationDto notificationDto = NotificationDto.from(noticeCommandService.createApplyDeniedNotice(ApplyDeniedDto.from(event)));
+        NotificationDto notificationDto = noticeCommandService.createApplyDeniedNotice(ApplyDeniedDto.from(event));
         sseNotificationSender.send(notificationDto);
     }
 
     @EventListener
     public void handleCompanyRecruitDead(CompanyRecruitDeadEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createCompanyRecruitDeadNotice(CompanyRecruitDeadDto.from(event)));
+        NotificationDto notification = noticeCommandService.createCompanyRecruitDeadNotice(CompanyRecruitDeadDto.from(event));
         sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleLaborRecruitDead(LaborRecruitDeadEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createLaborRecruitDeadNotice(LaborRecruitDeadDto.from(event)));
+        NotificationDto notification = noticeCommandService.createLaborRecruitDeadNotice(LaborRecruitDeadDto.from(event));
         sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleCompanyRecruitDue(CompanyDueEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createCompanyDueNotice(CompanyDueDto.from(event)));
+        NotificationDto notification = noticeCommandService.createCompanyDueNotice(CompanyDueDto.from(event));
         sseNotificationSender.send(notification);
     }
 
     @EventListener
     public void handleLaborDue(LaborDueEvent event) {
-        NotificationDto notification = NotificationDto.from(noticeCommandService.createLaborDueNotice(LaborDueDto.from(event)));
+        NotificationDto notification = noticeCommandService.createLaborDueNotice(LaborDueDto.from(event));
         sseNotificationSender.send(notification);
     }
 }
