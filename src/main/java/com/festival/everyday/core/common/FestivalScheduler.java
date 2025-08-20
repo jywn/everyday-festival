@@ -7,7 +7,7 @@ import com.festival.everyday.core.favorite.domain.Favorite;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
-import com.festival.everyday.core.notice.service.NoticeService;
+//import com.festival.everyday.core.notice.service.NoticeService;
 import com.festival.everyday.core.recruit.domain.CompanyRecruit;
 import com.festival.everyday.core.recruit.domain.LaborRecruit;
 import com.festival.everyday.core.recruit.dto.RecruitType;
@@ -26,7 +26,7 @@ import java.util.List;
 public class FestivalScheduler {
 
     private final FestivalRepository festivalRepository;
-    private final NoticeService noticeService;
+//    private final NoticeService noticeService;
     private FavoriteRepository favoriteRepository;
 
     @Scheduled(cron="0 0 1 * * *") //매일 새벽 1시에 자동으로 싹 검사
@@ -43,12 +43,12 @@ public class FestivalScheduler {
 
             CompanyRecruit companyRecruit=festival.getCompanyRecruit();
             if(companyRecruit!=null && isEndedYesterDay(companyRecruit.getPeriod(),yesterdayStart, yesterdayEnd)) {
-                noticeService.createFestivalDeadNotice(festival, RecruitType.COMPANY);
+//               noticeService.createFestivalDeadNotice(festival, RecruitType.COMPANY);
             }
 
             LaborRecruit laborRecruit=festival.getLaborRecruit();
             if(laborRecruit!=null&& isEndedYesterDay(laborRecruit.getPeriod(),yesterdayStart,yesterdayEnd)) {
-                noticeService.createFestivalDeadNotice(festival, RecruitType.LABOR);
+//               noticeService.createFestivalDeadNotice(festival, RecruitType.LABOR);
             }
         }
     }
@@ -78,13 +78,13 @@ public class FestivalScheduler {
                     CompanyRecruit companyRecruit = festival.getCompanyRecruit();
                     //찜한 사용자가 업체이고, 업체 모집 마감 3일 전이 맞다면 알림 보내기
                     if (companyRecruit != null && isDueInThreeDays(companyRecruit.getPeriod(), threeDaysLaterStart, threeDaysLaterEnd)) {
-                        noticeService.createFestivalDueNotice(user, festival);
+//                        noticeService.createFestivalDueNotice(user, festival);
                     }
                 } else if (user instanceof Labor) {
                     LaborRecruit laborRecruit = festival.getLaborRecruit();
                     //찜한 사용자가 근로자이고, 근로자 모집 마감 3일 전이 맞다면 알림 보내기
                     if (laborRecruit != null && isDueInThreeDays(laborRecruit.getPeriod(), threeDaysLaterStart, threeDaysLaterEnd)) {
-                        noticeService.createFestivalDueNotice(user, festival);
+//                        noticeService.createFestivalDueNotice(user, festival);
                     }
                 }
             }
