@@ -1,6 +1,5 @@
 package com.festival.everyday.core.notice.handler;
 
-import com.festival.everyday.core.notice.domain.Notice;
 import com.festival.everyday.core.notice.dto.command.NotificationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

@@ -28,7 +28,7 @@ public class NoticeCommandService {
     private final NoticeRepository noticeRepository;
     private final InterestRepository interestRepository;
 
-    public Notice createInterestNotice(InterestCreatedDto dto) {
+    public NotificationDto createInterestNotice(InterestCreatedDto dto) {
 
         FestivalInterestPayload payload = new FestivalInterestPayload(dto.getFestivalId(), dto.getFestivalName());
 
@@ -39,10 +39,10 @@ public class NoticeCommandService {
                 NoticeType.FESTIVAL_INTEREST,
                 payload
         );
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createCompanyAppliedNotice(CompanyApplicationCreatedDto dto) {
+    public NotificationDto createCompanyAppliedNotice(CompanyApplicationCreatedDto dto) {
 
         // 나의 관심 여부를 확인한다.
         Interested interested = interestRepository.existsByFestivalIdAndCompanyId(dto.getFestivalId(), dto.getCompanyId()) ? INTERESTED : NOT_INTERESTED;
@@ -61,10 +61,10 @@ public class NoticeCommandService {
         );
 
         // 알림을 저장한다.
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createLaborAppliedNotice(LaborApplicationCreatedDto dto) {
+    public NotificationDto createLaborAppliedNotice(LaborApplicationCreatedDto dto) {
 
         // 알림 정보를 생성한다.
         LaborAppliedPayload payload = LaborAppliedPayload.of(dto.getLaborId(), dto.getLaborName(), dto.getFestivalId(), dto.getFestivalName());
@@ -79,10 +79,10 @@ public class NoticeCommandService {
         );
 
         // 알림을 저장한다.
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createCompanyRecruitDeadNotice(CompanyRecruitDeadDto dto) {
+    public NotificationDto createCompanyRecruitDeadNotice(CompanyRecruitDeadDto dto) {
 
         RecruitDeadPayload payload = RecruitDeadPayload.from(dto.getFestivalId(), dto.getFestivalName());
 
@@ -94,10 +94,10 @@ public class NoticeCommandService {
                 payload
         );
 
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createLaborRecruitDeadNotice(LaborRecruitDeadDto dto) {
+    public NotificationDto createLaborRecruitDeadNotice(LaborRecruitDeadDto dto) {
 
         RecruitDeadPayload payload = RecruitDeadPayload.from(dto.getFestivalId(), dto.getFestivalName());
 
@@ -109,10 +109,10 @@ public class NoticeCommandService {
                 payload
         );
 
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createCompanyDueNotice(CompanyDueDto dto) {
+    public NotificationDto createCompanyDueNotice(CompanyDueDto dto) {
 
         FestivalDuePayload payload = new FestivalDuePayload(dto.getFestivalId(), dto.getFestivalName());
 
@@ -124,10 +124,10 @@ public class NoticeCommandService {
                 payload
         );
 
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createLaborDueNotice(LaborDueDto dto) {
+    public NotificationDto createLaborDueNotice(LaborDueDto dto) {
 
         FestivalDuePayload payload = new FestivalDuePayload(dto.getFestivalId(), dto.getFestivalName());
 
@@ -139,10 +139,10 @@ public class NoticeCommandService {
                 payload
         );
 
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createApplyAcceptedNotice(ApplyAcceptedDto dto) {
+    public NotificationDto createApplyAcceptedNotice(ApplyAcceptedDto dto) {
 
         ApplyAcceptedPayload payload = ApplyAcceptedPayload.of(dto.getFestivalId(), dto.getFestivalName());
 
@@ -154,10 +154,10 @@ public class NoticeCommandService {
                 payload
         );
 
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
-    public Notice createApplyDeniedNotice(ApplyDeniedDto dto) {
+    public NotificationDto createApplyDeniedNotice(ApplyDeniedDto dto) {
 
         ApplyDeniedPayload payload = ApplyDeniedPayload.of(dto.getFestivalId(), dto.getFestivalName());
 
@@ -169,7 +169,7 @@ public class NoticeCommandService {
                 payload
         );
 
-        return noticeRepository.save(notice);
+        return NotificationDto.from(noticeRepository.save(notice));
     }
 
 }
