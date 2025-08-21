@@ -5,13 +5,11 @@ import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
-import com.festival.everyday.core.common.TokenToCond;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.image.domain.OwnerType;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.EnumExpression;
-import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.*;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -42,10 +40,10 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
         String[] tokens = getTokens(keyword);
 
         // 입력 키워드 토큰을 바탕으로 AND 검색 조건을 생성합니다.
-        BooleanExpression andConditions = TokenToCond.getAndConditions(tokens);
+        BooleanExpression andConditions = getAndConditions(tokens);
 
         // 쿼리를 실행하고, 결과를 DTO 로 변환합니다.
-        List<FestivalSearchDto> listAndCondition = queryFactory
+        List<FestivalSearchDto> queryResult = queryFactory
                 .select(Projections.constructor(FestivalSearchDto.class,
                         festival.id, festival.name,
                         festival.address.city, festival.address.district, festival.address.detail,
@@ -64,20 +62,35 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .fetch();
 
 
-        return getPageByList(pageable, listAndCondition, andConditions);
+        JPAQuery<Long> countQuery = queryFactory
+                .select(festival.count())
+                .from(festival)
+                .where(andConditions);
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
+    // 페이징
     @Override
-    public List<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId) {
+    public Page<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId, Pageable pageable) {
 
-        return queryFactory
+        List<MyFestivalDto> queryResult = queryFactory
                 .select(Projections.constructor(MyFestivalDto.class,
                         festival.id, festival.name, festival.address.city, festival.address.district, festival.address.detail,
                         festival.period.begin, festival.period.end, image.url))
                 .from(festival)
+                .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(festival.holder.id.eq(holderId))
+                .where(holder.id.eq(holderId))
                 .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(festival.count())
+                .from(festival)
+                .join(festival.holder, holder)
+                .where(holder.id.eq(holderId));
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
     @Override
@@ -104,27 +117,24 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .fetchOne();
     }
 
-    private static EnumExpression<FavorStatus> favorStatus() {
-        return Expressions.cases()
-                .when(favorite.id.isNotNull()).then(FavorStatus.FAVORED)
-                .otherwise(FavorStatus.NOT_FAVORED);
+    private static SimpleExpression<FavorStatus> favorStatus() {
+        return new CaseBuilder()
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
     }
 
-    private static EnumExpression<ApplyStatus> applyStatus() {
-        return Expressions.cases()
-                .when(application.id.isNotNull()).then(ApplyStatus.APPLIED)
-                .otherwise(ApplyStatus.NOT_APPLIED);
+    private static SimpleExpression<ApplyStatus> applyStatus() {
+        return new CaseBuilder()
+                .when(application.id.isNotNull()).then(Expressions.constant(ApplyStatus.APPLIED))
+                .otherwise(Expressions.constant(ApplyStatus.NOT_APPLIED));
     }
 
-    private Page<FestivalSearchDto> getPageByList(Pageable pageable, List<FestivalSearchDto> listAndCondition, BooleanExpression andConditions) {
-        return PageableExecutionUtils.getPage(
-                listAndCondition,
-                pageable,
-                () -> Optional.ofNullable(queryFactory
-                        .select(festival.count())
-                        .from(festival)
-                        .where(andConditions)
-                        .fetchOne()
-                ).orElse(0L));
+    public static BooleanExpression getAndConditions(String[] tokens) {
+        BooleanExpression andCondition = null;
+        for (String token : tokens) {
+            BooleanExpression tokenExpr = festival.name.containsIgnoreCase(token);
+            andCondition = (andCondition == null) ? tokenExpr : andCondition.and(tokenExpr);
+        }
+        return andCondition;
     }
 }

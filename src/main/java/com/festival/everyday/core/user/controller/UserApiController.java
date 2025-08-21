@@ -1,6 +1,8 @@
 package com.festival.everyday.core.user.controller;
 
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
+import com.festival.everyday.core.common.dto.response.PageResponse;
+import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.company.dto.response.CompanySimpleResponse;
 import com.festival.everyday.core.favorite.service.FavoriteQueryService;
 import com.festival.everyday.core.festival.dto.response.FestivalSimpleResponse;
@@ -15,6 +17,7 @@ import com.festival.everyday.core.user.dto.response.MyProfileResponse;
 import com.festival.everyday.core.user.service.UserCommandService;
 import com.festival.everyday.core.user.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +37,10 @@ public class UserApiController {
 
     // 내가 등록한 축제 목록을 조회합니다.
     @GetMapping("/me/festivals")
-    public ResponseEntity<ApiResponse<List<MyFestivalResponse>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
-                                                                               @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
-        List<MyFestivalResponse> response = festivalQueryService.findListByHolderId(userId).stream().map(MyFestivalResponse::from).toList();
+    public ResponseEntity<ApiResponse<PageResponse<MyFestivalResponse>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+                                                                                        @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
+                                                                                        Pageable pageable) {
+        PageResponse<MyFestivalResponse> response = PageResponse.from(festivalQueryService.findListByHolderId(userId, pageable).map(MyFestivalResponse::from));
 
         return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", response));
     }
@@ -81,30 +85,31 @@ public class UserApiController {
 
     // 내가 찜한 업체 목록을 조회합니다.
     @GetMapping("/me/favorite-companies")
-    public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> getFavoriteCompanies(
+    public ResponseEntity<ApiResponse<PageResponse<CompanySimpleResponse>>> getFavoriteCompanies(
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
-            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType) {
+            @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
+            Pageable pageable) {
 
-        List<CompanySimpleResponse> result = favoriteQueryService.getFavoriteCompanyList(userId).stream()
-                .map(CompanySimpleResponse::from).toList();
+        PageResponse<CompanySimpleResponse> response = PageResponse.from(favoriteQueryService.getFavoriteCompanyList(userId, pageable).map(CompanySimpleResponse::from));
 
-        return ResponseEntity.ok(ApiResponse.success("찜한 업체 목록 조회 성공", result));
+        return ResponseEntity.ok(ApiResponse.success("찜한 업체 목록 조회 성공", response));
     }
 
     // 진행중, 종료 여부를 구분합니다.
     @GetMapping("/me/favorite-festivals")
-    public ResponseEntity<ApiResponse<List<FestivalSimpleResponse>>> getFavoriteFestivals(
+    public ResponseEntity<ApiResponse<PageResponse<FestivalSimpleResponse>>> getFavoriteFestivals(
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
-            @RequestParam(name = "holdStatus") HoldStatus holdStatus) {
+            @RequestParam(name = "holdStatus") HoldStatus holdStatus,
+            Pageable pageable) {
         // 진행중, 종료 여부에 따라 다른 서비스 메서드를 호출합니다.
         // 호출 결과를 steam + map 통해 response 로 변환합니다.
-        List<FestivalSimpleResponse> result =  (switch (holdStatus) {
-            case ONGOING -> favoriteQueryService.getOnGoingFestivalList(userId);
-            case ENDED -> favoriteQueryService.getEndedFestivalList(userId);
-        }).stream().map(FestivalSimpleResponse::from).toList();
+        PageResponse<FestivalSimpleResponse> response = PageResponse.from((switch (holdStatus) {
+            case ONGOING -> favoriteQueryService.getOnGoingFestivalList(userId, pageable);
+            case ENDED -> favoriteQueryService.getEndedFestivalList(userId, pageable);
+        }).map(FestivalSimpleResponse::from));
 
-        return ResponseEntity.ok(ApiResponse.success("찜한 축제 목록 조회 성공", result));
+        return ResponseEntity.ok(ApiResponse.success("찜한 축제 목록 조회 성공", response));
     }
 
     // 컨트롤러에서만 사용하는 enum 클래스.

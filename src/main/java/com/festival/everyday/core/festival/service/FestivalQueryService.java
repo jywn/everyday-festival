@@ -26,7 +26,9 @@ import com.festival.everyday.core.recruit.repository.LaborRecruitRepository;
 import com.festival.everyday.core.recruit.repository.RecruitRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,14 +56,14 @@ public class FestivalQueryService {
     }
 
     // 기획자 id 를 이용해 축제 목록을 조회합니다.
-    public List<MyFestivalDto> findListByHolderId(Long holderId) {
+    public Page<MyFestivalDto> findListByHolderId(Long holderId, Pageable pageable) {
 
         // 조회한 축제 목록을 찜 여부와 함께 DTO 로 변환합니다.
-        return  festivalRepository.findFestivalsByHolderIdWithUrl(holderId);
+        return festivalRepository.findFestivalsByHolderIdWithUrl(holderId, pageable);
     }
 
     // 사용자 ID 를 통해 찜 여부와 함께 축제 목록 페이지를 검색합니다.
-    public PageResponse<FestivalSearchDto> searchByKeyword(Long userId, String keyword, PageRequest pageRequest) {
-        return PageResponse.from(festivalRepository.searchByKeyword(userId, keyword, pageRequest));
+    public Page<FestivalSearchDto> searchByKeyword(Long userId, String keyword, Pageable pageable) {
+        return festivalRepository.searchByKeyword(userId, keyword, pageable);
     }
 }

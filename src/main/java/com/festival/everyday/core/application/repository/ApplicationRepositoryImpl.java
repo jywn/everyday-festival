@@ -10,8 +10,12 @@ import com.festival.everyday.core.recruit.domain.QLaborRecruit;
 import com.festival.everyday.core.recruit.domain.QRecruit;
 import com.festival.everyday.core.user.domain.QLabor;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
@@ -31,44 +35,72 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId) {
-        return queryFactory
+    // 페이징
+    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable) {
+
+        List<CompanyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(CompanyApplicationSimpleDto.class,
                         application.id, application.selected,
                         company.id, company.name, company.category,
                         company.address.city, company.address.district, company.address.detail, image.url))
                 .from(application)
-                .leftJoin(company).on(company.id.eq(application.user.id))
+                .join(application.festival, festival)
+                .join(company).on(company.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(COMPANY).and(image.ownerId.eq(company.id)))
                 .where(application.festival.id.eq(festivalId))
                 .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(application.count())
+                .from(application)
+                .join(application.festival, festival)
+                .where(application.festival.id.eq(festivalId));
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
+    // 페이징
     @Override
-    public List<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId) {
-        return queryFactory
+    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable) {
+        List<LaborApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(LaborApplicationSimpleDto.class,
                         application.id, application.selected, labor.name, image.url))
                 .from(application)
-                .leftJoin(labor).on(labor.id.eq(application.user.id))
+                .join(application.festival, festival)
+                .join(labor).on(labor.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(LABOR).and(image.ownerId.eq(labor.id)))
                 .where(application.festival.id.eq(festivalId))
                 .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory.select(application.count())
+                .from(application)
+                .join(application.festival, festival)
+                .where(application.festival.id.eq(festivalId));
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
+    // 페이징
     @Override
-    public List<MyApplicationSimpleDto> findMyApplicationList(Long userId) {
-        return queryFactory
+    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable) {
+        List<MyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(MyApplicationSimpleDto.class,
                         application.festival.id, application.festival.name, application.festival.holder.name,
                         application.festival.period.begin, application.festival.period.end,
                         application.selected, image.url))
                 .from(application)
-                .leftJoin(festival).on(festival.id.eq(application.festival.id))
-                .leftJoin(holder).on(holder.id.eq(festival.holder.id))
+                .join(application.festival, festival)
+                .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(application.user.id.eq(userId))
                 .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(application.count())
+                .from(application)
+                .join(application.festival, festival)
+                .where(application.user.id.eq(userId));
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
     // 엔티티 직접 조회

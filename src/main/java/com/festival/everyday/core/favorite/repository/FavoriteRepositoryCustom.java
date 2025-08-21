@@ -5,6 +5,8 @@ import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,7 +16,7 @@ import java.util.List;
 
 public interface FavoriteRepositoryCustom {
 
-    List<CompanySearchDto> findFavoriteCompaniesOfUser(Long userId);
-    List<FestivalSearchDto> findFavoredFestivalsByUserIdOngoing(Long userId, LocalDateTime now);
-    List<FestivalSearchDto> findFavoredFestivalsByUserIdEnded(Long userId, LocalDateTime now);
+    Page<CompanySearchDto> findFavoriteCompaniesOfUser(Long userId, Pageable pageable);
+    Page<FestivalSearchDto> findFavoredFestivalsByUserIdOngoing(Long userId, LocalDateTime now, Pageable pageable);
+    Page<FestivalSearchDto> findFavoredFestivalsByUserIdEnded(Long userId, LocalDateTime now, Pageable pageable);
 }
