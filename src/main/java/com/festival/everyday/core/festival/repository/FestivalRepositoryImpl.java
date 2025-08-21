@@ -82,6 +82,8 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(holder.id.eq(holderId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory

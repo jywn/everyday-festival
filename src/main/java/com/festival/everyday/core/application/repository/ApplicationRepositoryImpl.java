@@ -48,6 +48,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(company).on(company.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(COMPANY).and(image.ownerId.eq(company.id)))
                 .where(application.festival.id.eq(festivalId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(application.count())
@@ -69,6 +71,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(labor).on(labor.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(LABOR).and(image.ownerId.eq(labor.id)))
                 .where(application.festival.id.eq(festivalId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(application.count())
@@ -92,6 +96,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(application.user.id.eq(userId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory

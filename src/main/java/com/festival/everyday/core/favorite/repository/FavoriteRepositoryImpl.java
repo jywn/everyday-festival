@@ -49,6 +49,8 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                         .and(favorite.receiverType.eq(ReceiverType.COMPANY)
                                 .and(favorite.receiverId.eq(company.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
@@ -97,6 +99,8 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                                 .and(favorite.receiverId.eq(festival.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(festival.period.end.after(now))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(festival.count())
@@ -127,6 +131,8 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                                 .and(favorite.receiverId.eq(festival.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(festival.period.end.before(now))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(festival.count())
