@@ -19,8 +19,7 @@ import static com.festival.everyday.core.common.DomainValidator.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CompanyRecruit extends Recruit {
 
-    @NotNull
-    @Column(name = "company_preferred", nullable = false)
+    @Column(name = "company_preferred")
     private String preferred;
 
     /**

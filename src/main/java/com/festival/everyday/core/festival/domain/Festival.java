@@ -82,8 +82,9 @@ public class Festival extends BaseCreatedAtEntity {
     /**
      * 모집 공고에서 축제를 조회할 일은 없으므로,
      * 단방향 연관관계입니다.
-     */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+     *
+     * */
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_recruit")
     private CompanyRecruit companyRecruit;
 
@@ -91,7 +92,7 @@ public class Festival extends BaseCreatedAtEntity {
      * 모집 공고에서 축제를 조회할 일은 없으므로,
      * 단방향 연관관계입니다.
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "labor_recruit")
     private LaborRecruit laborRecruit;
 
@@ -160,7 +161,7 @@ public class Festival extends BaseCreatedAtEntity {
      * 업체 지원 공고를 연결합니다.
      * 단방향 연관관계입니다.
      */
-    public void connectRecruit(CompanyRecruit companyRecruit) {
+    public void addCompanyRecruit(CompanyRecruit companyRecruit) {
         this.companyRecruit = companyRecruit;
     }
 
@@ -168,7 +169,7 @@ public class Festival extends BaseCreatedAtEntity {
      * 단기 근로자 지원 공고를 연결합니다.
      * 단방향 연관관계입니다.
      */
-    public void connectLaborRecruit(LaborRecruit laborRecruit) {
+    public void addLaborRecruit(LaborRecruit laborRecruit) {
         this.laborRecruit = laborRecruit;
     }
 

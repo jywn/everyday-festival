@@ -13,35 +13,12 @@ import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
-import com.festival.everyday.core.image.domain.Image;
-import com.festival.everyday.core.image.domain.OwnerType;
-import com.festival.everyday.core.image.repository.ImageRepository;
-import com.festival.everyday.core.recruit.domain.CompanyRecruit;
-import com.festival.everyday.core.recruit.domain.LaborRecruit;
-import com.festival.everyday.core.recruit.dto.RecruitStatus;
-import com.festival.everyday.core.recruit.dto.command.CategoryDto;
-import com.festival.everyday.core.recruit.dto.command.CompanyRecruitWithApplyDto;
-import com.festival.everyday.core.recruit.dto.command.LaborRecruitWithApplyDto;
 import com.festival.everyday.core.recruit.repository.CompanyRecruitRepository;
-import com.festival.everyday.core.recruit.repository.LaborRecruitRepository;
-import com.festival.everyday.core.recruit.repository.RecruitRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
-
-import static com.festival.everyday.core.application.dto.ApplyStatus.APPLIED;
-import static com.festival.everyday.core.application.dto.ApplyStatus.NOT_APPLIED;
-import static com.festival.everyday.core.favorite.dto.FavorStatus.FAVORED;
-import static com.festival.everyday.core.favorite.dto.FavorStatus.NOT_FAVORED;
-import static com.festival.everyday.core.recruit.dto.RecruitStatus.NOT_RECRUITING;
-import static com.festival.everyday.core.recruit.dto.RecruitStatus.RECRUITING;
 
 @Service
 @Transactional(readOnly = true)

@@ -109,8 +109,8 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                         festival.address.city, festival.address.district, festival.address.detail,
                         favorStatus(),
                         image.url,
-                        companyRecruit.period.begin, companyRecruit.period.end, companyRecruit.notice, companyRecruit.preferred,
-                        laborRecruit.period.begin, laborRecruit.period.end, laborRecruit.notice,laborRecruit.job, laborRecruit.wage, laborRecruit.remark,
+                        companyRecruit.id, companyRecruit.period.begin, companyRecruit.period.end, companyRecruit.notice, companyRecruit.preferred,
+                        laborRecruit.id, laborRecruit.period.begin, laborRecruit.period.end, laborRecruit.notice,laborRecruit.job, laborRecruit.wage, laborRecruit.remark,
                         applyStatus()))
                 .from(festival)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))

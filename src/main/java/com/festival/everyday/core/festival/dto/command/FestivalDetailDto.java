@@ -46,6 +46,7 @@ public class FestivalDetailDto {
     private String imageUrl;
 
     // companyRecruit
+    private Long companyRecruitId;
     private LocalDateTime companyRecruitBegin;
     private LocalDateTime companyRecruitEnd;
     private String companyNotice;
@@ -53,6 +54,7 @@ public class FestivalDetailDto {
     private List<Category> categories = new ArrayList<>();
 
     // laborRecruit
+    private Long laborRecruitId;
     private LocalDateTime laborRecruitBegin;
     private LocalDateTime laborRecruitEnd;
     private String laborNotice;
@@ -66,9 +68,9 @@ public class FestivalDetailDto {
     public FestivalDetailDto(String name, String fee, String time, String introduction, String tel,
                              String link, String holderName, LocalDateTime holdBegin, LocalDateTime holdEnd,
                              String city, String district, String detail, String strFavor, String url,
-                             LocalDateTime companyRecruitBegin, LocalDateTime companyRecruitEnd,
+                             Long CompanyRecruitId, LocalDateTime companyRecruitBegin, LocalDateTime companyRecruitEnd,
                              String companyNotice, String preferred,
-                             LocalDateTime laborRecruitBegin, LocalDateTime laborRecruitEnd,
+                             Long laborRecruitId, LocalDateTime laborRecruitBegin, LocalDateTime laborRecruitEnd,
                              String laborNotice, String job, String wage, String remark,
                              String strApply) {
         this.name = name;
@@ -85,10 +87,12 @@ public class FestivalDetailDto {
         this.detail = detail;
         this.favorStatus = FavorStatus.valueOf(strFavor);
         this.imageUrl = url;
+        this.companyRecruitId = CompanyRecruitId;
         this.companyRecruitBegin = companyRecruitBegin;
         this.companyRecruitEnd = companyRecruitEnd;
         this.companyNotice = companyNotice;
         this.preferred = preferred;
+        this.laborRecruitId = laborRecruitId;
         this.laborRecruitBegin = laborRecruitBegin;
         this.laborRecruitEnd = laborRecruitEnd;
         this.laborNotice = laborNotice;
