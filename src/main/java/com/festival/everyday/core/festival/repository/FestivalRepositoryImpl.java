@@ -7,6 +7,9 @@ import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.image.domain.OwnerType;
+import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
+import com.festival.everyday.core.recruit.dto.command.CategoryDto;
+import com.festival.everyday.core.user.domain.Category;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -105,9 +108,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                         festival.address.city, festival.address.district, festival.address.detail,
                         favorStatus(),
                         image.url,
-                        // categories 수정 필요
-                        // 쿼리 분리하여 2회 조회후, 서비스에서 합성
-                        companyRecruit.period.begin, companyRecruit.period.end, companyRecruit.notice, companyRecruit.preferred, companyRecruit.categories,
+                        companyRecruit.period.begin, companyRecruit.period.end, companyRecruit.notice, companyRecruit.preferred,
                         laborRecruit.period.begin, laborRecruit.period.end, laborRecruit.notice,laborRecruit.job, laborRecruit.wage, laborRecruit.remark,
                         applyStatus()))
                 .from(festival)
@@ -119,16 +120,27 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .fetchOne();
     }
 
-    private static SimpleExpression<FavorStatus> favorStatus() {
-        return new CaseBuilder()
-                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
-                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
+    @Override
+    public List<Category> findCompanyRecruitCategories(Long festivalId) {
+        return queryFactory
+                .select(companyRecruit.categories.any())
+                .from(festival)
+                .join(festival.companyRecruit, companyRecruit)
+                .where(festival.id.eq(festivalId))
+                .fetch();
     }
 
-    private static SimpleExpression<ApplyStatus> applyStatus() {
+
+    private static SimpleExpression<String> favorStatus() {
         return new CaseBuilder()
-                .when(application.id.isNotNull()).then(Expressions.constant(ApplyStatus.APPLIED))
-                .otherwise(Expressions.constant(ApplyStatus.NOT_APPLIED));
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED.name()))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED.name()));
+    }
+
+    private static SimpleExpression<String> applyStatus() {
+        return new CaseBuilder()
+                .when(application.id.isNotNull()).then(Expressions.constant(ApplyStatus.APPLIED.name()))
+                .otherwise(Expressions.constant(ApplyStatus.NOT_APPLIED.name()));
     }
 
     public static BooleanExpression getAndConditions(String[] tokens) {
