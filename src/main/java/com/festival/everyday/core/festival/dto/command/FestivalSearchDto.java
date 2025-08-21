@@ -12,6 +12,7 @@ public class FestivalSearchDto {
 
     private Long id;
     private String name;
+    private String holderName;
 
     private String holderName;
     // address
