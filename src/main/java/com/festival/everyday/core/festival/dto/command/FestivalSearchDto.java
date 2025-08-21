@@ -13,9 +13,6 @@ public class FestivalSearchDto {
     private Long id;
     private String name;
 
-    // holder
-    private String holderName;
-
     // address
     private String city;
     private String district;
@@ -31,10 +28,10 @@ public class FestivalSearchDto {
     // image
     private String imageUrl;
 
-    public static FestivalSearchDto of(Festival festival, FavorStatus favorStatus, String imageUrl) {
-        return new FestivalSearchDto(festival.getId(), festival.getName(), festival.getHolder().getName(),
-                festival.getAddress().getCity(), festival.getAddress().getDistrict(), festival.getAddress().getDetail(),
-                festival.getPeriod().getBegin(), festival.getPeriod().getEnd(),
-                favorStatus, imageUrl);
-    }
+//    public static FestivalSearchDto of(Festival festival, FavorStatus favorStatus, String imageUrl) {
+//        return new FestivalSearchDto(festival.getId(), festival.getName(),
+//                festival.getAddress().getCity(), festival.getAddress().getDistrict(), festival.getAddress().getDetail(),
+//                festival.getPeriod().getBegin(), festival.getPeriod().getEnd(),
+//                favorStatus, imageUrl);
+//    }
 }
