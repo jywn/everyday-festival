@@ -29,6 +29,22 @@ public class FestivalSearchDto {
     // image
     private String imageUrl;
 
+    public FestivalSearchDto(Long id, String name, String holderName,
+                             String city, String district, String detail,
+                             LocalDateTime begin, LocalDateTime end,
+                             String strFavor, String url) {
+        this.id = id;
+        this.name = name;
+        this.holderName = holderName;
+        this.city = city;
+        this.district = district;
+        this.detail = detail;
+        this.begin = begin;
+        this.end = end;
+        this.favorStatus = FavorStatus.valueOf(strFavor);
+        this.imageUrl = url;
+    }
+
 //    public static FestivalSearchDto of(Festival festival, FavorStatus favorStatus, String imageUrl) {
 //        return new FestivalSearchDto(festival.getId(), festival.getName(),
 //                festival.getAddress().getCity(), festival.getAddress().getDistrict(), festival.getAddress().getDetail(),
