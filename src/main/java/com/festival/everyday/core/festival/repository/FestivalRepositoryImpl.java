@@ -122,10 +122,14 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
 
     @Override
     public List<Category> findCompanyRecruitCategories(Long festivalId) {
+
+        EnumPath<Category> category = Expressions.enumPath(Category.class, "category");
+
         return queryFactory
-                .select(companyRecruit.categories.any())
+                .select(category)
                 .from(festival)
                 .join(festival.companyRecruit, companyRecruit)
+                .join(companyRecruit.categories, category)
                 .where(festival.id.eq(festivalId))
                 .fetch();
     }
