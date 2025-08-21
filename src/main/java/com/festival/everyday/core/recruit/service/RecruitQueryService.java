@@ -1,28 +1,19 @@
-//package com.festival.everyday.core.recruit.service;
-//
-//import com.festival.everyday.core.recruit.domain.CompanyRecruit;
-//import com.festival.everyday.core.recruit.domain.LaborRecruit;
-//import com.festival.everyday.core.recruit.dto.command.CompanyRecruitDto;
-//import com.festival.everyday.core.recruit.dto.command.LaborRecruitDto;
-//import com.festival.everyday.core.recruit.repository.CompanyRecruitRepository;
-//import com.festival.everyday.core.recruit.repository.LaborRecruitRepository;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.stereotype.Service;
-//
-//@Service
-//@RequiredArgsConstructor
-//public class RecruitQueryService {
-//
-//    private final CompanyRecruitRepository companyRecruitRepository;
-//    private final LaborRecruitRepository laborRecruitRepository;
-//
-//    public CompanyRecruitDto findCompanyRecruit(Long festivalId) {
-//        CompanyRecruit companyRecruit = companyRecruitRepository.findByFestivalId(festivalId);
-//        return CompanyRecruitDto.from(companyRecruit);
-//    }
-//
-//    public LaborRecruitDto findLaborRecruit(Long festivalId) {
-//        LaborRecruit laborRecruit = laborRecruitRepository.findByFestivalId;
-//        return LaborRecruitDto.from(laborRecruit);
-//    }
-//}
+package com.festival.everyday.core.recruit.service;
+
+import com.festival.everyday.core.recruit.domain.Recruit;
+import com.festival.everyday.core.recruit.dto.command.RecruitWithQuestionsDto;
+import com.festival.everyday.core.recruit.repository.RecruitRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class RecruitQueryService {
+
+    private final RecruitRepository recruitRepository;
+
+    public RecruitWithQuestionsDto findRecruitWithQuestions(Long id) {
+        Recruit recruitWithQuestions = recruitRepository.findRecruitWithQuestions(id);
+        return RecruitWithQuestionsDto.from(recruitWithQuestions);
+    }
+}
