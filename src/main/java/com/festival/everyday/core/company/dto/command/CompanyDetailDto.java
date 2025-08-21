@@ -29,6 +29,31 @@ public class CompanyDetailDto {
     // image
     private String imageUrl;
 
+    // ← 추가: 0/1을 받아 enum으로 변환하는 생성자 (프로젝션 순서와 정확히 맞출 것)
+    public CompanyDetailDto(
+            String name, Category category, String introduction, String ceoName, String tel, String email, String link,
+            String city, String district, String detail,
+            Integer favorBit,           // 0 or 1
+            String imageUrl
+    ) {
+        this.name = name;
+        this.category = category;
+        this.introduction = introduction;
+        this.ceoName = ceoName;
+        this.tel = tel;
+        this.email = email;
+        this.link = link;
+
+        this.city = city;
+        this.district = district;
+        this.detail = detail;
+
+        this.favorStatus = (favorBit != null && favorBit == 1)
+                ? FavorStatus.FAVORED : FavorStatus.NOT_FAVORED;
+
+        this.imageUrl = imageUrl;
+    }
+
     public static CompanyDetailDto from(Company company, FavorStatus favorStatus, String imageUrl) {
         return new CompanyDetailDto(
                 company.getName(),
@@ -41,5 +66,4 @@ public class CompanyDetailDto {
                 company.getAddress().getCity(), company.getAddress().getDistrict(), company.getAddress().getDetail(),
                 favorStatus, imageUrl);
     }
-
 }
