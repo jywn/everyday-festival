@@ -48,7 +48,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
         // 쿼리를 실행하고, 결과를 DTO 로 변환합니다.
         List<FestivalSearchDto> queryResult = queryFactory
                 .select(Projections.constructor(FestivalSearchDto.class,
-                        festival.id, festival.name,
+                        festival.id, festival.name, festival.holder.name,
                         festival.address.city, festival.address.district, festival.address.detail,
                         festival.period.begin, festival.period.end,
                         favorStatus(),
@@ -59,6 +59,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                         .and(favorite.receiverType.eq(ReceiverType.FESTIVAL)
                                 .and(favorite.receiverId.eq(festival.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+                .join(festival.holder, holder)
                 .where(andConditions)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
