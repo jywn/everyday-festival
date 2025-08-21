@@ -26,4 +26,14 @@ public class CompanySearchDto {
     // image
     private String imageUrl;
 
+    public CompanySearchDto(Long id, String name, Category category, String city, String district, String detail, String strFavor, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.city = city;
+        this.district = district;
+        this.detail = detail;
+        this.favorStatus = FavorStatus.valueOf(strFavor);
+        this.imageUrl = imageUrl;
+    }
 }
