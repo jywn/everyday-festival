@@ -18,6 +18,7 @@ public class NoticeController {
 
     private final NoticeQueryService noticeQueryService;
 
+    // 페이징 수정 필요
     @GetMapping("/users/me/notices")
     public ResponseEntity<ApiResponse<List<NoticeResponse>>> getMyNotices(@RequestAttribute(name= TokenAuthenticationFilter.ATTR_USER_ID) Long userId) {
 
