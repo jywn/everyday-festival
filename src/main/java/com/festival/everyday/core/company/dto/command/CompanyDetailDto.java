@@ -29,6 +29,24 @@ public class CompanyDetailDto {
     // image
     private String imageUrl;
 
+    public CompanyDetailDto(String name, Category category, String introduction,
+                            String ceoName, String tel, String email, String link,
+                            String city, String district, String detail,
+                            String favorStatus, String imageUrl) {
+        this.name = name;
+        this.category = category;
+        this.introduction = introduction;
+        this.ceoName = ceoName;
+        this.tel = tel;
+        this.email = email;
+        this.link = link;
+        this.city = city;
+        this.district = district;
+        this.detail = detail;
+        this.favorStatus = FavorStatus.valueOf(favorStatus);
+        this.imageUrl = imageUrl;
+    }
+
     public static CompanyDetailDto from(Company company, FavorStatus favorStatus, String imageUrl) {
         return new CompanyDetailDto(
                 company.getName(),
