@@ -15,16 +15,13 @@ import static com.festival.everyday.core.common.DomainValidator.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LaborRecruit extends Recruit {
 
-    @NotNull
-    @Column(name = "labor_job", nullable = false)
+    @Column(name = "labor_job")
     private String job;
 
-    @NotNull
-    @Column(name = "wage", nullable = false)
+    @Column(name = "wage")
     private String wage;
 
-    @NotNull
-    @Column(name = "remark", nullable = false)
+    @Column(name = "remark")
     private String remark;
 
     /**

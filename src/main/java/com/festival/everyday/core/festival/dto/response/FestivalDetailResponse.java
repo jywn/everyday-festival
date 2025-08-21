@@ -82,6 +82,7 @@ public class FestivalDetailResponse {
     @Data
     @AllArgsConstructor
     public static class SimpleCompanyRecruitDto {
+        public Long id;
         private PeriodDto periodDto;
         private String notice;
         private String preferred;
@@ -89,6 +90,7 @@ public class FestivalDetailResponse {
 
         public static SimpleCompanyRecruitDto from(FestivalDetailDto festivalDetailDto) {
             return new SimpleCompanyRecruitDto(
+                    festivalDetailDto.getCompanyRecruitId(),
                     PeriodDto.of(festivalDetailDto.getCompanyRecruitBegin(), festivalDetailDto.getCompanyRecruitEnd()),
                     festivalDetailDto.getCompanyNotice(), festivalDetailDto.getPreferred(), festivalDetailDto.getCategories()
             );
@@ -98,6 +100,7 @@ public class FestivalDetailResponse {
     @Data
     @AllArgsConstructor
     public static class SimpleLaborRecruitDto {
+        public Long id;
         private PeriodDto periodDto;
         private String notice;
         private String job;
@@ -106,6 +109,7 @@ public class FestivalDetailResponse {
 
         public static SimpleLaborRecruitDto from(FestivalDetailDto festivalDetailDto) {
             return new SimpleLaborRecruitDto(
+                    festivalDetailDto.getLaborRecruitId(),
                     PeriodDto.of(festivalDetailDto.getLaborRecruitBegin(), festivalDetailDto.getLaborRecruitEnd()),
                     festivalDetailDto.getLaborNotice(), festivalDetailDto.getJob(), festivalDetailDto.getWage(), festivalDetailDto.getRemark()
             );

@@ -13,8 +13,4 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class InterestRequest {
     private Long festivalId;
-    public Interest toEntity(Company company, Festival festival)
-    {
-        return Interest.create(company, festival);
-    }
 }

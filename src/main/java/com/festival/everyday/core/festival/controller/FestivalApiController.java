@@ -44,7 +44,7 @@ public class FestivalApiController {
         return ResponseEntity.ok(ApiResponse.success("축제 상세 조회에 성공하였습니다.", festivalDetailResponse));
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ApiResponse<Long>> createFestival(@RequestAttribute(name = ATTR_USER_ID) Long userId,
                                                             @RequestAttribute(name = ATTR_USER_TYPE) String userType,
                                                             @RequestBody FestivalFormRequest festivalFormRequest) {
