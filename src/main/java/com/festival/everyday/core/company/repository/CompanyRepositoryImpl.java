@@ -46,7 +46,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                 .select(Projections.constructor(CompanySearchDto.class,
                         company.id, company.name, company.category,
                         company.address.city, company.address.district, company.address.detail,
-                        favorBitExpr(), image.url))
+                        favorStatus(), image.url))
                 .from(company)
                 .leftJoin(favorite).on(favorite.sender.id.eq(userId)
                         .and(favorite.receiverType.eq(ReceiverType.COMPANY)
@@ -68,7 +68,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                 .select(Projections.constructor(CompanySearchDto.class,
                         company.id, company.name, company.category,
                         company.address.city, company.address.district, company.address.detail,
-                        favorBitExpr(), image.url))
+                        favorStatus(), image.url))
                 .from(company)
                 .leftJoin(favorite).on(favorite.sender.id.eq(userId)
                         .and(favorite.receiverType.eq(ReceiverType.COMPANY)
@@ -84,7 +84,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                 .select(Projections.constructor(CompanyDetailDto.class,
                         company.name, company.category, company.introduction, company.ceoName, company.tel, company.email, company.link,
                         company.address.city, company.address.district, company.address.detail,
-                        favorBitExpr(), image.url))
+                        favorStatus(), image.url))
                 .from(company)
                 .leftJoin(favorite).on(favorite.sender.id.eq(userId)
                         .and(favorite.receiverType.eq(ReceiverType.COMPANY)
@@ -109,10 +109,10 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
     }
 
     // 찜 여부를 확인합니다.
-    private static SimpleExpression<FavorStatus> favorStatus() {
+    private static SimpleExpression<String> favorStatus() {
         return new CaseBuilder()
-                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
-                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED.name()))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED.name()));
     }
 
     public static BooleanExpression getAndConditions(String[] tokens) {
@@ -123,11 +123,4 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
         }
         return andCondition;
     }
-
-    private static NumberExpression<Integer> favorBitExpr() {
-        return new CaseBuilder()
-                .when(favorite.id.isNotNull()).then(1)
-                .otherwise(0);
-    }
 }
-

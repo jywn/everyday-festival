@@ -17,9 +17,6 @@ public class FestivalSearchResponse {
     private Long id;
     private String name;
 
-    // holder
-    private String holderName;
-
     // address
     private AddressDto address;
 
@@ -34,7 +31,7 @@ public class FestivalSearchResponse {
 
     public static FestivalSearchResponse from(FestivalSearchDto dto) {
         return new FestivalSearchResponse(
-                dto.getId(), dto.getName(), dto.getHolderName(),
+                dto.getId(), dto.getName(),
                 AddressDto.of(dto.getCity(), dto.getDistrict(), dto.getDetail()),
                 PeriodDto.of(dto.getBegin(), dto.getEnd()),
                 dto.getFavorStatus(),
