@@ -19,6 +19,7 @@ import com.festival.everyday.core.image.repository.ImageRepository;
 import com.festival.everyday.core.recruit.domain.CompanyRecruit;
 import com.festival.everyday.core.recruit.domain.LaborRecruit;
 import com.festival.everyday.core.recruit.dto.RecruitStatus;
+import com.festival.everyday.core.recruit.dto.command.CategoryDto;
 import com.festival.everyday.core.recruit.dto.command.CompanyRecruitWithApplyDto;
 import com.festival.everyday.core.recruit.dto.command.LaborRecruitWithApplyDto;
 import com.festival.everyday.core.recruit.repository.CompanyRecruitRepository;
@@ -48,10 +49,12 @@ import static com.festival.everyday.core.recruit.dto.RecruitStatus.RECRUITING;
 public class FestivalQueryService {
 
     private final FestivalRepository festivalRepository;
+    private final CompanyRecruitRepository companyRecruitRepository;
 
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
         // 축제를 찾습니다.
         FestivalDetailDto festivalDetail = festivalRepository.findFestivalDetail(festivalId, userId);
+        festivalDetail.addCategories(festivalRepository.findCompanyRecruitCategories(festivalId));
         return FestivalDetailResponse.from(festivalDetail);
     }
 
