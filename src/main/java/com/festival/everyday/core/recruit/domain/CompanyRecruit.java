@@ -32,7 +32,7 @@ public class CompanyRecruit extends Recruit {
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     @CollectionTable(
-            name = "company_categoreis",
+            name = "company_categories",
             joinColumns = @JoinColumn(name = "recruit_id")
     )
     @Column(name = "company_category")
