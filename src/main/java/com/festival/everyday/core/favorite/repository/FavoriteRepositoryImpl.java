@@ -145,9 +145,9 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
-    private static SimpleExpression<FavorStatus> favorStatus() {
+    private static SimpleExpression<String> favorStatus() {
         return new CaseBuilder()
-                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
-                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED.name()))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED.name()));
     }
 }
