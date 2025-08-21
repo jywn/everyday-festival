@@ -109,10 +109,10 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
     }
 
     // 찜 여부를 확인합니다.
-    private static SimpleExpression<FavorStatus> favorStatus() {
+    private static SimpleExpression<String> favorStatus() {
         return new CaseBuilder()
-                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED))
-                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED));
+                .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED.name()))
+                .otherwise(Expressions.constant(FavorStatus.NOT_FAVORED.name()));
     }
 
     public static BooleanExpression getAndConditions(String[] tokens) {
