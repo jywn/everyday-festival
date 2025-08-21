@@ -37,6 +37,8 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 .from(review)
                 .join(company).on(company.id.eq(review.senderId).and(review.senderType.eq(COMPANY)))
                 .where(review.receiverId.eq(receiverId).and(review.receiverType.eq(receiverType)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(review.count())
@@ -56,6 +58,8 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 .from(review)
                 .join(festival).on(festival.id.eq(review.senderId).and(review.senderType.eq(FESTIVAL)))
                 .where(review.receiverId.eq(receiverId).and(review.receiverType.eq(receiverType)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(review.count())
@@ -76,6 +80,8 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 .from(review)
                 .join(labor).on(labor.id.eq(review.senderId).and(review.senderType.eq(LABOR)))
                 .where(review.receiverId.eq(receiverId).and(review.receiverType.eq(receiverType)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(review.count())
