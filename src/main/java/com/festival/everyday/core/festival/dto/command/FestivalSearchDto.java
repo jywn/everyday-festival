@@ -14,7 +14,6 @@ public class FestivalSearchDto {
     private String name;
     private String holderName;
 
-    private String holderName;
     // address
     private String city;
     private String district;
