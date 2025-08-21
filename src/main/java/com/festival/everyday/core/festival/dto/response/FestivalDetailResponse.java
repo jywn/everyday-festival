@@ -48,8 +48,9 @@ public class FestivalDetailResponse {
         );
     }
 
+    @Data
     @AllArgsConstructor
-    static class FestivalOnlyDto {
+    public static class FestivalOnlyDto {
         private String name;
         private String fee;
         private String time;
@@ -78,8 +79,9 @@ public class FestivalDetailResponse {
         }
     }
 
+    @Data
     @AllArgsConstructor
-    static class SimpleCompanyRecruitDto {
+    public static class SimpleCompanyRecruitDto {
         private PeriodDto periodDto;
         private String notice;
         private String preferred;
@@ -93,8 +95,9 @@ public class FestivalDetailResponse {
         }
     }
 
+    @Data
     @AllArgsConstructor
-    static class SimpleLaborRecruitDto {
+    public static class SimpleLaborRecruitDto {
         private PeriodDto periodDto;
         private String notice;
         private String job;
