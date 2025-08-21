@@ -115,7 +115,9 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .leftJoin(favorite).on(favorite.receiverType.eq(ReceiverType.FESTIVAL).and(favorite.receiverId.eq(festival.id)).and(favorite.sender.id.eq(userId)))
                 .leftJoin(application).on(application.festival.id.eq(festivalId).and(application.user.id.eq(userId)))
-                .leftJoin(festival.holder, holder)
+                .leftJoin(companyRecruit).on(festival.companyRecruit.id.eq(companyRecruit.id))
+                .leftJoin(laborRecruit).on(festival.laborRecruit.id.eq(laborRecruit.id))
+                .join(festival.holder, holder)
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
     }
