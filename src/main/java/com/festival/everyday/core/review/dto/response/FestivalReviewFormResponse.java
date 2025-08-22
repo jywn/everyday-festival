@@ -17,10 +17,10 @@ public class FestivalReviewFormResponse {
     private String festivalName;
 
     // address
-    private AddressDto addressDto;
+    private AddressDto address;
 
     // period
-    private PeriodDto periodDto;
+    private PeriodDto period;
 
     public static FestivalReviewFormResponse from(Festival festival) {
         return new FestivalReviewFormResponse(

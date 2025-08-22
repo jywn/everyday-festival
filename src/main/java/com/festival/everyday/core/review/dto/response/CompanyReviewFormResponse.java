@@ -17,7 +17,7 @@ public class CompanyReviewFormResponse {
     private Category companyCategory;
 
     // address
-    private AddressDto addressDto;
+    private AddressDto address;
 
     public static CompanyReviewFormResponse from(Company company) {
         return new CompanyReviewFormResponse(company.getName(), company.getCategory(), AddressDto.from(company.getAddress()));

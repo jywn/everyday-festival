@@ -18,7 +18,7 @@ public class MyApplicationSimpleResponse {
     private String holderName;
 
     // period
-    private PeriodDto periodDto;
+    private PeriodDto period;
 
     private SELECTED selected;
 
