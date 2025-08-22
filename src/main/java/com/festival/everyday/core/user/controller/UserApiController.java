@@ -35,17 +35,6 @@ public class UserApiController {
     private final FestivalQueryService festivalQueryService;
     private final FavoriteQueryService favoriteQueryService;
 
-    // 내가 등록한 축제 목록을 조회합니다.
-    @GetMapping("/me/festivals")
-    public ResponseEntity<ApiResponse<PageResponse<MyFestivalResponse>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
-                                                                                        @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
-                                                                                        Pageable pageable) {
-        PageResponse<MyFestivalResponse> response = PageResponse.from(festivalQueryService.findListByHolderId(userId, pageable).map(MyFestivalResponse::from));
-
-        return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", response));
-    }
-
-
     // 내 프로필을 조회합니다.
     @GetMapping("/me/profile")
     public ResponseEntity<ApiResponse<MyProfileResponse>>  getMyProfile(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
@@ -110,6 +99,20 @@ public class UserApiController {
         }).map(FestivalSimpleResponse::from));
 
         return ResponseEntity.ok(ApiResponse.success("찜한 축제 목록 조회 성공", response));
+    }
+
+    // 내가 등록한 축제 목록을 조회합니다.
+    @GetMapping("/me/festivals")
+    public ResponseEntity<ApiResponse<PageResponse<MyFestivalResponse>>> getMyFestivals(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+                                                                                        @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
+                                                                                        @RequestParam(name = "holdStatus") HoldStatus holdStatus,
+                                                                                        Pageable pageable) {
+        PageResponse<MyFestivalResponse> response = PageResponse.from((switch (holdStatus) {
+            case ONGOING -> festivalQueryService.findOngoingListByHolderId(userId,pageable);
+            case ENDED -> festivalQueryService.findEndedListByHolderId(userId,pageable);
+        }).map(MyFestivalResponse::from));
+
+        return ResponseEntity.ok(ApiResponse.success("내가 등록한 축제 목록을 조회하는데 성공하였습니다.", response));
     }
 
     // 컨트롤러에서만 사용하는 enum 클래스.

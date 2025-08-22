@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class LaborRecruitResponse {
 
-    private PeriodDto periodDto;
+    private PeriodDto period;
     private String job;
     private String wage;
     private String notice;

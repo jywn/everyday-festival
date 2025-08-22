@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +79,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
 
     // 페이징
     @Override
-    public Page<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId, Pageable pageable) {
+    public Page<MyFestivalDto> findOngoingFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable) {
 
         List<MyFestivalDto> queryResult = queryFactory
                 .select(Projections.constructor(MyFestivalDto.class,
@@ -87,7 +88,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .from(festival)
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(holder.id.eq(holderId))
+                .where(holder.id.eq(holderId).and(festival.period.end.goe(now)))    // 페스티벌 끝난 시간 >= now
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -100,6 +101,31 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
 
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
+
+    @Override
+    public Page<MyFestivalDto> findEndedFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable) {
+
+        List<MyFestivalDto> queryResult = queryFactory
+                .select(Projections.constructor(MyFestivalDto.class,
+                        festival.id, festival.name, festival.address.city, festival.address.district, festival.address.detail,
+                        festival.period.begin, festival.period.end, image.url))
+                .from(festival)
+                .join(festival.holder, holder)
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+                .where(holder.id.eq(holderId).and(festival.period.end.loe(now)))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(festival.count())
+                .from(festival)
+                .join(festival.holder, holder)
+                .where(holder.id.eq(holderId));
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
+    }
+
 
     @Override
     public FestivalDetailDto findFestivalDetail(Long festivalId, Long userId) {

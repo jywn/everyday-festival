@@ -33,7 +33,7 @@ public class CompanyApplicationSimpleResponse {
         private Long id;
         private String name;
         private Category category;
-        private AddressDto addressDto;
+        private AddressDto address;
 
         public static SimpleCompanyDto of(CompanyApplicationSimpleDto companyApplicationSimpleDto) {
             return new SimpleCompanyDto(

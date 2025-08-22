@@ -10,12 +10,15 @@ import com.festival.everyday.core.user.domain.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface FestivalRepositoryCustom {
     Page<FestivalSearchDto> searchByKeyword(Long userId, String keyword, Pageable pageable);
 
-    Page<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId, Pageable pageable);
+    Page<MyFestivalDto> findOngoingFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable);
+
+    Page<MyFestivalDto> findEndedFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable);
 
     FestivalDetailDto findFestivalDetail(Long festivalId, Long userId);
 

@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -35,11 +37,20 @@ public class FestivalQueryService {
         return FestivalDetailResponse.from(festivalDetail);
     }
 
-    // 기획자 id 를 이용해 축제 목록을 조회합니다.
-    public Page<MyFestivalDto> findListByHolderId(Long holderId, Pageable pageable) {
+    // 진행 중인 내 축제 보기
+    public Page<MyFestivalDto> findOngoingListByHolderId(Long holderId, Pageable pageable) {
 
         // 조회한 축제 목록을 찜 여부와 함께 DTO 로 변환합니다.
-        return festivalRepository.findFestivalsByHolderIdWithUrl(holderId, pageable);
+        LocalDateTime now = LocalDateTime.now();
+        return festivalRepository.findOngoingFestivalsByHolderIdWithUrl(holderId,now, pageable);
+    }
+
+    // 진행 완료 내 축제 보기
+    public Page<MyFestivalDto> findEndedListByHolderId(Long holderId, Pageable pageable) {
+
+        // 조회한 축제 목록을 찜 여부와 함께 DTO 로 변환합니다.
+        LocalDateTime now = LocalDateTime.now();
+        return festivalRepository.findEndedFestivalsByHolderIdWithUrl(holderId, now, pageable);
     }
 
     // 사용자 ID 를 통해 찜 여부와 함께 축제 목록 페이지를 검색합니다.
