@@ -32,7 +32,7 @@ public class UserCommandService {
         checkRedundant(request.getAccount());
 
         // 주소를 DTO 로 변환한다.
-        AddressDto addressDto = request.getAddressDto();
+        AddressDto addressDto = request.getAddress();
         Address address = Address.create(addressDto.getCity(), addressDto.getDistrict(), addressDto.getDetail());
 
         // 비밀번호를 암호화한다.
@@ -51,7 +51,7 @@ public class UserCommandService {
         checkRedundant(request.getAccount());
 
         // 주소를 DTO 로 변환한다.
-        AddressDto addressDto = request.getAddressDto();
+        AddressDto addressDto = request.getAddress();
         Address address = Address.create(addressDto.getCity(), addressDto.getDistrict(), addressDto.getDetail());
 
         // 비밀번호를 암호화한다.
@@ -70,7 +70,7 @@ public class UserCommandService {
         // 계정 중복을 확인한다.
         checkRedundant(request.getAccount());
         // 주소를 DTO 로 변환한다.
-        AddressDto addressDto = request.getAddressDto();
+        AddressDto addressDto = request.getAddress();
         Address address = Address.create(addressDto.getCity(), addressDto.getDistrict(), addressDto.getDetail());
 
         // 비밀번호를 암호화한다.

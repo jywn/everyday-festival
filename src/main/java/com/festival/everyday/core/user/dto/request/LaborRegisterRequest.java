@@ -15,7 +15,7 @@ public class LaborRegisterRequest {
     private String name;
     private String tel;
     private String email;
-    private AddressDto addressDto;
+    private AddressDto address;
     private Integer age;
     private Gender gender;
 }
