@@ -88,6 +88,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable) {
         List<MyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(MyApplicationSimpleDto.class,
+                        application.id,
                         application.festival.id, application.festival.name, application.festival.holder.name,
                         application.festival.period.begin, application.festival.period.end,
                         application.selected, image.url))

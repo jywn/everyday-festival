@@ -12,8 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MyApplicationSimpleResponse {
 
-    // festival
+    // application
     private Long id;
+
+    // festival
+    private Long festivalId;
     private String name;
     private String holderName;
 
@@ -27,7 +30,8 @@ public class MyApplicationSimpleResponse {
 
     public static MyApplicationSimpleResponse from(MyApplicationSimpleDto myApplicationSimpleDto) {
         return new MyApplicationSimpleResponse(
-                myApplicationSimpleDto.getId(), myApplicationSimpleDto.getName(), myApplicationSimpleDto.getHolderName(),
+                myApplicationSimpleDto.getId(),
+                myApplicationSimpleDto.getFestivalId(), myApplicationSimpleDto.getName(), myApplicationSimpleDto.getHolderName(),
                 PeriodDto.of(myApplicationSimpleDto.getBegin(), myApplicationSimpleDto.getEnd()),
                 myApplicationSimpleDto.getSelected(), myApplicationSimpleDto.getImageUrl());
     }

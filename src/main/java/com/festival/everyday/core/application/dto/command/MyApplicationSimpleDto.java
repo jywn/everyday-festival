@@ -10,8 +10,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MyApplicationSimpleDto {
 
-    // festival
+    // application
     private Long id;
+
+    // festival
+    private Long festivalId;
     private String name;
     private String holderName;
 
