@@ -2,6 +2,7 @@ package com.festival.everyday.core.festival.repository;
 
 import com.festival.everyday.core.application.dto.ApplyStatus;
 import com.festival.everyday.core.common.dto.ReceiverType;
+import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 import static com.festival.everyday.core.application.domain.QApplication.*;
 import static com.festival.everyday.core.common.Tokenizer.*;
+import static com.festival.everyday.core.company.domain.QCompany.company;
 import static com.festival.everyday.core.favorite.domain.QFavorite.*;
 import static com.festival.everyday.core.festival.domain.QFestival.*;
 import static com.festival.everyday.core.image.domain.QImage.*;
@@ -137,6 +139,27 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public List<FestivalSearchDto> findSimpleFestivalList(Long userId, List<Long> festivalIds) {
+        return List.of();
+    }
+
+//    @Override
+//    public List<FestivalSearchDto> findSimpleFestivalList(Long userId, List<Long> festivalIds) {
+//
+//        return queryFactory
+//                .select(Projections.constructor(CompanySearchDto.class,
+//                        company.id, company.name, company.category,
+//                        company.address.city, company.address.district, company.address.detail,
+//                        favorStatus(), image.url))
+//                .from(company)
+//                .leftJoin(favorite).on(favorite.sender.id.eq(userId)
+//                        .and(favorite.receiverType.eq(ReceiverType.COMPANY)
+//                                .and(favorite.receiverId.eq(company.id))))
+//                .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
+//                .where(company.id.in(companyIds))
+//                .fetch();
+//    }
 
     private static SimpleExpression<String> favorStatus() {
         return new CaseBuilder()
