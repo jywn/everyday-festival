@@ -65,16 +65,16 @@ public class FestivalApiController {
         return ResponseEntity.ok(ApiResponse.success("축제 검색에 성공하였습니다.", response));
     }
 
-    @GetMapping("/{festival_id}/recommended-companies")
-    public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> recommendCompanies(@RequestAttribute(name = ATTR_USER_ID) Long userId,
-                                                                                       @RequestAttribute(name = ATTR_USER_TYPE) String userType,
-                                                                                       @PathVariable Long festival_id) {
-
-        // 추천 업체 목록을 조회한 결과를 목록으로 반환합니다.
-        List<CompanySimpleResponse> response = recommendService.recommendCompany(userId, festival_id).stream().map(CompanySimpleResponse::from).toList();
-
-        return ResponseEntity.ok(ApiResponse.success("추천 업체 목록 조회에 성공했습니다.", response));
-    }
+//    @GetMapping("/{festival_id}/recommended-companies")
+//    public ResponseEntity<ApiResponse<List<CompanySimpleResponse>>> recommendCompanies(@RequestAttribute(name = ATTR_USER_ID) Long userId,
+//                                                                                       @RequestAttribute(name = ATTR_USER_TYPE) String userType,
+//                                                                                       @PathVariable Long festival_id) {
+//
+//        // 추천 업체 목록을 조회한 결과를 목록으로 반환합니다.
+//        List<CompanySimpleResponse> response = recommendService.recommendCompanies(userId, festival_id).stream().map(CompanySimpleResponse::from).toList();
+//
+//        return ResponseEntity.ok(ApiResponse.success("추천 업체 목록 조회에 성공했습니다.", response));
+//    }
 
     // 기획자인지 확인합니다.
     @GetMapping("/form")

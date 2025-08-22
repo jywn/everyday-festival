@@ -23,4 +23,6 @@ public interface FestivalRepositoryCustom {
     FestivalDetailDto findFestivalDetail(Long festivalId, Long userId);
 
     List<Category> findCompanyRecruitCategories(Long festivalId);
+
+    List<FestivalSearchDto> findSimpleFestivalList(Long userId, List<Long> festivalIds);
 }
