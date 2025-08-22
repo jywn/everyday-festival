@@ -25,7 +25,7 @@ public class DummyUserRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // 업체 더미 데이터 저장
+        // 업체 더미 데이터 저장, 1 ~ 30
         for (int i = 0; i < 30; i++) {
             CompanyRegisterRequest request = new CompanyRegisterRequest(
                     "C_acc_" + i,
@@ -42,7 +42,7 @@ public class DummyUserRunner implements CommandLineRunner {
             userCommandService.companyJoin(request);
         }
 
-        // 근로자 더미 데이터 저장
+        // 근로자 더미 데이터 저장, 31 ~ 60
         for (int i = 0; i < 30; i++) {
             LaborRegisterRequest request = new LaborRegisterRequest(
                     "L_acc_" + i,
@@ -57,7 +57,7 @@ public class DummyUserRunner implements CommandLineRunner {
             userCommandService.laborJoin(request);
         }
 
-        // 기획자 더미 데이터 저장
+        // 기획자 더미 데이터 저장, 61 ~ 90
         for (int i = 0; i < 30; i++) {
             HolderRegisterRequest request = new HolderRegisterRequest(
                     "H_acc_" + i,
