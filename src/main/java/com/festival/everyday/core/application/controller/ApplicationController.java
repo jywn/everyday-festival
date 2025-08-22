@@ -50,7 +50,7 @@ public class ApplicationController {
     }
 
     // 내가 지원한 목록 조회하기
-    @GetMapping("/company-applications")
+    @GetMapping("/my-applications")
     public ResponseEntity<ApiResponse<PageResponse<MyApplicationSimpleResponse>>> getMyApplications(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId, Pageable pageable) {
 
         PageResponse<MyApplicationSimpleResponse> result = PageResponse.from(applicationQueryService.getMyApplications(userId, pageable)
