@@ -25,14 +25,22 @@ public class DummyFavoriteRunner implements CommandLineRunner {
         for (int i = 1; i <= 90; i++) {
             Long senderId = (long) i;
 
-            // FESTIVAL (6개 찜)
+            /**
+             *  FESTIVAL (6개 찜)
+             *  userId = 5 -> festivalId가 5,15,25,35,45,55 찜
+             *  userId = 70 -> festivalId가 10,20,30,40,50,60
+             */
             for (int k = 0; k < 6; k++) {
                 Long receiverId = (long) modNonZero(i + k * 10, 60);
                 FavoriteRequest request = new FavoriteRequest(receiverId, ReceiverType.FESTIVAL);
                 favoriteCommandService.favor(senderId, request);
             }
 
-            // COMPANY (3개 찜)
+            /**
+             *  COMPANY (3개 찜)
+             *  userId = 7 -> userId가 7,17,27인 company 찜 (company의 userId 1~30)
+             *  userId = 80 -> userId가 10,20,30인 company 찜
+             */
             for (int k = 0; k < 3; k++) {
                 Long receiverId = (long) modNonZero(i + k * 10, 30);
                 FavoriteRequest request = new FavoriteRequest(receiverId, ReceiverType.COMPANY);
