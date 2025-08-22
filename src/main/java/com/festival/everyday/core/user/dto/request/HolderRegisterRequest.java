@@ -14,5 +14,5 @@ public class HolderRegisterRequest {
     private String name;
     private String tel;
     private String email;
-    private AddressDto addressDto;
+    private AddressDto address;
 }
