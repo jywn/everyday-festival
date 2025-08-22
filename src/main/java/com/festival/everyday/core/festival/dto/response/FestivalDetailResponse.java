@@ -101,7 +101,7 @@ public class FestivalDetailResponse {
     @AllArgsConstructor
     public static class SimpleLaborRecruitDto {
         public Long id;
-        private PeriodDto periodDto;
+        private PeriodDto period;
         private String notice;
         private String job;
         private String wage;

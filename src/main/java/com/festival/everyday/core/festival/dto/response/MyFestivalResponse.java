@@ -16,7 +16,7 @@ public class MyFestivalResponse {
     private Long id;
     private String name;
     private AddressDto address;
-    private PeriodDto periodDto;
+    private PeriodDto period;
     private String imageUrl;
 
     public static MyFestivalResponse from(MyFestivalDto festivalDto) {

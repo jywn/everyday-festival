@@ -11,7 +11,7 @@ public class FestivalFormRequest {
 
     private String name;
     private PeriodDto period;
-    private AddressDto addressDto;
+    private AddressDto address;
 
     private String fee;
     private String time;
