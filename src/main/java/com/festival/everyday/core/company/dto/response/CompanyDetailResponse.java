@@ -21,7 +21,7 @@ public class CompanyDetailResponse {
     private String link;
 
     // address
-    private AddressDto addressDto;
+    private AddressDto address;
 
     // favorite
     private FavorStatus favorStatus;

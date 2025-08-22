@@ -15,7 +15,7 @@ public class MyFestivalResponse {
 
     private Long id;
     private String name;
-    private AddressDto addressDto;
+    private AddressDto address;
     private PeriodDto periodDto;
     private String imageUrl;
 

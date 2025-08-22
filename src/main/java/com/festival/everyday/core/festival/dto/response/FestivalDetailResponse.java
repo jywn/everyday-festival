@@ -62,8 +62,8 @@ public class FestivalDetailResponse {
 
         private String imageUrl;
 
-        private PeriodDto periodDto;
-        private AddressDto addressDto;
+        private PeriodDto period;
+        private AddressDto address;
 
         private FavorStatus favorStatus;
 
@@ -83,7 +83,7 @@ public class FestivalDetailResponse {
     @AllArgsConstructor
     public static class SimpleCompanyRecruitDto {
         public Long id;
-        private PeriodDto periodDto;
+        private PeriodDto period;
         private String notice;
         private String preferred;
         private List<Category> categories;
