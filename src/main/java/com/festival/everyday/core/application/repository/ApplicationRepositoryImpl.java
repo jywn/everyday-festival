@@ -10,6 +10,7 @@ import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
 import com.festival.everyday.core.recruit.domain.QLaborRecruit;
 import com.festival.everyday.core.recruit.domain.QRecruit;
 import com.festival.everyday.core.user.domain.QLabor;
+import com.festival.everyday.core.user.domain.QUser;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -31,6 +32,7 @@ import static com.festival.everyday.core.recruit.domain.QLaborRecruit.*;
 import static com.festival.everyday.core.recruit.domain.QRecruit.*;
 import static com.festival.everyday.core.user.domain.QHolder.holder;
 import static com.festival.everyday.core.user.domain.QLabor.*;
+import static com.festival.everyday.core.user.domain.QUser.*;
 
 @RequiredArgsConstructor
 public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
@@ -126,6 +128,18 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .where(application.id.eq(applicationId))
                 .distinct()
                 .fetchOne();
+    }
+
+    @Override
+    public Boolean isApplicationSelected(Long senderId, Long festivalId) {
+
+        return queryFactory
+                .selectOne()
+                .from(application)
+                .where(application.festival.id.eq(festivalId)
+                        .and(application.user.id.eq(senderId))
+                        .and(application.selected.eq(SELECTED.ACCEPTED)))
+                .fetchFirst() != null;
     }
 
     private BooleanExpression selectedEq(SELECTED status) {

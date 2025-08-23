@@ -108,5 +108,29 @@ public class DummyRecruitRunner implements CommandLineRunner {
             );
             recruitCommandService.saveLaborRecruit(laborRequest, (long) i);
         }
+
+        // 60은 공고를 모두 등록한다.
+        CreateCompanyRecruitRequest companyRequest = new CreateCompanyRecruitRequest(
+                beginPast,
+                endPast,
+                categoriesPair,
+                null,
+                "CR_preferred_" + "60",
+                "CR_notice_" + "60",
+                strExQuestionsPair
+        );
+        recruitCommandService.saveCompanyRecruit(companyRequest, (long) 60);
+
+        CreateLaborRecruitRequest laborRequest = new CreateLaborRecruitRequest(
+                beginPast,
+                endPast,
+                "LR_job_" + "60",
+                "LR_wage_" + "60",
+                "LR_remark_" + "60",
+                "LR_notice_" + "60",
+                strExQuestionsPair
+        );
+
+        recruitCommandService.saveLaborRecruit(laborRequest, (long) 60);
     }
 }

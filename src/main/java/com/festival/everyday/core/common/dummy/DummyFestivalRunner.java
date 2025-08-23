@@ -35,6 +35,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
         /**
          * 1 ~ 45: 진행
          * 46 ~ 60: 종료
+         * id = 60 (acc 59)는 종료된 행사에 지원자가 존재한다.
          */
         for (int i = 0; i < 60; i++) {
             FestivalFormRequest request = new FestivalFormRequest(
