@@ -1,5 +1,6 @@
 package com.festival.everyday.core.company.dto.response;
 
+import com.festival.everyday.core.common.CategoryMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
@@ -13,7 +14,7 @@ import lombok.Data;
 public class CompanyDetailResponse {
 
     private String name;
-    private Category category;
+    private String category;
     private String introduction;
     private String ceoName;
     private String tel;
@@ -32,7 +33,7 @@ public class CompanyDetailResponse {
     public static CompanyDetailResponse from(CompanyDetailDto companyDetailDto) {
         return new CompanyDetailResponse(
                 companyDetailDto.getName(),
-                companyDetailDto.getCategory(),
+                CategoryMapper.enumToStr(companyDetailDto.getCategory()),
                 companyDetailDto.getIntroduction(),
                 companyDetailDto.getCeoName(),
                 companyDetailDto.getTel(),

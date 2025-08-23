@@ -1,5 +1,6 @@
 package com.festival.everyday.core.user.dto.response;
 
+import com.festival.everyday.core.common.CategoryMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.user.domain.Category;
@@ -10,11 +11,11 @@ public class CompanyFavoriteResponse {
     private Long id;
     private String name;
     private AddressDto address;
-    private Category category;
+    private String category;
     private String tel;
     private String link;
 
-    private CompanyFavoriteResponse(Long id, String name, AddressDto address, Category category, String tel, String link) {
+    private CompanyFavoriteResponse(Long id, String name, AddressDto address, String category, String tel, String link) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -28,7 +29,7 @@ public class CompanyFavoriteResponse {
                 company.getId(),
                 company.getName(),
                 AddressDto.from(company.getAddress()),
-                company.getCategory(),
+                CategoryMapper.enumToStr(company.getCategory()),
                 company.getTel(),
                 company.getLink()
         );
