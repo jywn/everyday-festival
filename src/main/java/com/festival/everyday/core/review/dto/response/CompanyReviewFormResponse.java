@@ -2,6 +2,7 @@ package com.festival.everyday.core.review.dto.response;
 
 import com.festival.everyday.core.common.CategoryMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
+import com.festival.everyday.core.company.dto.command.SimpleCompanyWithImageDto;
 import com.festival.everyday.core.user.domain.Category;
 import com.festival.everyday.core.company.domain.Company;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,14 @@ public class CompanyReviewFormResponse {
     // address
     private AddressDto address;
 
-    public static CompanyReviewFormResponse from(Company company) {
-        return new CompanyReviewFormResponse(company.getName(), CategoryMapper.enumToStr(company.getCategory()), AddressDto.from(company.getAddress()));
+    //image
+    private String imageUrl;
+
+    public static CompanyReviewFormResponse from(SimpleCompanyWithImageDto dto) {
+        return new CompanyReviewFormResponse(
+                dto.getCompanyName(), dto.getCompanyCategory(),
+                AddressDto.of(dto.getCity(), dto.getDistrict(), dto.getDetail()),
+                dto.getImageUrl()
+        );
     }
 }

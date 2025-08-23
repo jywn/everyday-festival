@@ -7,6 +7,7 @@ import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
+import com.festival.everyday.core.festival.dto.command.SimpleFestivalWithImageDto;
 import com.festival.everyday.core.image.domain.OwnerType;
 import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
 import com.festival.everyday.core.recruit.dto.command.CategoryDto;
@@ -168,6 +169,19 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
     @Override
     public List<FestivalSearchDto> findSimpleFestivalList(Long userId, List<Long> festivalIds) {
         return List.of();
+    }
+
+    @Override
+    public SimpleFestivalWithImageDto findSimpleFestivalWithImage(Long festivalId) {
+        return queryFactory.select(Projections.constructor(SimpleFestivalWithImageDto.class,
+                        festival.name,
+                        festival.period.begin, festival.period.end,
+                        festival.address.city, festival.address.district, festival.address.detail,
+                        image.url))
+                .from(festival)
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+                .where(festival.id.eq(festivalId))
+                .fetchOne();
     }
 
 //    @Override

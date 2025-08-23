@@ -70,7 +70,7 @@ public class ReviewController {
     @GetMapping("/festivals/{festivalId}/reviews/form")
     public ResponseEntity<ApiResponse<FestivalReviewFormResponse>> getFestivalReviewForm(@PathVariable Long festivalId) {
 
-        FestivalReviewFormResponse response = reviewQueryService.getFestivalReviewForm(festivalId);
+        FestivalReviewFormResponse response = FestivalReviewFormResponse.from(reviewQueryService.getFestivalReviewForm(festivalId));
 
         return ResponseEntity.ok(ApiResponse.success("축제 리뷰 작성 폼 조회에 성공하였습니다.", response));
     }
@@ -78,7 +78,7 @@ public class ReviewController {
     @GetMapping("/companies/{companyId}/reviews/form")
     public ResponseEntity<ApiResponse<CompanyReviewFormResponse>> getCompanyReviewForm(@PathVariable Long companyId) {
 
-        CompanyReviewFormResponse response = reviewQueryService.getCompanyReviewForm(companyId);
+        CompanyReviewFormResponse response = CompanyReviewFormResponse.from(reviewQueryService.getCompanyReviewForm(companyId));
 
         return ResponseEntity.ok(ApiResponse.success("업체 리뷰 작성 폼 조회에 성공하였습니다.", response));
     }

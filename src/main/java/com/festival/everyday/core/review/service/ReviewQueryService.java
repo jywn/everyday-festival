@@ -3,8 +3,10 @@ package com.festival.everyday.core.review.service;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.company.domain.Company;
+import com.festival.everyday.core.company.dto.command.SimpleCompanyWithImageDto;
 import com.festival.everyday.core.company.repository.CompanyRepository;
 import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.festival.dto.command.SimpleFestivalWithImageDto;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
 import com.festival.everyday.core.review.domain.Review;
 import com.festival.everyday.core.review.dto.command.ReviewAndSenderDto;
@@ -49,17 +51,13 @@ public class ReviewQueryService {
         return reviewRepository.findReviewsByFestivals(companyId, COMPANY, pageable);
     }
 
-    public FestivalReviewFormResponse getFestivalReviewForm(Long festivalId) {
+    public SimpleFestivalWithImageDto getFestivalReviewForm(Long festivalId) {
 
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(()-> new EntityNotFoundException("리뷰를 남길 축제를 찾을 수 없습니다."));
-
-        return FestivalReviewFormResponse.from(festival);
+        return festivalRepository.findSimpleFestivalWithImage(festivalId);
     }
 
-    public CompanyReviewFormResponse getCompanyReviewForm(Long companyId) {
+    public SimpleCompanyWithImageDto getCompanyReviewForm(Long companyId) {
 
-        Company company = companyRepository.findById(companyId).orElseThrow(()-> new EntityNotFoundException("리뷰를 남길 업체를 찾을 수 없습니다."));
-
-        return CompanyReviewFormResponse.from(company);
+        return companyRepository.findSimpleCompanyWithImage(companyId);
     }
 }
