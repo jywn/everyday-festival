@@ -4,6 +4,7 @@ import com.festival.everyday.core.favorite.domain.Favorite;
 import com.festival.everyday.core.favorite.dto.request.FavoriteRequest;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
 import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.user.exception.UserNotFoundException;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class FavoriteCommandService {
         }
 
         // 사용자를 조회합니다.
-        User sender = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다."));
+        User sender = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         // 좋아요를 생성합니다.
         Favorite favorite = Favorite.create(sender, request.getReceiverType(), request.getReceiverId());

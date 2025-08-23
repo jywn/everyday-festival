@@ -2,7 +2,9 @@ package com.festival.everyday.core.token.service;
 
 import com.festival.everyday.core.token.dto.request.LoginRequest;
 import com.festival.everyday.core.token.dto.response.LoginResponse;
+import com.festival.everyday.core.token.exception.InvalidPasswordException;
 import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.user.exception.UserNotFoundException;
 import com.festival.everyday.core.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,10 +23,10 @@ public class AuthService {
     @Transactional
     public LoginResponse login(LoginRequest req) {
         User user = userRepository.findByAccount(req.account())    //account로 찾기
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 계정입니다."));
+                .orElseThrow(UserNotFoundException::new);
 
         if (!passwordEncoder.matches(req.password(), user.getPassword())) {     //user의 password와 받은 password 매치
-            throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+            throw new InvalidPasswordException();
         }
 
         return tokenService.issueTokens(user);
