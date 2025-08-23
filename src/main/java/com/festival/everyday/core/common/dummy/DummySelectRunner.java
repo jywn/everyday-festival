@@ -31,5 +31,11 @@ public class DummySelectRunner implements CommandLineRunner {
         applicationCommandService.acceptApplication(236L);
         applicationCommandService.acceptApplication(241L);
 
+        //H_acc_0이 업체를 1개씩 수락, 거절. 근로자를 1개씩 수락, 거절.
+        applicationCommandService.acceptApplication(2L);
+        applicationCommandService.acceptApplication(6L);
+        applicationCommandService.denyApplication(3L);
+        applicationCommandService.denyApplication(7L);
+
     }
 }

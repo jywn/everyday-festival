@@ -12,8 +12,8 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ApplicationRepositoryCustom {
-    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable);
-    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable);
+    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable, SELECTED status);
+    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable, SELECTED status);
     public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status);
     public Application findApplicationDetail(Long applicationId);
 }

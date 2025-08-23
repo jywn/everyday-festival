@@ -29,9 +29,10 @@ public class ApplicationController {
     public ResponseEntity<ApiResponse<PageResponse<CompanyApplicationSimpleResponse>>> getCompanyApplications(@PathVariable Long festivalId,
                                                                                                               @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
                                                                                                               @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
+                                                                                                              @RequestParam(required = false) SELECTED status,
                                                                                                               Pageable pageable) {
 
-        PageResponse<CompanyApplicationSimpleResponse> result = PageResponse.from(applicationQueryService.getCompanyApplications(festivalId, holderId, userType, pageable)
+        PageResponse<CompanyApplicationSimpleResponse> result = PageResponse.from(applicationQueryService.getCompanyApplications(festivalId, holderId, userType, pageable, status)
                 .map(CompanyApplicationSimpleResponse::from));
 
         return ResponseEntity.ok(ApiResponse.success("업체 지원 목록 조회를 성공하였습니다.", result));
@@ -42,9 +43,10 @@ public class ApplicationController {
     public ResponseEntity<ApiResponse<PageResponse<LaborApplicationSimpleResponse>>> getLaborApplications(@PathVariable Long festivalId,
                                                             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long holderId,
                                                             @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
+                                                                                                  @RequestParam(required = false) SELECTED status,
                                                                                                   Pageable pageable)
     {
-        PageResponse<LaborApplicationSimpleResponse> result = PageResponse.from(applicationQueryService.getLaborApplications(festivalId, holderId, userType, pageable)
+        PageResponse<LaborApplicationSimpleResponse> result = PageResponse.from(applicationQueryService.getLaborApplications(festivalId, holderId, userType, pageable, status)
                 .map(LaborApplicationSimpleResponse::from));
 
         return ResponseEntity.ok(ApiResponse.success("근로자 지원 목록 조회를 성공하였습니다.", result));
