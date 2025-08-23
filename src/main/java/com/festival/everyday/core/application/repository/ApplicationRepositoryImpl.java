@@ -1,6 +1,7 @@
 package com.festival.everyday.core.application.repository;
 
 import com.festival.everyday.core.application.domain.Application;
+import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.MyApplicationSimpleDto;
@@ -9,7 +10,9 @@ import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
 import com.festival.everyday.core.recruit.domain.QLaborRecruit;
 import com.festival.everyday.core.recruit.domain.QRecruit;
 import com.festival.everyday.core.user.domain.QLabor;
+import com.festival.everyday.core.user.domain.QUser;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ import static com.festival.everyday.core.recruit.domain.QLaborRecruit.*;
 import static com.festival.everyday.core.recruit.domain.QRecruit.*;
 import static com.festival.everyday.core.user.domain.QHolder.holder;
 import static com.festival.everyday.core.user.domain.QLabor.*;
+import static com.festival.everyday.core.user.domain.QUser.*;
 
 @RequiredArgsConstructor
 public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
@@ -36,7 +40,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     // 페이징
-    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable) {
+    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable, SELECTED status) {
 
         List<CompanyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(CompanyApplicationSimpleDto.class,
@@ -47,9 +51,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(company).on(company.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(COMPANY).and(image.ownerId.eq(company.id)))
-                .where(application.festival.id.eq(festivalId))
+                .where(application.festival.id.eq(festivalId).and(selectedEq(status)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(application.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(application.count())
@@ -62,7 +67,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     // 페이징
     @Override
-    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable) {
+    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable, SELECTED status) {
         List<LaborApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(LaborApplicationSimpleDto.class,
                         application.id, application.selected, labor.name, image.url))
@@ -70,9 +75,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(labor).on(labor.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(LABOR).and(image.ownerId.eq(labor.id)))
-                .where(application.festival.id.eq(festivalId))
+                .where(application.festival.id.eq(festivalId).and(selectedEq(status)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(application.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(application.count())
@@ -85,7 +91,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     // 페이징
     @Override
-    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable) {
+    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status) {
         List<MyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(MyApplicationSimpleDto.class,
                         application.id,
@@ -96,9 +102,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(application.user.id.eq(userId))
+                .where(application.user.id.eq(userId).and(selectedEq(status)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(application.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
@@ -121,5 +128,21 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .where(application.id.eq(applicationId))
                 .distinct()
                 .fetchOne();
+    }
+
+    @Override
+    public Boolean isApplicationSelected(Long senderId, Long festivalId) {
+
+        return queryFactory
+                .selectOne()
+                .from(application)
+                .where(application.festival.id.eq(festivalId)
+                        .and(application.user.id.eq(senderId))
+                        .and(application.selected.eq(SELECTED.ACCEPTED)))
+                .fetchFirst() != null;
+    }
+
+    private BooleanExpression selectedEq(SELECTED status) {
+        return status != null ? application.selected.eq(status) : null;
     }
 }

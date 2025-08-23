@@ -1,6 +1,7 @@
 package com.festival.everyday.core.application.repository;
 
 import com.festival.everyday.core.application.domain.Application;
+import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.LaborApplicationDetailDto;
 import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
@@ -11,8 +12,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ApplicationRepositoryCustom {
-    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable);
-    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable);
-    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable);
+    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable, SELECTED status);
+    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable, SELECTED status);
+    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status);
     public Application findApplicationDetail(Long applicationId);
+    public Boolean isApplicationSelected(Long senderId, Long festivalId);
 }

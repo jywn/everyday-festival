@@ -56,6 +56,10 @@ public class DummyApplyRunner implements CommandLineRunner {
     // 근로자 공고가 등록된 축제: 1,4,7,10,13,16,19,22,25,28
     private static final int[] LABOR_FESTIVALS = {1,4,7,10,13,16,19,22,25,28};
 
+    private final List<Long> reviewCompany = List.of(12L, 13L, 14L, 15L, 16L, 17L, 18L);
+    private final List<Long> reviewLabor = List.of(32L, 33L, 34L, 35L, 36L, 37L, 38L);
+
+
     @Override
     public void run(String... args) throws Exception {
         createCompanyApplications();
@@ -114,5 +118,15 @@ public class DummyApplyRunner implements CommandLineRunner {
                 );
             }
         }
+
+        // 60번 축제는 종료된 행사에 다수의 지원자가 존재한다.
+        ApplicationRequest companyRequest = new ApplicationRequest(companyAnswersPair, companyEAnswersPair);
+
+        pairCompany.forEach(id -> applicationCommandService.createCompanyApplication(id, 60L, companyRequest));
+        pairLabor.forEach(id -> applicationCommandService.createLaborApplication(id, 60L, companyRequest));
+
+        // 60번 축제는 종료된 행사에 다수의 지원자가 존재하고, 이들은 모두 선택된다.
+        reviewCompany.forEach(id -> applicationCommandService.createCompanyApplication(id, 60L, companyRequest));
+        reviewLabor.forEach(id -> applicationCommandService.createLaborApplication(id, 60L, companyRequest));
     }
 }

@@ -2,6 +2,7 @@ package com.festival.everyday.core.recruit.service;
 
 import com.festival.everyday.core.common.domain.Period;
 import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
 import com.festival.everyday.core.recruit.domain.CompanyRecruit;
 import com.festival.everyday.core.recruit.domain.ExtraQuestion;
@@ -24,14 +25,18 @@ public class RecruitCommandService {
     private final RecruitRepository recruitRepository;
     private final FestivalRepository festivalRepository;
 
+    /**
+     * 축제 생성과 동시에 호출되기에 검증 요소가 없으므로 검증을 생략합니다.
+     */
     public Long saveCompanyRecruit(CreateCompanyRecruitRequest request, Long festivalId) {
+
         // 업체 모집 공고를 생성한다.
         CompanyRecruit companyRecruit = CompanyRecruit.create(Period.create(request.getBegin(), request.getEnd()),
                 request.getNotice(), request.getPreferred(), request.getCategories());
 
         // 추가 질문들과 모집 공고의 연관 관계를 설정한다.
         List<ExtraQuestion> questions = ExtraQuestion.createQuestions(companyRecruit, request.getExtraQuestions());
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(FestivalNotFoundException::new);
 
         // 연관 관계 설정
         festival.addCompanyRecruit(companyRecruit);
@@ -43,6 +48,7 @@ public class RecruitCommandService {
     }
 
     public Long saveLaborRecruit(CreateLaborRecruitRequest request, Long festivalId) {
+
         // 근로자 모집 공고를 생성한다.
         LaborRecruit laborRecruit = LaborRecruit.create(Period.create(request.getBegin(), request.getEnd()),
                 request.getNotice(), request.getJob(), request.getWage(), request.getRemark());
@@ -51,7 +57,7 @@ public class RecruitCommandService {
         List<ExtraQuestion> questions = ExtraQuestion.createQuestions(laborRecruit, request.getExtraQuestions());
 
 
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(FestivalNotFoundException::new);
 
         // 연관 관계 설정
         festival.addLaborRecruit(laborRecruit);

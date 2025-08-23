@@ -8,6 +8,6 @@ import lombok.Data;
 public class ImageResponse {
     private Long id;
     private String originalName;
-    private String imageurl;  // 원본 파일명
+    private String imageUrl;  // 원본 파일명
 }
 

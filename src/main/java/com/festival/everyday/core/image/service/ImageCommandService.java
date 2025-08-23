@@ -2,6 +2,8 @@ package com.festival.everyday.core.image.service;
 
 import com.festival.everyday.core.image.domain.Image;
 import com.festival.everyday.core.image.dto.common.ImageDto;
+import com.festival.everyday.core.image.exception.FileNotFoundException;
+import com.festival.everyday.core.image.exception.FileSaveFailedException;
 import com.festival.everyday.core.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +31,7 @@ public class ImageCommandService {
 
         // 빈 파일이면 예외를 발생시킵니다.
         if (file.isEmpty()) {
-            throw new IllegalArgumentException("파일이 존재하지 않습니다.");
+            throw new FileNotFoundException();
         }
 
         // 파일의 이름을 저장합니다.
@@ -45,7 +47,7 @@ public class ImageCommandService {
         try {
             file.transferTo(new File(image.getFullPath()));
         } catch (IOException e) {
-            throw new RuntimeException("파일 저장에 실패했습니다.", e);
+            throw new FileSaveFailedException(e);
         }
 
         log.info("영속화 이전");

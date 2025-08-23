@@ -1,6 +1,8 @@
 package com.festival.everyday.core.interest.service;
 
+import com.festival.everyday.core.company.exception.CompanyNotFoundException;
 import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
 import com.festival.everyday.core.interest.domain.Interest;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.repository.CompanyRepository;
@@ -32,8 +34,8 @@ public class InterestCommandService
         }
 
         // 관심을 주고 받는 축제와 업체를 조회
-        Company company = companyRepository.findById(companyId).orElseThrow(() -> new EntityNotFoundException("업체를 찾을 수 없습니다."));
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+        Company company = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(FestivalNotFoundException::new);
 
         // 관심 엔티티 생성 후 DB 저장
         Interest interest = Interest.create(company, festival);

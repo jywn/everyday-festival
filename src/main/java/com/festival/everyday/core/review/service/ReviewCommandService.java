@@ -1,18 +1,23 @@
 package com.festival.everyday.core.review.service;
 
+import com.festival.everyday.core.application.repository.ApplicationRepository;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.SenderType;
 import com.festival.everyday.core.company.domain.Company;
+import com.festival.everyday.core.company.exception.CompanyNotFoundException;
 import com.festival.everyday.core.company.repository.CompanyRepository;
 import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
 import com.festival.everyday.core.review.domain.Review;
 import com.festival.everyday.core.review.dto.command.CompanyReviewFormDto;
 import com.festival.everyday.core.review.dto.command.FestivalReviewFormDto;
 import com.festival.everyday.core.review.dto.request.CompanyReviewRequest;
 import com.festival.everyday.core.review.dto.request.FestivalReviewRequest;
+import com.festival.everyday.core.review.exception.InvalidReviewerException;
 import com.festival.everyday.core.review.repository.ReviewRepository;
 import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.user.exception.UserNotFoundException;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -29,26 +34,29 @@ import static com.festival.everyday.core.common.dto.SenderType.COMPANY;
 @Transactional
 public class ReviewCommandService {
 
+    private final ApplicationRepository applicationRepository;
     private final ReviewRepository reviewRepository;
     private final CompanyRepository companyRepository;
     private final FestivalRepository festivalRepository;
     private final UserRepository userRepository;
 
 
+    // 실제 참여자인지 확인해야함
     public Long createFestivalReview(Long festivalId, Long userId, String userType, FestivalReviewFormDto formDto) {
 
-        if (!userRepository.existsById(userId)) {
-            throw new EntityNotFoundException("사용자를 찾을 수 없습니다.");
+        if (!festivalRepository.existsById(festivalId)) {
+            throw new FestivalNotFoundException();
         }
 
-        if (!festivalRepository.existsById(festivalId)) {
-            throw new EntityNotFoundException("축제를 찾을 수 없습니다.");
-        }
+        // 배포시 해제
+//        if (!applicationRepository.isApplicationSelected(userId, festivalId)) {
+//            throw new InvalidReviewerException();
+//        }
 
         SenderType senderType = switch (userType) {
             case "COMPANY" -> COMPANY;
             case "LABOR" -> LABOR;
-            default -> throw new IllegalArgumentException("잘못된 작성자입니다.");
+            default -> throw new InvalidReviewerException();
         };
 
         // 리뷰 엔티티를 생성합니다.
@@ -57,15 +65,16 @@ public class ReviewCommandService {
         return reviewRepository.save(review).getId();
     }
 
+    // 실제 참여자인지 확인해야함
     public Long createCompanyReview(Long companyId, CompanyReviewFormDto formDto) {
 
         if (!festivalRepository.existsById(formDto.getFestivalId())) {
-            throw new EntityNotFoundException("축제를 찾을 수 없습니다.");
+            throw new FestivalNotFoundException();
         }
-
-        if (!companyRepository.existsById(companyId)) {
-            throw new EntityNotFoundException("업체를 찾을 수 없습니다.");
-        }
+        // 배포시 해제
+//        if (!applicationRepository.isApplicationSelected(companyId, formDto.getFestivalId())) {
+//            throw new InvalidReviewerException();
+//        }
 
         // 리뷰 엔티티를 생성합니다.
         Review review = Review.create(formDto.getFestivalId(), SenderType.FESTIVAL, companyId, ReceiverType.COMPANY, formDto.getContent());

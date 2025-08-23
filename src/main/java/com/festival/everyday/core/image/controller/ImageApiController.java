@@ -6,6 +6,7 @@ import com.festival.everyday.core.image.dto.common.ImageDto;
 import com.festival.everyday.core.image.dto.request.ImageRequest;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
 import com.festival.everyday.core.image.dto.response.ImageResponse;
+import com.festival.everyday.core.image.exception.InvalidOwnerException;
 import com.festival.everyday.core.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -39,7 +40,7 @@ public class ImageApiController {
             case "HOLDER" -> OwnerType.HOLDER;
             case "LABOR" -> OwnerType.LABOR;
             case "COMPANY" -> OwnerType.COMPANY;
-            default -> throw new IllegalStateException("Unexpected value: " + ownerType);
+            default -> throw new InvalidOwnerException();
         };
 
         ImageRequest imageRequest = new ImageRequest(Long.parseLong(ownerId), type);

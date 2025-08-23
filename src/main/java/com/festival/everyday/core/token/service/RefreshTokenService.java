@@ -1,6 +1,9 @@
 package com.festival.everyday.core.token.service;
 
 import com.festival.everyday.core.token.domain.RefreshToken;
+import com.festival.everyday.core.token.exception.ExpiredTokenException;
+import com.festival.everyday.core.token.exception.InvalidTokenException;
+import com.festival.everyday.core.token.exception.RevokeTokenException;
 import com.festival.everyday.core.token.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +21,13 @@ public class RefreshTokenService {
     // refresh token 디비 존재 여부 + 만료(Expired) + 철회(Revoked) 검증 수행
     public RefreshToken getActiveByTokenOrThrow(String refreshToken) {
         RefreshToken rt = refreshTokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid refresh token"));
+                .orElseThrow(InvalidTokenException::new);
 
         if (rt.isRevoked()) {
-            throw new IllegalArgumentException("Refresh token revoked");
+            throw new RevokeTokenException();
         }
         if (rt.getExpiresAt().isBefore(Instant.now())) {
-            throw new IllegalArgumentException("Refresh token expired");
+            throw new ExpiredTokenException();
         }
         return rt;
     }

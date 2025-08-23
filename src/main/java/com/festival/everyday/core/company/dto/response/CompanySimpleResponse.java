@@ -1,5 +1,6 @@
 package com.festival.everyday.core.company.dto.response;
 
+import com.festival.everyday.core.common.CategoryMapper;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.user.domain.Category;
 import com.festival.everyday.core.common.dto.command.AddressDto;
@@ -13,7 +14,7 @@ public class CompanySimpleResponse {
 
     private Long id;
     private String name;
-    private Category category;
+    private String category;
 
     private AddressDto address;
 
@@ -22,7 +23,7 @@ public class CompanySimpleResponse {
     private String imageUrl;
 
     public static CompanySimpleResponse from(CompanySearchDto companySearchDto) {
-        return new CompanySimpleResponse(companySearchDto.getId(), companySearchDto.getName(), companySearchDto.getCategory(),
+        return new CompanySimpleResponse(companySearchDto.getId(), companySearchDto.getName(), CategoryMapper.enumToStr(companySearchDto.getCategory()),
                 AddressDto.of(companySearchDto.getCity(), companySearchDto.getDistrict(), companySearchDto.getDetail()),
                 companySearchDto.getFavorStatus(), companySearchDto.getImageUrl());
     }

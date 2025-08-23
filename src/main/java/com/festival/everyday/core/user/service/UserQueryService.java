@@ -1,6 +1,7 @@
 package com.festival.everyday.core.user.service;
 
 import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.user.exception.UserNotFoundException;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,6 @@ public class UserQueryService {
     private final UserRepository userRepository;
 
     public User findById(Long userId){
-        return userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("존재하지 않는 사용자입니다."));
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 }

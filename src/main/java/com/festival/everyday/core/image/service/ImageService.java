@@ -3,6 +3,9 @@ package com.festival.everyday.core.image.service;
 import com.festival.everyday.core.image.domain.Image;
 import com.festival.everyday.core.image.dto.common.ImageDto;
 import com.festival.everyday.core.image.dto.response.ImageResponse;
+import com.festival.everyday.core.image.exception.FileSaveFailedException;
+import com.festival.everyday.core.image.exception.ImageNotFoundException;
+import com.festival.everyday.core.image.exception.InvalidFileNameException;
 import com.festival.everyday.core.image.repository.ImageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +34,7 @@ public class ImageService {
      */
     public ImageResponse getImage(Long id) {
         Image image = imageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("이미지를 찾을 수 없습니다."));
+                .orElseThrow(ImageNotFoundException::new);
 
         String imageUrl = url + image.getEncodedName();
 
@@ -48,7 +51,7 @@ public class ImageService {
     public Long upload(ImageDto imageDto, MultipartFile file) {
         String originalName = file.getOriginalFilename();
         if (originalName == null || originalName.isBlank()) {
-            throw new RuntimeException("파일 이름이 유효하지 않습니다.");
+            throw new InvalidFileNameException();
         }
 
         String ext = extractExt(originalName);
@@ -72,7 +75,7 @@ public class ImageService {
             file.transferTo(dest);
 
         } catch (IOException e) {
-            throw new RuntimeException("파일 저장에 실패했습니다.", e);
+            throw new FileSaveFailedException(e);
         }
 
         return imageRepository.save(image).getId();

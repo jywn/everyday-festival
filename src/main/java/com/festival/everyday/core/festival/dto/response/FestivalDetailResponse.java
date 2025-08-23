@@ -1,6 +1,7 @@
 package com.festival.everyday.core.festival.dto.response;
 
 import com.festival.everyday.core.application.dto.ApplyStatus;
+import com.festival.everyday.core.common.CategoryMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
@@ -86,13 +87,13 @@ public class FestivalDetailResponse {
         private PeriodDto period;
         private String notice;
         private String preferred;
-        private List<Category> categories;
+        private List<String> categories;
 
         public static SimpleCompanyRecruitDto from(FestivalDetailDto festivalDetailDto) {
             return new SimpleCompanyRecruitDto(
                     festivalDetailDto.getCompanyRecruitId(),
                     PeriodDto.of(festivalDetailDto.getCompanyRecruitBegin(), festivalDetailDto.getCompanyRecruitEnd()),
-                    festivalDetailDto.getCompanyNotice(), festivalDetailDto.getPreferred(), festivalDetailDto.getCategories()
+                    festivalDetailDto.getCompanyNotice(), festivalDetailDto.getPreferred(), festivalDetailDto.getCategories().stream().map(CategoryMapper::enumToStr).toList()
             );
         }
     }
