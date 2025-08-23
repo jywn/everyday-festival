@@ -38,7 +38,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     // 페이징
-    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable) {
+    public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable, SELECTED status) {
 
         List<CompanyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(CompanyApplicationSimpleDto.class,
@@ -49,9 +49,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(company).on(company.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(COMPANY).and(image.ownerId.eq(company.id)))
-                .where(application.festival.id.eq(festivalId))
+                .where(application.festival.id.eq(festivalId).and(selectedEq(status)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(application.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(application.count())
@@ -64,7 +65,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     // 페이징
     @Override
-    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable) {
+    public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable, SELECTED status) {
         List<LaborApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(LaborApplicationSimpleDto.class,
                         application.id, application.selected, labor.name, image.url))
@@ -72,9 +73,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(labor).on(labor.id.eq(application.user.id))
                 .leftJoin(image).on(image.ownerType.eq(LABOR).and(image.ownerId.eq(labor.id)))
-                .where(application.festival.id.eq(festivalId))
+                .where(application.festival.id.eq(festivalId).and(selectedEq(status)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(application.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory.select(application.count())

@@ -28,7 +28,7 @@ public class ApplicationQueryService {
     private final ApplicationRepository applicationRepository;
     private final FestivalRepository festivalRepository;
 
-    public Page<CompanyApplicationSimpleDto> getCompanyApplications(Long festivalId, Long holderId, String userType, Pageable pageable) {
+    public Page<CompanyApplicationSimpleDto> getCompanyApplications(Long festivalId, Long holderId, String userType, Pageable pageable, SELECTED status) {
 
         // 기획자가 아니면 예외 발생
         if (!userType.equals("HOLDER")) {
@@ -41,12 +41,12 @@ public class ApplicationQueryService {
         }
 
         // 업체 지원 목록 조회
-        return applicationRepository.findCompanyApplicationList(festivalId, pageable);
+        return applicationRepository.findCompanyApplicationList(festivalId, pageable, status);
 
     }
 
     //근로자->축제 지원 목록 조회
-    public Page<LaborApplicationSimpleDto> getLaborApplications(Long festivalId, Long holderId, String userType, Pageable pageable) {
+    public Page<LaborApplicationSimpleDto> getLaborApplications(Long festivalId, Long holderId, String userType, Pageable pageable, SELECTED status) {
         // 기획자가 아니면 예외 발생
         if (!userType.equals("HOLDER")) {
             throw new AccessDeniedException("축제에 대한 권한이 없습니다.");
@@ -58,7 +58,7 @@ public class ApplicationQueryService {
         }
 
         // 근로자 지원 목록 조회
-        return applicationRepository.findLaborApplicationList(festivalId, pageable);
+        return applicationRepository.findLaborApplicationList(festivalId, pageable, status);
     }
 
     public Page<MyApplicationSimpleDto> getMyApplications(Long userId, Pageable pageable, SELECTED status) {
