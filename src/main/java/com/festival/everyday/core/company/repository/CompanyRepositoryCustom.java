@@ -2,6 +2,7 @@ package com.festival.everyday.core.company.repository;
 
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.company.dto.command.SimpleCompanyWithImageDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,4 +15,6 @@ public interface CompanyRepositoryCustom {
     List<CompanySearchDto> findSimpleCompanyList(Long userId, List<Long> companyIds);
 
     CompanyDetailDto findCompanyDetailById(Long userId, Long companyId);
+
+    public SimpleCompanyWithImageDto findSimpleCompanyWithImage(Long companyId);
 }

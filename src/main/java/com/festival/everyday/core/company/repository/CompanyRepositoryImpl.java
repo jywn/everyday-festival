@@ -5,6 +5,7 @@ import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.QCompany;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.company.dto.command.SimpleCompanyWithImageDto;
 import com.festival.everyday.core.favorite.domain.QFavorite;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.common.Tokenizer;
@@ -89,6 +90,19 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                 .leftJoin(favorite).on(favorite.sender.id.eq(userId)
                         .and(favorite.receiverType.eq(ReceiverType.COMPANY)
                                 .and(favorite.receiverId.eq(company.id))))
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
+                .where(company.id.eq(companyId))
+                .fetchOne();
+    }
+
+    @Override
+    public SimpleCompanyWithImageDto findSimpleCompanyWithImage(Long companyId) {
+        return queryFactory
+                .select(Projections.constructor(SimpleCompanyWithImageDto.class,
+                        company.name, company.category,
+                        company.address.city, company.address.district, company.address.detail,
+                        image.url))
+                .from(company)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
                 .where(company.id.eq(companyId))
                 .fetchOne();
