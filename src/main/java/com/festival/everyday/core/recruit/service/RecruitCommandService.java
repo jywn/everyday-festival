@@ -25,7 +25,11 @@ public class RecruitCommandService {
     private final RecruitRepository recruitRepository;
     private final FestivalRepository festivalRepository;
 
+    /**
+     * 축제 생성과 동시에 호출되기에 검증 요소가 없으므로 검증을 생략합니다.
+     */
     public Long saveCompanyRecruit(CreateCompanyRecruitRequest request, Long festivalId) {
+
         // 업체 모집 공고를 생성한다.
         CompanyRecruit companyRecruit = CompanyRecruit.create(Period.create(request.getBegin(), request.getEnd()),
                 request.getNotice(), request.getPreferred(), request.getCategories());
@@ -44,6 +48,7 @@ public class RecruitCommandService {
     }
 
     public Long saveLaborRecruit(CreateLaborRecruitRequest request, Long festivalId) {
+
         // 근로자 모집 공고를 생성한다.
         LaborRecruit laborRecruit = LaborRecruit.create(Period.create(request.getBegin(), request.getEnd()),
                 request.getNotice(), request.getJob(), request.getWage(), request.getRemark());

@@ -16,4 +16,5 @@ public interface ApplicationRepositoryCustom {
     public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable, SELECTED status);
     public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status);
     public Application findApplicationDetail(Long applicationId);
+    public Boolean isApplicationSelected(Long senderId, Long festivalId);
 }

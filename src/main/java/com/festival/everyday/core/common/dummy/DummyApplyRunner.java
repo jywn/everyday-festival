@@ -80,5 +80,11 @@ public class DummyApplyRunner implements CommandLineRunner {
 
             oddLabor.forEach(id -> applicationCommandService.createLaborApplication(id, index, laborRequest));
         }
+
+        // 60번 축제는 종료된 행사에 다수의 지원자가 존재한다.
+        ApplicationRequest companyRequest = new ApplicationRequest(companyAnswersPair, companyEAnswersPair);
+
+        pairCompany.forEach(id -> applicationCommandService.createCompanyApplication(id, 60L, companyRequest));
+        pairLabor.forEach(id -> applicationCommandService.createLaborApplication(id, 60L, companyRequest));
     }
 }

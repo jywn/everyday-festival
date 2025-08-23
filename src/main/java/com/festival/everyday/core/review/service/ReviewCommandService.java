@@ -1,5 +1,6 @@
 package com.festival.everyday.core.review.service;
 
+import com.festival.everyday.core.application.repository.ApplicationRepository;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.SenderType;
 import com.festival.everyday.core.company.domain.Company;
@@ -33,21 +34,24 @@ import static com.festival.everyday.core.common.dto.SenderType.COMPANY;
 @Transactional
 public class ReviewCommandService {
 
+    private final ApplicationRepository applicationRepository;
     private final ReviewRepository reviewRepository;
     private final CompanyRepository companyRepository;
     private final FestivalRepository festivalRepository;
     private final UserRepository userRepository;
 
 
+    // 실제 참여자인지 확인해야함
     public Long createFestivalReview(Long festivalId, Long userId, String userType, FestivalReviewFormDto formDto) {
-
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException();
-        }
 
         if (!festivalRepository.existsById(festivalId)) {
             throw new FestivalNotFoundException();
         }
+
+        // 배포시 해제
+//        if (!applicationRepository.isApplicationSelected(userId, festivalId)) {
+//            throw new InvalidReviewerException();
+//        }
 
         SenderType senderType = switch (userType) {
             case "COMPANY" -> COMPANY;
@@ -61,15 +65,16 @@ public class ReviewCommandService {
         return reviewRepository.save(review).getId();
     }
 
+    // 실제 참여자인지 확인해야함
     public Long createCompanyReview(Long companyId, CompanyReviewFormDto formDto) {
 
         if (!festivalRepository.existsById(formDto.getFestivalId())) {
             throw new FestivalNotFoundException();
         }
-
-        if (!companyRepository.existsById(companyId)) {
-            throw new CompanyNotFoundException();
-        }
+        // 배포시 해제
+//        if (!applicationRepository.isApplicationSelected(companyId, formDto.getFestivalId())) {
+//            throw new InvalidReviewerException();
+//        }
 
         // 리뷰 엔티티를 생성합니다.
         Review review = Review.create(formDto.getFestivalId(), SenderType.FESTIVAL, companyId, ReceiverType.COMPANY, formDto.getContent());
