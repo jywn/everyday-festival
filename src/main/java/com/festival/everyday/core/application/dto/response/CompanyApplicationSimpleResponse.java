@@ -2,14 +2,17 @@ package com.festival.everyday.core.application.dto.response;
 
 import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
+import com.festival.everyday.core.common.CategoryMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.user.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class CompanyApplicationSimpleResponse {
 
     //application
@@ -30,14 +33,15 @@ public class CompanyApplicationSimpleResponse {
     @Data
     @AllArgsConstructor
     static class SimpleCompanyDto {
+
         private Long id;
         private String name;
-        private Category category;
+        private String category;
         private AddressDto address;
 
         public static SimpleCompanyDto of(CompanyApplicationSimpleDto companyApplicationSimpleDto) {
             return new SimpleCompanyDto(
-                    companyApplicationSimpleDto.getCompanyId(), companyApplicationSimpleDto.getCompanyName(), companyApplicationSimpleDto.getCategory(),
+                    companyApplicationSimpleDto.getCompanyId(), companyApplicationSimpleDto.getCompanyName(), CategoryMapper.enumToStr(companyApplicationSimpleDto.getCategory()),
                     AddressDto.of(companyApplicationSimpleDto.getCity(), companyApplicationSimpleDto.getDistrict(), companyApplicationSimpleDto.getDetail()));
         }
     }
