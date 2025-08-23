@@ -1,6 +1,7 @@
 package com.festival.everyday.core.application.service;
 
 import com.festival.everyday.core.application.domain.Application;
+import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.*;
 import com.festival.everyday.core.application.dto.response.*;
 import com.festival.everyday.core.application.repository.ApplicationRepository;
@@ -60,8 +61,8 @@ public class ApplicationQueryService {
         return applicationRepository.findLaborApplicationList(festivalId, pageable);
     }
 
-    public Page<MyApplicationSimpleDto> getMyApplications(Long userId, Pageable pageable) {
-        return applicationRepository.findMyApplicationList(userId, pageable);
+    public Page<MyApplicationSimpleDto> getMyApplications(Long userId, Pageable pageable, SELECTED status) {
+        return applicationRepository.findMyApplicationList(userId, pageable, status);
     }
 
     public ApplicationDetailDto getApplicationDetail(Long applicationId) {

@@ -1,5 +1,6 @@
 package com.festival.everyday.core.application.controller;
 
+import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.response.*;
 import com.festival.everyday.core.application.service.ApplicationCommandService;
@@ -51,9 +52,11 @@ public class ApplicationController {
 
     // 내가 지원한 목록 조회하기
     @GetMapping("/my-applications")
-    public ResponseEntity<ApiResponse<PageResponse<MyApplicationSimpleResponse>>> getMyApplications(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId, Pageable pageable) {
+    public ResponseEntity<ApiResponse<PageResponse<MyApplicationSimpleResponse>>> getMyApplications(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+                                                                                                    @RequestParam(required = false) SELECTED status,
+                                                                                                    Pageable pageable) {
 
-        PageResponse<MyApplicationSimpleResponse> result = PageResponse.from(applicationQueryService.getMyApplications(userId, pageable)
+        PageResponse<MyApplicationSimpleResponse> result = PageResponse.from(applicationQueryService.getMyApplications(userId, pageable, status)
                 .map(MyApplicationSimpleResponse::from));
 
         return ResponseEntity.ok(ApiResponse.success("나의 지원 목록 조회에 성공하였습니다.", result));
