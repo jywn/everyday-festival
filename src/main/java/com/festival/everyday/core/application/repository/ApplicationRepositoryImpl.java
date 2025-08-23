@@ -1,6 +1,7 @@
 package com.festival.everyday.core.application.repository;
 
 import com.festival.everyday.core.application.domain.Application;
+import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.MyApplicationSimpleDto;
@@ -10,6 +11,7 @@ import com.festival.everyday.core.recruit.domain.QLaborRecruit;
 import com.festival.everyday.core.recruit.domain.QRecruit;
 import com.festival.everyday.core.user.domain.QLabor;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +87,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     // 페이징
     @Override
-    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable) {
+    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status) {
         List<MyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(MyApplicationSimpleDto.class,
                         application.id,
@@ -96,9 +98,10 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(application.user.id.eq(userId))
+                .where(application.user.id.eq(userId).and(selectedEq(status)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(application.createdAt.desc())
                 .fetch();
 
         JPAQuery<Long> countQuery = queryFactory
@@ -121,5 +124,9 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .where(application.id.eq(applicationId))
                 .distinct()
                 .fetchOne();
+    }
+
+    private BooleanExpression selectedEq(SELECTED status) {
+        return status != null ? application.selected.eq(status) : null;
     }
 }
