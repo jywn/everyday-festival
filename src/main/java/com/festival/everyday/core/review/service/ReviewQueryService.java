@@ -74,8 +74,6 @@ public class ReviewQueryService {
     // 실제 참여자인지 확인해야함
     public SimpleCompanyWithImageDto getCompanyReviewForm(Long companyId) {
 
-
-
         SimpleCompanyWithImageDto simpleCompanyWithImage = companyRepository.findSimpleCompanyWithImage(companyId);
         if (simpleCompanyWithImage == null) {
             throw new CompanyNotFoundException();

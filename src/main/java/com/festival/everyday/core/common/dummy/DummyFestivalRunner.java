@@ -52,5 +52,21 @@ public class DummyFestivalRunner implements CommandLineRunner {
             // 1인 2축제
             festivalCommandService.save((long) (61 + (i % 30)), request);
         }
+
+        for (int i = 0; i < 10; i++) {
+            FestivalFormRequest request = new FestivalFormRequest(
+                    "Fx_name_" + i,
+                    PeriodDto.of(beginFuture, endFuture),
+                    AddressDto.of("Fx_city_" + i, "Fx_district_" + i, "Fx_detail_" + i),
+                    "Fx_fee_" + i,
+                    "Fx_time_" + i,
+                    "Fx_intro_" + i,
+                    "Fx_link_" + i,
+                    "Fx_tel_" + i
+            );
+
+            festivalCommandService.save(61L, request);
+        }
+
     }
 }
