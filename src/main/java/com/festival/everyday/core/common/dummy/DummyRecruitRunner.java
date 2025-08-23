@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * 1 ~ 15: 모든 모집공고가 존재한다.
- * 16 ~ 30: 업체 모집 공고만 존재한다.
- * 31 ~ 45: 근로자 모집 공고만 존재한다.
+ * 1 ~ 15: 모든 모집공고가 존재한다. (짝수: 모집중, 홀수: 모집 완료)
+ * 16 ~ 30: 업체 모집 공고만 존재한다. (짝수: 모집중, 홀수: 모집 완료)
+ * 31 ~ 45: 근로자 모집 공고만 존재한다. (짝수: 모집중, 홀수: 모집 완료)
  * 46 ~ 60: 모집 공고가 존재하지 않는다.
  */
 
@@ -49,11 +49,17 @@ public class DummyRecruitRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        LocalDateTime beginPast = LocalDateTime.of(2025, 7, 10, 14, 30);
+        LocalDateTime endPast = LocalDateTime.of(2025, 7, 15, 15, 30);
+
+        LocalDateTime beginFuture = LocalDateTime.of(2025, 10, 1, 14, 30);
+        LocalDateTime endFuture = LocalDateTime.of(2025, 10, 5, 15, 30);
+
         // 축제 1 ~ 15 모집 공고 등록
         for (int i = 1; i <= ALL_RECRUIT; i++) {
             CreateCompanyRecruitRequest companyRequest = new CreateCompanyRecruitRequest(
-                    LocalDateTime.now(),
-                    LocalDateTime.now(),
+                    i % 2 == 0 ? beginFuture : beginPast,
+                    i % 2 == 0 ? endFuture : endPast,
                     i % 2 == 0 ? categoriesPair : categoriesOdd,
                     null,
                     "CR_preferred_" + i,
@@ -63,8 +69,8 @@ public class DummyRecruitRunner implements CommandLineRunner {
             recruitCommandService.saveCompanyRecruit(companyRequest, (long) i);
 
             CreateLaborRecruitRequest laborRequest = new CreateLaborRecruitRequest(
-                    LocalDateTime.now(),
-                    LocalDateTime.now(),
+                    i % 2 == 0 ? beginFuture : beginPast,
+                    i % 2 == 0 ? endFuture : endPast,
                     "LR_job_" + i,
                     "LR_wage_" + i,
                     "LR_remark_" + i,
@@ -78,8 +84,8 @@ public class DummyRecruitRunner implements CommandLineRunner {
         // 16 ~ 30 업체 모집 공고만 등록
         for (int i = 16; i <= COMPANY_RECRUIT; i++) {
             CreateCompanyRecruitRequest companyRequest = new CreateCompanyRecruitRequest(
-                    LocalDateTime.now(),
-                    LocalDateTime.now(),
+                    i % 2 == 0 ? beginFuture : beginPast,
+                    i % 2 == 0 ? endFuture : endPast,
                     i % 2 == 0 ? categoriesPair : categoriesOdd,
                     null,
                     "CR_preferred_" + i,
@@ -92,8 +98,8 @@ public class DummyRecruitRunner implements CommandLineRunner {
         // 31 ~ 45 근로자 모집 공고만 등록
         for (int i = 31; i <= LABOR_RECRUIT; i++) {
             CreateLaborRecruitRequest laborRequest = new CreateLaborRecruitRequest(
-                    LocalDateTime.now(),
-                    LocalDateTime.now(),
+                    i % 2 == 0 ? beginFuture : beginPast,
+                    i % 2 == 0 ? endFuture : endPast,
                     "LR_job_" + i,
                     "LR_wage_" + i,
                     "LR_remark_" + i,

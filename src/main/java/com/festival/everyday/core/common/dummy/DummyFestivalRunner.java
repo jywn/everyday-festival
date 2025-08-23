@@ -25,11 +25,21 @@ public class DummyFestivalRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        LocalDateTime beginPast = LocalDateTime.of(2025, 7, 10, 14, 30);
+        LocalDateTime endPast = LocalDateTime.of(2025, 7, 15, 15, 30);
+
+        LocalDateTime beginFuture = LocalDateTime.of(2025, 10, 1, 14, 30);
+        LocalDateTime endFuture = LocalDateTime.of(2025, 10, 5, 15, 30);
+
         // 더미 축제를 저장한다
+        /**
+         * 1 ~ 45: 진행
+         * 46 ~ 60: 종료
+         */
         for (int i = 0; i < 60; i++) {
             FestivalFormRequest request = new FestivalFormRequest(
                     "F_name_" + i,
-                    PeriodDto.of(LocalDateTime.now(), LocalDateTime.now()),
+                    i < 45 ? PeriodDto.of(beginFuture, endFuture) : PeriodDto.of(beginPast, endPast),
                     AddressDto.of("F_city_" + i, "F_district_" + i, "F_detail_" + i),
                     "F_fee_" + i,
                     "F_time_" + i,
