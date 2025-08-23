@@ -47,5 +47,23 @@ public class DummySelectRunner implements CommandLineRunner {
         applicationCommandService.acceptApplication(307L);
         applicationCommandService.denyApplication(308L);
         applicationCommandService.denyApplication(309L);
+
+        //60번 행사는 종료됐으며, 복수의 지원자를 가지고 이들은 모두 선택된다.
+        applicationCommandService.acceptApplication(310L);
+        applicationCommandService.acceptApplication(311L);
+        applicationCommandService.acceptApplication(312L);
+        applicationCommandService.acceptApplication(313L);
+        applicationCommandService.acceptApplication(314L);
+        applicationCommandService.acceptApplication(315L);
+        applicationCommandService.acceptApplication(316L);
+
+        applicationCommandService.acceptApplication(317L);
+        applicationCommandService.acceptApplication(318L);
+        applicationCommandService.acceptApplication(319L);
+        applicationCommandService.acceptApplication(320L);
+        applicationCommandService.acceptApplication(321L);
+        applicationCommandService.acceptApplication(322L);
+        applicationCommandService.acceptApplication(323L);
+
     }
 }

@@ -35,6 +35,9 @@ public class DummyReviewRunner implements CommandLineRunner {
     private final List<Long> pairLabor = List.of(32L, 34L, 36L, 38L, 40L);
     private final List<Long> oddLabor = List.of(31L, 33L, 35L, 37L, 39L);
 
+    private final List<Long> reviewCompany = List.of(12L, 13L, 14L, 15L, 16L, 17L, 18L);
+    private final List<Long> reviewLabor = List.of(32L, 33L, 34L, 35L, 36L, 37L, 38L);
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -90,5 +93,11 @@ public class DummyReviewRunner implements CommandLineRunner {
             oddLabor.forEach(id -> reviewCommandService.createFestivalReview(index, id, "LABOR", oddLaborReview));
         }
 
+        // 60번 축제에 모두 7명씩 리뷰를 작성합니다.
+        FestivalReviewFormDto cDto = new FestivalReviewFormDto("COMPANY_REVIEW_60");
+        FestivalReviewFormDto lDto = new FestivalReviewFormDto("LABOR_REVIEW_60");
+
+        reviewCompany.forEach(id -> reviewCommandService.createFestivalReview(60L, (long) id, "COMPANY", cDto));
+        reviewLabor.forEach(id -> reviewCommandService.createFestivalReview(60L, (long) id, "LABOR", lDto));
     }
 }
