@@ -4,9 +4,11 @@ import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.dto.command.SimpleCompanyWithImageDto;
+import com.festival.everyday.core.company.exception.CompanyNotFoundException;
 import com.festival.everyday.core.company.repository.CompanyRepository;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.SimpleFestivalWithImageDto;
+import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
 import com.festival.everyday.core.review.domain.Review;
 import com.festival.everyday.core.review.dto.command.ReviewAndSenderDto;
@@ -53,11 +55,21 @@ public class ReviewQueryService {
 
     public SimpleFestivalWithImageDto getFestivalReviewForm(Long festivalId) {
 
-        return festivalRepository.findSimpleFestivalWithImage(festivalId);
+        SimpleFestivalWithImageDto simpleFestivalWithImage = festivalRepository.findSimpleFestivalWithImage(festivalId);
+        if (simpleFestivalWithImage == null) {
+            throw new FestivalNotFoundException();
+        }
+
+        return simpleFestivalWithImage;
     }
 
     public SimpleCompanyWithImageDto getCompanyReviewForm(Long companyId) {
 
-        return companyRepository.findSimpleCompanyWithImage(companyId);
+        SimpleCompanyWithImageDto simpleCompanyWithImage = companyRepository.findSimpleCompanyWithImage(companyId);
+        if (simpleCompanyWithImage == null) {
+            throw new CompanyNotFoundException();
+        }
+
+        return simpleCompanyWithImage;
     }
 }

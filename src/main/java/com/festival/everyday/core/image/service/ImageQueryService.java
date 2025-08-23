@@ -1,6 +1,7 @@
 package com.festival.everyday.core.image.service;
 
 import com.festival.everyday.core.image.domain.Image;
+import com.festival.everyday.core.image.exception.ImageNotFoundException;
 import com.festival.everyday.core.image.repository.ImageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,9 @@ public class ImageQueryService {
 
     // 이미지를 조회합니다. (가능한 사용하지 않습니다.)
     public Resource getImage(Long id) throws MalformedURLException {
-        Optional<Image> findImage = imageRepository.findById(id);
-        if (findImage.isEmpty()) {
-            throw new EntityNotFoundException("이미지를 찾을 수 없습니다.");
-        }
+        Image findImage = imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
 
-        Path imgPath = Paths.get(findImage.get().getFullPath(), findImage.get().getEncodedName());
+        Path imgPath = Paths.get(findImage.getFullPath(), findImage.getEncodedName());
         return new UrlResource(imgPath.toUri());
     }
 }

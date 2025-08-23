@@ -9,6 +9,7 @@ import com.festival.everyday.core.user.domain.Labor;
 import com.festival.everyday.core.user.dto.request.CompanyRegisterRequest;
 import com.festival.everyday.core.user.dto.request.HolderRegisterRequest;
 import com.festival.everyday.core.user.dto.request.LaborRegisterRequest;
+import com.festival.everyday.core.user.exception.RedundantAccountException;
 import com.festival.everyday.core.user.repository.HolderRepository;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -86,7 +87,7 @@ public class UserCommandService {
 
     private void checkRedundant(String account) {
         if (userRepository.existsByAccount(account)) {
-            throw new EntityExistsException("중복 계정입니다.");
+            throw new RedundantAccountException();
         }
     }
 

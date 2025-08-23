@@ -12,6 +12,7 @@ import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
 import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
 import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
 import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
+import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
 import com.festival.everyday.core.recruit.repository.CompanyRecruitRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,10 @@ public class FestivalQueryService {
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
         // 축제를 찾습니다.
         FestivalDetailDto festivalDetail = festivalRepository.findFestivalDetail(festivalId, userId);
+        if (festivalDetail == null) {
+            throw new FestivalNotFoundException();
+        }
+
         festivalDetail.addCategories(festivalRepository.findCompanyRecruitCategories(festivalId));
         return FestivalDetailResponse.from(festivalDetail);
     }

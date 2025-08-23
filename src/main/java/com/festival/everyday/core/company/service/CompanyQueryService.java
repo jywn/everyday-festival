@@ -4,6 +4,7 @@ import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.common.dto.response.PageResponse;
+import com.festival.everyday.core.company.exception.CompanyNotFoundException;
 import com.festival.everyday.core.company.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,10 @@ public class CompanyQueryService {
     }
 
     public CompanyDetailDto findById(Long userId, Long companyId){
-        return companyRepository.findCompanyDetailById(userId, companyId);
+        CompanyDetailDto companyDetailById = companyRepository.findCompanyDetailById(userId, companyId);
+        if (companyDetailById == null) {
+            throw new CompanyNotFoundException();
+        }
+        return companyDetailById;
     }
 }

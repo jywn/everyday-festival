@@ -4,6 +4,7 @@ import com.festival.everyday.core.application.domain.Application;
 import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.*;
 import com.festival.everyday.core.application.dto.response.*;
+import com.festival.everyday.core.application.exception.ApplicationNotFoundException;
 import com.festival.everyday.core.application.repository.ApplicationRepository;
 import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
@@ -66,7 +67,11 @@ public class ApplicationQueryService {
     }
 
     public ApplicationDetailDto getApplicationDetail(Long applicationId) {
-        return ApplicationDetailDto.from(applicationRepository.findApplicationDetail(applicationId));
+        Application applicationDetail = applicationRepository.findApplicationDetail(applicationId);
+        if (applicationDetail == null) {
+            throw new ApplicationNotFoundException();
+        }
+        return ApplicationDetailDto.from(applicationDetail);
     }
 
 }

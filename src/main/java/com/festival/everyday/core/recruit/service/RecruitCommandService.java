@@ -2,6 +2,7 @@ package com.festival.everyday.core.recruit.service;
 
 import com.festival.everyday.core.common.domain.Period;
 import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
 import com.festival.everyday.core.recruit.domain.CompanyRecruit;
 import com.festival.everyday.core.recruit.domain.ExtraQuestion;
@@ -31,7 +32,7 @@ public class RecruitCommandService {
 
         // 추가 질문들과 모집 공고의 연관 관계를 설정한다.
         List<ExtraQuestion> questions = ExtraQuestion.createQuestions(companyRecruit, request.getExtraQuestions());
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(FestivalNotFoundException::new);
 
         // 연관 관계 설정
         festival.addCompanyRecruit(companyRecruit);
@@ -51,7 +52,7 @@ public class RecruitCommandService {
         List<ExtraQuestion> questions = ExtraQuestion.createQuestions(laborRecruit, request.getExtraQuestions());
 
 
-        Festival festival = festivalRepository.findById(festivalId).orElseThrow(() -> new EntityNotFoundException("축제를 찾을 수 없습니다."));
+        Festival festival = festivalRepository.findById(festivalId).orElseThrow(FestivalNotFoundException::new);
 
         // 연관 관계 설정
         festival.addLaborRecruit(laborRecruit);
