@@ -22,27 +22,25 @@ public class DummyFavoriteRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (int i = 1; i <= 90; i++) {
-            Long senderId = (long) i;
+        for (int userId = 1; userId <= 100; userId++) {
+            Long senderId = (long) userId;
 
             /**
-             *  FESTIVAL (6개 찜)
-             *  userId = 5 -> festivalId가 5,15,25,35,45,55 찜
-             *  userId = 70 -> festivalId가 10,20,30,40,50,60
+             *  userId가 짝수면 festivalId 짝수 다 찜 (2,4...,30)
+             *  userId가 홀수면 festivalId 홀수 다 찜 (1,3...,29)
              */
-            for (int k = 0; k < 6; k++) {
-                Long receiverId = (long) modNonZero(i + k * 10, 60);
+            for (int k = 0; k < 15; k++) {
+                Long receiverId = (long) (2 * k + (userId % 2 == 0 ? 2 : 1));
                 FavoriteRequest request = new FavoriteRequest(receiverId, ReceiverType.FESTIVAL);
                 favoriteCommandService.favor(senderId, request);
             }
 
             /**
-             *  COMPANY (3개 찜)
-             *  userId = 7 -> userId가 7,17,27인 company 찜 (company의 userId 1~30)
-             *  userId = 80 -> userId가 10,20,30인 company 찜
+             *  userId가 짝수면 CompanyId 짝수 다 찜 (2,4,...,60)
+             *  userId가 홀수면 CompanyId 홀수 다 찜 (1,3,...,59)
              */
-            for (int k = 0; k < 3; k++) {
-                Long receiverId = (long) modNonZero(i + k * 10, 30);
+            for (int k = 1; k <= 30; k++) {
+                Long receiverId = (long) (2 * k - (userId % 2 == 0 ? 0 : 1));
                 FavoriteRequest request = new FavoriteRequest(receiverId, ReceiverType.COMPANY);
                 favoriteCommandService.favor(senderId, request);
             }

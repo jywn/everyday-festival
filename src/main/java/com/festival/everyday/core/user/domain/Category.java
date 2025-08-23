@@ -4,6 +4,14 @@ public enum Category {
     ART, ENTERTAINMENT, EXPERIENCE, SALE, FOOD, CAMPAIGN, ETC
 
     /**
+     * ART : 공연
+     * ENTERTAINMENT : 오락
+     * EXPERIENCE : 판매
+     * FOOD : 푸드트럭
+     * CAMPAIGN : 캠페인
+     * ETC : 그외
+     */
+    /**
      * ~ 연관 관계 설정 메서드
      * ======================================
      * 비즈니스 메서드 ~
