@@ -58,7 +58,7 @@ public class ImageService {
         String baseName = originalName.substring(0, originalName.lastIndexOf("."));
 
         // uuid_원본이름.확장자
-        String encodedName = UUID.randomUUID().toString() + "_" + baseName + "." + ext;
+        String encodedName = UUID.randomUUID() + "_" + baseName + "." + ext;
 
         // Image 엔티티 생성 (url은 디렉토리 경로까지만 저장됨)
         Image image = Image.create(url, imageDto.getOwnerType(), imageDto.getOwnerId(), originalName, encodedName);
