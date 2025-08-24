@@ -11,5 +11,4 @@ public interface ReviewRepositoryCustom {
     public Page<ReviewAndSenderDto> findReviewsByCompanies(Long receiverId, ReceiverType receiverType, Pageable pageable);
     public Page<ReviewAndSenderDto> findReviewsByFestivals(Long receiverId, ReceiverType receiverType, Pageable pageable);
     public Page<ReviewAndSenderDto> findReviewsByLabors(Long receiverId, ReceiverType receiverType, Pageable pageable);
-
 }

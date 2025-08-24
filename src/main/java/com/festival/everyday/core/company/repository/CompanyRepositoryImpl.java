@@ -5,6 +5,7 @@ import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.QCompany;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.company.dto.command.RecommendCompanyDto;
 import com.festival.everyday.core.company.dto.command.SimpleCompanyWithImageDto;
 import com.festival.everyday.core.favorite.domain.QFavorite;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
@@ -106,6 +107,19 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
                 .where(company.id.eq(companyId))
                 .fetchOne();
+    }
+
+    @Override
+    public List<RecommendCompanyDto> findRecommendCompanies(List<Long> idList) {
+        return queryFactory
+                .select(Projections.constructor(RecommendCompanyDto.class,
+                        company.id, company.name,
+                        company.address.city, company.address.district, company.address.detail,
+                        company.category, image.url))
+                .from(company)
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
+                .where(company.id.in(idList))
+                .fetch();
     }
 
     // 카운트 쿼리를 날려 페이지 객체를 생성합니다.

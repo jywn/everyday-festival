@@ -1,5 +1,6 @@
 package com.festival.everyday.core.user.service;
 
+import com.festival.everyday.core.ai.service.EmbeddingService;
 import com.festival.everyday.core.common.domain.Address;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.Company;

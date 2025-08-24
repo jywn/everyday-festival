@@ -39,6 +39,7 @@ public class Image extends BaseCreatedAtEntity {
     private String url;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "owner_type", nullable = false)
     private OwnerType ownerType;
 

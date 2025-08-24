@@ -2,6 +2,7 @@ package com.festival.everyday.core.application.repository;
 
 import com.festival.everyday.core.application.domain.Application;
 import com.festival.everyday.core.application.domain.SELECTED;
+import com.festival.everyday.core.application.dto.Progress;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
 import com.festival.everyday.core.application.dto.command.MyApplicationSimpleDto;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.festival.everyday.core.application.domain.QApplication.*;
@@ -91,7 +93,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
 
     // 페이징
     @Override
-    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status) {
+    public Page<MyApplicationSimpleDto> findEndedMyApplicationList(Long userId, Pageable pageable, SELECTED status) {
         List<MyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(MyApplicationSimpleDto.class,
                         application.id,
@@ -102,7 +104,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(application.user.id.eq(userId).and(selectedEq(status)))
+                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.before(LocalDateTime.now())))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(application.createdAt.desc())
@@ -112,7 +114,34 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .select(application.count())
                 .from(application)
                 .join(application.festival, festival)
-                .where(application.user.id.eq(userId));
+                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.before(LocalDateTime.now())));
+
+        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public Page<MyApplicationSimpleDto> findOngoingMyApplicationList(Long userId, Pageable pageable, SELECTED status) {
+        List<MyApplicationSimpleDto> queryResult = queryFactory
+                .select(Projections.constructor(MyApplicationSimpleDto.class,
+                        application.id,
+                        application.festival.id, application.festival.name, application.festival.holder.name,
+                        application.festival.period.begin, application.festival.period.end,
+                        application.selected, image.url))
+                .from(application)
+                .join(application.festival, festival)
+                .join(festival.holder, holder)
+                .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
+                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.after(LocalDateTime.now())))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(application.createdAt.desc())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(application.count())
+                .from(application)
+                .join(application.festival, festival)
+                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.after(LocalDateTime.now())));
 
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
@@ -141,6 +170,9 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                         .and(application.selected.eq(SELECTED.ACCEPTED)))
                 .fetchFirst() != null;
     }
+
+//    @Override
+//    public
 
     private BooleanExpression selectedEq(SELECTED status) {
         return status != null ? application.selected.eq(status) : null;
