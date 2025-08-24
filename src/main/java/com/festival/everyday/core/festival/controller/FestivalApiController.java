@@ -66,7 +66,7 @@ public class FestivalApiController {
         return ResponseEntity.ok(ApiResponse.success("축제 검색에 성공하였습니다.", response));
     }
 
-    @GetMapping("/festivals/{festivalId}/recommended-companies")
+    @GetMapping("/{festivalId}/recommended-companies")
     public ResponseEntity<ApiResponse<List<RecommendCompanyResponse>>> recommendCompanies(@PathVariable Long festivalId) {
         List<Long> idList = embeddingService.recommendCompanies(festivalId);
         List<RecommendCompanyResponse> response = festivalQueryService.getRecommendedCompanies(idList).stream().map(RecommendCompanyResponse::from).toList();
