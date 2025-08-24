@@ -4,6 +4,7 @@ import com.festival.everyday.core.image.domain.OwnerType;
 import com.festival.everyday.core.image.dto.common.ImageDto;
 import com.festival.everyday.core.image.service.ImageCommandService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -18,15 +19,21 @@ public class DummyImageRunner implements CommandLineRunner {
 
     private final ImageCommandService imageCommandService;
 
+
+    @Value("${DUMMY_FESTIVAL_URL}")
+    String folderPathFestival;
+
+    @Value("${DUMMY_USER_URL}")
+    String folderPathUser;
+
     @Override
     public void run(String... args) {
-        String folderPathFestival = "C:\\Users\\kgeo6\\OneDrive\\바탕 화면\\더미데이터 이미지 파일\\축제";
+
+
         for (int i = 1; i <= 30; i++) {
             uploadIfExists(folderPathFestival, i, OwnerType.FESTIVAL);
         }
 
-        // 👤 유저 이미지 업로드
-        String folderPathUser = "C:\\Users\\kgeo6\\OneDrive\\바탕 화면\\더미데이터 이미지 파일\\유저";
         for (int i = 1; i <= 100; i++) {
             OwnerType type;
             if (i <= 60) {
