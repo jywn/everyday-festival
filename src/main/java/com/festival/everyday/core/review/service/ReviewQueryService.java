@@ -62,10 +62,10 @@ public class ReviewQueryService {
     // 중복 리뷰 막아야함
     public SimpleFestivalWithImageDto getFestivalReviewForm(Long userId, String userType, Long festivalId) {
 
-        // 실제 참여자인가
-        if (!applicationRepository.isApplicationSelected(userId, festivalId)) {
-            throw new InvalidReviewerException();
-        }
+//        // 실제 참여자인가
+//        if (!applicationRepository.isApplicationSelected(userId, festivalId)) {
+//            throw new InvalidReviewerException();
+//        }
 
         // 중복 리뷰인가
         checkExistingFestivalReview(userId, userType, festivalId);
