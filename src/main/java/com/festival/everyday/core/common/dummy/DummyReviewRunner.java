@@ -45,8 +45,8 @@ public class DummyReviewRunner implements CommandLineRunner {
         //createFestivalReview(Long festivalId, Long userId, String userType, FestivalReviewFormDto formDto);
         reviewCommandService.createFestivalReview(2L, 12L, "COMPANY", CR1);
         reviewCommandService.createFestivalReview(2L, 42L, "COMPANY", CR2);
-        CompanyReviewFormDto FR1 = new CompanyReviewFormDto(2L, FR.get(0));
-        reviewCommandService.createCompanyReview(12L, FR1);
+//        CompanyReviewFormDto FR1 = new CompanyReviewFormDto(2L, FR.get(0));
+//        reviewCommandService.createCompanyReview(12L, FR1);
         CompanyReviewFormDto FR2 = new CompanyReviewFormDto(2L, FR.get(1));
         reviewCommandService.createCompanyReview(42L, FR2);
 
