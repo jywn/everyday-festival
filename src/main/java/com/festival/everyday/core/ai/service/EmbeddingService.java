@@ -1,5 +1,6 @@
 package com.festival.everyday.core.ai.service;
 
+import com.festival.everyday.core.ai.exception.PgVectorFailedException;
 import com.festival.everyday.core.ai.repository.EmbeddingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
@@ -51,6 +52,10 @@ public class EmbeddingService {
         float[] embedding = new float[splitNum.length];
         for (int i = 0; i < splitNum.length; i++) {
             embedding[i] = Float.parseFloat(splitNum[i].trim());
+        }
+
+        if (embedding.length != 1536) {
+            throw new PgVectorFailedException();
         }
 
         return embedding;

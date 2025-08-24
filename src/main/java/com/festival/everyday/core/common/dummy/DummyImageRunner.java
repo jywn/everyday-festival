@@ -19,7 +19,6 @@ public class DummyImageRunner implements CommandLineRunner {
 
     private final ImageCommandService imageCommandService;
 
-
     @Value("${DUMMY_FESTIVAL_URL}")
     String folderPathFestival;
 
