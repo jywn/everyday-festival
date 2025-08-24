@@ -119,14 +119,5 @@ public class DummyApplyRunner implements CommandLineRunner {
             }
         }
 
-        // 60번 축제는 종료된 행사에 다수의 지원자가 존재한다.
-        ApplicationRequest companyRequest = new ApplicationRequest(companyAnswersPair, companyEAnswersPair);
-
-        pairCompany.forEach(id -> applicationCommandService.createCompanyApplication(id, 60L, companyRequest));
-        pairLabor.forEach(id -> applicationCommandService.createLaborApplication(id, 60L, companyRequest));
-
-        // 60번 축제는 종료된 행사에 다수의 지원자가 존재하고, 이들은 모두 선택된다.
-        reviewCompany.forEach(id -> applicationCommandService.createCompanyApplication(id, 60L, companyRequest));
-        reviewLabor.forEach(id -> applicationCommandService.createLaborApplication(id, 60L, companyRequest));
     }
 }
