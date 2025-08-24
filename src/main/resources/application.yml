@@ -1,7 +1,7 @@
 spring:
   web:
     resources:
-      static-locations: file:/home/ec2-user/images/
+      static-locations: file:/home/ec2-user/
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
