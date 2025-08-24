@@ -57,7 +57,7 @@ public class CompanyApiController {
         return ResponseEntity.ok(ApiResponse.success("업체 상세 정보 조회 성공", result));
     }
 
-    @GetMapping("/companies/{companyId}/recommended-festivals")
+    @GetMapping("/{companyId}/recommended-festivals")
     public ResponseEntity<ApiResponse<List<RecommendFestivalResponse>>> recommendFestivals(@PathVariable Long companyId) {
         List<Long> idList = embeddingService.recommendFestivals(companyId);
         List<RecommendFestivalResponse> response = companyQueryService.getRecommendedFestivals(idList).stream().map(RecommendFestivalResponse::from).collect(Collectors.toList());

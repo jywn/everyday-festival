@@ -1,5 +1,6 @@
 package com.festival.everyday.core.common.dummy;
 
+import com.festival.everyday.core.ai.service.EmbeddingService;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.image.dto.common.ImageDto;
 import com.festival.everyday.core.image.service.ImageCommandService;
@@ -24,6 +25,7 @@ public class DummyUserRunner implements CommandLineRunner {
 
     private final UserCommandService userCommandService;
     private final ImageCommandService imageCommandService;
+    private final EmbeddingService embeddingService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -44,7 +46,8 @@ public class DummyUserRunner implements CommandLineRunner {
                 "머엇사",
                 Category.FOOD
         );
-        userCommandService.companyJoin(requestKing1);
+        saveAndEmbedCompany(requestKing1);
+
 
         //2
         CompanyRegisterRequest Crequest2 = new CompanyRegisterRequest(
@@ -58,7 +61,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김지오",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest2);
+        saveAndEmbedCompany(Crequest2);
 
         //3
         CompanyRegisterRequest Crequest3 = new CompanyRegisterRequest(
@@ -72,7 +75,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김종윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest3);
+        saveAndEmbedCompany(Crequest3);
 
         //4
         CompanyRegisterRequest Crequest4 = new CompanyRegisterRequest(
@@ -86,7 +89,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김지윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest4);
+        saveAndEmbedCompany(Crequest4);
 
         //5
         CompanyRegisterRequest Crequest5 = new CompanyRegisterRequest(
@@ -100,7 +103,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김예나",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest5);
+        saveAndEmbedCompany(Crequest5);
 
         //6
         CompanyRegisterRequest Crequest6 = new CompanyRegisterRequest(
@@ -114,7 +117,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김서정",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest6);
+        saveAndEmbedCompany(Crequest6);
 
         //7
         CompanyRegisterRequest Crequest7 = new CompanyRegisterRequest(
@@ -128,7 +131,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김현서",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest7);
+        saveAndEmbedCompany(Crequest7);
 
         //8
         CompanyRegisterRequest Crequest8 = new CompanyRegisterRequest(
@@ -142,7 +145,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "원지오",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest8);
+        saveAndEmbedCompany(Crequest8);
 
         //9
         CompanyRegisterRequest Crequest9 = new CompanyRegisterRequest(
@@ -156,7 +159,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "원종윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest9);
+        saveAndEmbedCompany(Crequest9);
 
         //10
         CompanyRegisterRequest Crequest10 = new CompanyRegisterRequest(
@@ -170,7 +173,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "원지윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest10);
+        saveAndEmbedCompany(Crequest10);
 
         //11
         CompanyRegisterRequest Crequest11 = new CompanyRegisterRequest(
@@ -184,7 +187,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "원예나",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest11);
+        saveAndEmbedCompany(Crequest11);
 
         //12
         CompanyRegisterRequest Crequest12 = new CompanyRegisterRequest(
@@ -198,7 +201,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "원서정",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest12);
+        saveAndEmbedCompany(Crequest12);
 
         //13
         CompanyRegisterRequest Crequest13 = new CompanyRegisterRequest(
@@ -212,7 +215,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "원현서",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest13);
+        saveAndEmbedCompany(Crequest13);
 
         //14
         CompanyRegisterRequest Crequest14 = new CompanyRegisterRequest(
@@ -226,7 +229,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박지오",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest14);
+        saveAndEmbedCompany(Crequest14);
 
         //15
         CompanyRegisterRequest Crequest15 = new CompanyRegisterRequest(
@@ -240,7 +243,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박종윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest15);
+        saveAndEmbedCompany(Crequest15);
 
         //16
         CompanyRegisterRequest Crequest16 = new CompanyRegisterRequest(
@@ -254,7 +257,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박지윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest16);
+        saveAndEmbedCompany(Crequest16);
 
         //17
         CompanyRegisterRequest Crequest17 = new CompanyRegisterRequest(
@@ -268,7 +271,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박예나",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest17);
+        saveAndEmbedCompany(Crequest17);
 
         //18
         CompanyRegisterRequest Crequest18 = new CompanyRegisterRequest(
@@ -282,7 +285,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박서정",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest18);
+        saveAndEmbedCompany(Crequest18);
 
         //19
         CompanyRegisterRequest Crequest19 = new CompanyRegisterRequest(
@@ -296,7 +299,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박현서",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest19);
+        saveAndEmbedCompany(Crequest19);
 
         //20
         CompanyRegisterRequest Crequest20 = new CompanyRegisterRequest(
@@ -310,7 +313,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이지오",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest20);
+        saveAndEmbedCompany(Crequest20);
 
         //21
         CompanyRegisterRequest Crequest21 = new CompanyRegisterRequest(
@@ -324,7 +327,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이종윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest21);
+        saveAndEmbedCompany(Crequest21);
 
         //22
         CompanyRegisterRequest Crequest22 = new CompanyRegisterRequest(
@@ -338,7 +341,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이지윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest22);
+        saveAndEmbedCompany(Crequest22);
 
         //23
         CompanyRegisterRequest Crequest23 = new CompanyRegisterRequest(
@@ -352,7 +355,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이예나",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest23);
+        saveAndEmbedCompany(Crequest23);
 
         //24
         CompanyRegisterRequest Crequest24 = new CompanyRegisterRequest(
@@ -366,7 +369,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이서정",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest24);
+        saveAndEmbedCompany(Crequest24);
 
         //25
         CompanyRegisterRequest Crequest25 = new CompanyRegisterRequest(
@@ -380,7 +383,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이현서",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest25);
+        saveAndEmbedCompany(Crequest25);
 
         //26
         CompanyRegisterRequest Crequest26 = new CompanyRegisterRequest(
@@ -394,7 +397,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "한지오",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest26);
+        saveAndEmbedCompany(Crequest26);
 
         //27
         CompanyRegisterRequest Crequest27 = new CompanyRegisterRequest(
@@ -408,7 +411,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "한종윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest27);
+        saveAndEmbedCompany(Crequest27);
 
         //28
         CompanyRegisterRequest Crequest28 = new CompanyRegisterRequest(
@@ -422,7 +425,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "한지윤",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest28);
+        saveAndEmbedCompany(Crequest28);
 
         //29
         CompanyRegisterRequest Crequest29 = new CompanyRegisterRequest(
@@ -436,7 +439,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "한예나",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest29);
+        saveAndEmbedCompany(Crequest29);
 
         //30
         CompanyRegisterRequest Crequest30 = new CompanyRegisterRequest(
@@ -450,7 +453,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "한서정",
                 Category.FOOD
         );
-        userCommandService.companyJoin(Crequest30);
+        saveAndEmbedCompany(Crequest30);
 
         //31
         CompanyRegisterRequest Crequest31 = new CompanyRegisterRequest(
@@ -464,7 +467,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김민준",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest31);
+        saveAndEmbedCompany(Crequest31);
 
         //32
         CompanyRegisterRequest Crequest32 = new CompanyRegisterRequest(
@@ -478,7 +481,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박서연",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest32);
+        saveAndEmbedCompany(Crequest32);
 
         //33
         CompanyRegisterRequest Crequest33 = new CompanyRegisterRequest(
@@ -492,7 +495,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이지후",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest33);
+        saveAndEmbedCompany(Crequest33);
 
         //34
         CompanyRegisterRequest Crequest34 = new CompanyRegisterRequest(
@@ -506,7 +509,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "최도윤",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest34);
+        saveAndEmbedCompany(Crequest34);
 
         //35
         CompanyRegisterRequest Crequest35 = new CompanyRegisterRequest(
@@ -520,7 +523,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "정하린",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest35);
+        saveAndEmbedCompany(Crequest35);
 
         //36
         CompanyRegisterRequest Crequest36 = new CompanyRegisterRequest(
@@ -534,7 +537,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "윤지호",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest36);
+        saveAndEmbedCompany(Crequest36);
 
         //37
         CompanyRegisterRequest Crequest37 = new CompanyRegisterRequest(
@@ -548,7 +551,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "장유진",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest37);
+        saveAndEmbedCompany(Crequest37);
 
         //38
         CompanyRegisterRequest Crequest38 = new CompanyRegisterRequest(
@@ -562,7 +565,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "한서준",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest38);
+        saveAndEmbedCompany(Crequest38);
 
         //39
         CompanyRegisterRequest Crequest39 = new CompanyRegisterRequest(
@@ -576,7 +579,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "오예린",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest39);
+        saveAndEmbedCompany(Crequest39);
 
         //40
         CompanyRegisterRequest Crequest40 = new CompanyRegisterRequest(
@@ -590,7 +593,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "임현서",
                 Category.ART
         );
-        userCommandService.companyJoin(Crequest40);
+        saveAndEmbedCompany(Crequest40);
 
         //41
         CompanyRegisterRequest Crequest41 = new CompanyRegisterRequest(
@@ -604,7 +607,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김하준",
                 Category.ENTERTAINMENT
         );
-        userCommandService.companyJoin(Crequest41);
+        saveAndEmbedCompany(Crequest41);
 
         //42
         CompanyRegisterRequest Crequest42 = new CompanyRegisterRequest(
@@ -618,7 +621,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박지아",
                 Category.ENTERTAINMENT
         );
-        userCommandService.companyJoin(Crequest42);
+        saveAndEmbedCompany(Crequest42);
 
         //43
         CompanyRegisterRequest Crequest43 = new CompanyRegisterRequest(
@@ -632,7 +635,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이도현",
                 Category.ENTERTAINMENT
         );
-        userCommandService.companyJoin(Crequest43);
+        saveAndEmbedCompany(Crequest43);
 
         //44
         CompanyRegisterRequest Crequest44 = new CompanyRegisterRequest(
@@ -646,7 +649,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "정은채",
                 Category.ENTERTAINMENT
         );
-        userCommandService.companyJoin(Crequest44);
+        saveAndEmbedCompany(Crequest44);
 
         //45
         CompanyRegisterRequest Crequest45 = new CompanyRegisterRequest(
@@ -660,7 +663,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "오세진",
                 Category.ENTERTAINMENT
         );
-        userCommandService.companyJoin(Crequest45);
+        saveAndEmbedCompany(Crequest45);
 
         //46
         CompanyRegisterRequest Crequest46 = new CompanyRegisterRequest(
@@ -674,7 +677,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김수현",
                 Category.EXPERIENCE
         );
-        userCommandService.companyJoin(Crequest46);
+        saveAndEmbedCompany(Crequest46);
 
         //47
         CompanyRegisterRequest Crequest47 = new CompanyRegisterRequest(
@@ -688,7 +691,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박서윤",
                 Category.EXPERIENCE
         );
-        userCommandService.companyJoin(Crequest47);
+        saveAndEmbedCompany(Crequest47);
 
         //48
         CompanyRegisterRequest Crequest48 = new CompanyRegisterRequest(
@@ -702,7 +705,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이도윤",
                 Category.EXPERIENCE
         );
-        userCommandService.companyJoin(Crequest48);
+        saveAndEmbedCompany(Crequest48);
 
         //49
         CompanyRegisterRequest Crequest49 = new CompanyRegisterRequest(
@@ -716,7 +719,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "정민재",
                 Category.EXPERIENCE
         );
-        userCommandService.companyJoin(Crequest49);
+        saveAndEmbedCompany(Crequest49);
 
         //50
         CompanyRegisterRequest Crequest50 = new CompanyRegisterRequest(
@@ -730,7 +733,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "최아린",
                 Category.EXPERIENCE
         );
-        userCommandService.companyJoin(Crequest50);
+        saveAndEmbedCompany(Crequest50);
 
         //51
         CompanyRegisterRequest Crequest51 = new CompanyRegisterRequest(
@@ -744,7 +747,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "정다은",
                 Category.SALE
         );
-        userCommandService.companyJoin(Crequest51);
+        saveAndEmbedCompany(Crequest51);
 
         //52
         CompanyRegisterRequest Crequest52 = new CompanyRegisterRequest(
@@ -758,7 +761,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이준호",
                 Category.SALE
         );
-        userCommandService.companyJoin(Crequest52);
+        saveAndEmbedCompany(Crequest52);
 
         //53
         CompanyRegisterRequest Crequest53 = new CompanyRegisterRequest(
@@ -772,7 +775,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박하린",
                 Category.SALE
         );
-        userCommandService.companyJoin(Crequest53);
+        saveAndEmbedCompany(Crequest53);
 
         //54
         CompanyRegisterRequest Crequest54 = new CompanyRegisterRequest(
@@ -786,7 +789,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김도윤",
                 Category.SALE
         );
-        userCommandService.companyJoin(Crequest54);
+        saveAndEmbedCompany(Crequest54);
 
         //55
         CompanyRegisterRequest Crequest55 = new CompanyRegisterRequest(
@@ -800,7 +803,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "최서우",
                 Category.SALE
         );
-        userCommandService.companyJoin(Crequest55);
+        saveAndEmbedCompany(Crequest55);
 
         //56
         CompanyRegisterRequest Crequest56 = new CompanyRegisterRequest(
@@ -814,7 +817,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "김태윤",
                 Category.CAMPAIGN
         );
-        userCommandService.companyJoin(Crequest56);
+        saveAndEmbedCompany(Crequest56);
 
         //57
         CompanyRegisterRequest Crequest57 = new CompanyRegisterRequest(
@@ -828,7 +831,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "이하린",
                 Category.CAMPAIGN
         );
-        userCommandService.companyJoin(Crequest57);
+        saveAndEmbedCompany(Crequest57);
 
         //58
         CompanyRegisterRequest Crequest58 = new CompanyRegisterRequest(
@@ -842,7 +845,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "정우빈",
                 Category.CAMPAIGN
         );
-        userCommandService.companyJoin(Crequest58);
+        saveAndEmbedCompany(Crequest58);
 
         //59
         CompanyRegisterRequest Crequest59 = new CompanyRegisterRequest(
@@ -856,7 +859,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "박지안",
                 Category.CAMPAIGN
         );
-        userCommandService.companyJoin(Crequest59);
+        saveAndEmbedCompany(Crequest59);
 
         //60
         CompanyRegisterRequest Crequest60 = new CompanyRegisterRequest(
@@ -870,7 +873,7 @@ public class DummyUserRunner implements CommandLineRunner {
                 "최서준",
                 Category.CAMPAIGN
         );
-        userCommandService.companyJoin(Crequest60);
+        saveAndEmbedCompany(Crequest60);
 
         /**
          * Labor Dummy Data (30개)
@@ -1026,6 +1029,11 @@ public class DummyUserRunner implements CommandLineRunner {
                 AddressDto.of("서울특별시" , "강남구", "강남로 1")
         );
         userCommandService.holderJoin(Hrequest9);
+    }
+
+    private void saveAndEmbedCompany(CompanyRegisterRequest requestKing1) {
+        Long saved = userCommandService.companyJoin(requestKing1);
+        embeddingService.embedCompany(saved, requestKing1.getIntroduction());
     }
 
 

@@ -44,7 +44,7 @@ public class ImageApiController {
         };
 
         ImageRequest imageRequest = new ImageRequest(Long.parseLong(ownerId), type);
-        Long id = imageService.upload(ImageDto.from(imageRequest), ggimage);
+        Long id = imageService.upload(ImageDto.from(imageRequest), image);
 
         return ResponseEntity.ok(ApiResponse.success("이미지 저장에 성공했습니다.", id));
     }

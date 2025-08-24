@@ -1,5 +1,6 @@
 package com.festival.everyday.core.common.dummy;
 
+import com.festival.everyday.core.ai.service.EmbeddingService;
 import com.festival.everyday.core.common.domain.Period;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class DummyFestivalRunner implements CommandLineRunner {
 
+    private final EmbeddingService embeddingService;
     private final FestivalCommandService festivalCommandService;
     private final ImageCommandService imageCommandService;
 
@@ -51,7 +53,8 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://likelion.net/",
                 "010-9411-2750"
         );
-        festivalCommandService.save(91L, request1);
+        saveAndEmbedFestival(91L, request1);
+
 
         //2
         FestivalFormRequest request2 = new FestivalFormRequest(
@@ -69,7 +72,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "010-5656-3434"
         );
 
-        festivalCommandService.save(91L, request2);
+        saveAndEmbedFestival(91L, request2);
 
         //3
         FestivalFormRequest request3 = new FestivalFormRequest(
@@ -86,7 +89,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "010-5959-3399"
         );
 
-        festivalCommandService.save(91L, request3);
+        saveAndEmbedFestival(91L, request3);
 
         //4
         FestivalFormRequest request4 = new FestivalFormRequest(
@@ -101,7 +104,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "yeomrisaltfestival.com",
                 "010-5111-8181"
         );
-        festivalCommandService.save(92L, request4);
+        saveAndEmbedFestival(92L, request4);
 
         //5
         FestivalFormRequest request5 = new FestivalFormRequest(
@@ -117,7 +120,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "snowfestival.com",
                 "010-1313-5678"
         );
-        festivalCommandService.save(92L, request5);
+        saveAndEmbedFestival(92L, request5);
         //6
         FestivalFormRequest request6 = new FestivalFormRequest(
                 "2023 염리동 소금 축제",
@@ -131,7 +134,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "yeomrisaltfestival.com",
                 "010-5111-8181"
         );
-        festivalCommandService.save(92L, request6);
+        saveAndEmbedFestival(92L, request6);
 
         //7
         FestivalFormRequest request7 = new FestivalFormRequest(
@@ -150,7 +153,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://yonggang.letsgo.kr",
                 "010-3535-7788"
         );
-        festivalCommandService.save(93L, request7);
+        saveAndEmbedFestival(93L, request7);
 
         //8
         FestivalFormRequest request8 = new FestivalFormRequest(
@@ -170,7 +173,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://yonggang.letsgo.kr",
                 "010-3535-7788"
         );
-        festivalCommandService.save(93L, request8);
+        saveAndEmbedFestival(93L, request8);
 
         //9
         FestivalFormRequest request9 = new FestivalFormRequest(
@@ -188,7 +191,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://yonggang.letsgo.kr",
                 "010-3535-7788"
         );
-        festivalCommandService.save(93L, request9);
+        saveAndEmbedFestival(93L, request9);
 
         //10
         FestivalFormRequest request10 = new FestivalFormRequest(
@@ -208,7 +211,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://www.sogang.ac.kr",
                 "02-6674-7817"
         );
-        festivalCommandService.save(94L, request10);
+        saveAndEmbedFestival(94L, request10);
 
         //11
         FestivalFormRequest request11 = new FestivalFormRequest(
@@ -231,7 +234,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.shock.ac.kr",
                 "010-1838-5238"
         );
-        festivalCommandService.save(95L, request11);
+        saveAndEmbedFestival(95L, request11);
 
         //12
         FestivalFormRequest request12 = new FestivalFormRequest(
@@ -254,7 +257,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.shock.ac.kr",
                 "010-9338-5438"
         );
-        festivalCommandService.save(95L, request12);
+        saveAndEmbedFestival(95L, request12);
 
         //13
         FestivalFormRequest request13 = new FestivalFormRequest(
@@ -277,7 +280,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.shock.ac.kr",
                 "010-1341-5523"
         );
-        festivalCommandService.save(95L, request13);
+        saveAndEmbedFestival(95L, request13);
 
         //14
         FestivalFormRequest request14 = new FestivalFormRequest(
@@ -295,7 +298,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.xstarc.ac.kr",
                 "010-4238-1648"
         );
-        festivalCommandService.save(96L, request14);
+        saveAndEmbedFestival(95L, request14);
 
         //15
         FestivalFormRequest request15 = new FestivalFormRequest(
@@ -312,7 +315,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.xstarc.ac.kr",
                 "010-4211-1115"
         );
-        festivalCommandService.save(96L, request15);
+        saveAndEmbedFestival(96L, request15);
 
         //16
         FestivalFormRequest request16 = new FestivalFormRequest(
@@ -330,7 +333,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.xstarc.ac.kr",
                 "010-4211-1115"
         );
-        festivalCommandService.save(96L, request16);
+        saveAndEmbedFestival(96L, request16);
 
         //17
         FestivalFormRequest request17 = new FestivalFormRequest(
@@ -351,7 +354,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://daeheungtownfestival.com",
                 "02-7415-9874"
         );
-        festivalCommandService.save(97L, request17);
+        saveAndEmbedFestival(97L, request17);
 
         //18
         FestivalFormRequest request18 = new FestivalFormRequest(
@@ -371,7 +374,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.watermelondaeheung.com",
                 "010-5764-1231"
         );
-        festivalCommandService.save(97L, request18);
+        saveAndEmbedFestival(97L, request18);
 
         //19
         FestivalFormRequest request19 = new FestivalFormRequest(
@@ -390,7 +393,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.daeheungtownfestival.com",
                 "010-2242-1667"
         );
-        festivalCommandService.save(97L, request19);
+        saveAndEmbedFestival(97L, request19);
 
         //20
         FestivalFormRequest request20 = new FestivalFormRequest(
@@ -409,7 +412,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "www.daeheungtownfestival.com",
                 "010-1423-4576"
         );
-        festivalCommandService.save(97L, request20);
+        saveAndEmbedFestival(97L, request20);
 
         //21
         FestivalFormRequest request21 = new FestivalFormRequest(
@@ -428,7 +431,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://zandari.go.kr",
                 "010-2424-8945"
         );
-        festivalCommandService.save(98L, request21);
+        saveAndEmbedFestival(98L, request21);
 
         //22
         FestivalFormRequest request22 = new FestivalFormRequest(
@@ -449,7 +452,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://zandari.go.kr",
                 "010-2424-8945"
         );
-        festivalCommandService.save(98L, request22);
+        saveAndEmbedFestival(98L, request22);
 
         //23
         FestivalFormRequest request23 = new FestivalFormRequest(
@@ -469,7 +472,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://zandari.go.kr",
                 "010-2424-8945"
         );
-        festivalCommandService.save(98L, request23);
+        saveAndEmbedFestival(98L, request23);
 
         //24
         FestivalFormRequest request24 = new FestivalFormRequest(
@@ -489,7 +492,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://yeonnamfestival.go.kr",
                 "010-7865-9999"
         );
-        festivalCommandService.save(99L, request24);
+        saveAndEmbedFestival(99L, request24);
 
         //25
         FestivalFormRequest request25 = new FestivalFormRequest(
@@ -509,7 +512,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://yeonnamfestival.go.kr",
                 "010-7865-9999"
         );
-        festivalCommandService.save(99L, request25);
+        saveAndEmbedFestival(99L, request25);
 
         //26
         FestivalFormRequest request26 = new FestivalFormRequest(
@@ -529,7 +532,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://yeonnamfestival.go.kr",
                 "010-7865-9999"
         );
-        festivalCommandService.save(99L, request26);
+        saveAndEmbedFestival(99L, request26);
 
         //27
         FestivalFormRequest request27 = new FestivalFormRequest(
@@ -549,7 +552,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://seoul_dongari.co.kr",
                 "010-3432-9877"
         );
-        festivalCommandService.save(100L, request27);
+        saveAndEmbedFestival(100L, request27);
 
         //28
         FestivalFormRequest request28 = new FestivalFormRequest(
@@ -570,7 +573,7 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://seoul_dongari.co.kr",
                 "010-3432-9877"
         );
-        festivalCommandService.save(100L, request28);
+        saveAndEmbedFestival(100L, request28);
 
         //29
         FestivalFormRequest request29 = new FestivalFormRequest(
@@ -590,7 +593,12 @@ public class DummyFestivalRunner implements CommandLineRunner {
                 "https://yeonnamfestival.go.kr",
                 "010-7865-9999"
         );
-        festivalCommandService.save(100L, request29);
+        saveAndEmbedFestival(100L, request29);
 
+    }
+
+    private void saveAndEmbedFestival(Long holderId, FestivalFormRequest request) {
+        Long saved = festivalCommandService.save(holderId, request);
+        embeddingService.embedFestival(saved, request.getIntroduction());
     }
 }
