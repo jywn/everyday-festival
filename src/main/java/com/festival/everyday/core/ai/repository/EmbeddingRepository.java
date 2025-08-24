@@ -19,27 +19,18 @@ public class EmbeddingRepository {
     // jdbcTemplate 을 활용해 직접 쿼리를 작성한다.
     private final JdbcTemplate jdbcTemplate;
 
-    private PGobject toPgVector(float[] embedding) {
-
-        PGobject vector = new PGobject();
-        vector.setType("vector");
-
-        try {
-            vector.setValue(Arrays.toString(embedding).replace(" ", ""));
-        } catch (SQLException e) {
-            throw new PgVectorFailedException();
-        }
-        return vector;
+    private String toVectorLiteral(float[] embedding) {
+        return Arrays.toString(embedding).replace(" ", ""); // "[0.1,0.2,0.3]"
     }
 
     public void saveCompany(Long companyId, float[] embedding) {
         String sql = "INSERT INTO company_embeddings (company_id, embedding) VALUES (?, ?::vector)";
-        jdbcTemplate.update(sql, companyId, toPgVector(embedding));
+        jdbcTemplate.update(sql, companyId, toVectorLiteral(embedding));
     }
 
     public void saveFestival(Long festivalId, float[] embedding) {
         String sql = "INSERT INTO festival_embeddings (festival_id, embedding) VALUES (?, ?::vector)";
-        jdbcTemplate.update(sql, festivalId, toPgVector(embedding));
+        jdbcTemplate.update(sql, festivalId, toVectorLiteral(embedding));
     }
 
     public String findFestivalEmbeddings(Long festivalId) {
@@ -54,16 +45,13 @@ public class EmbeddingRepository {
 
     public List<Long> findRecommendedFestivals(float[] embedding, int limit) {
         String sql = "SELECT festival_id FROM festival_embeddings " +
-                "ORDER BY embedding <=> ? LIMIT ?";
-
-        return jdbcTemplate.queryForList(sql, Long.class, toPgVector(embedding), limit);
+                "ORDER BY embedding <=> ?::vector LIMIT ?";
+        return jdbcTemplate.queryForList(sql, Long.class, toVectorLiteral(embedding), limit);
     }
 
     public List<Long> findRecommendedCompanies(float[] embedding, int limit) {
         String sql = "SELECT company_id FROM company_embeddings " +
-                "ORDER BY embedding <=> ? LIMIT ?";
-
-        return jdbcTemplate.queryForList(sql, Long.class, toPgVector(embedding), limit);
+                "ORDER BY embedding <=> ?::vector LIMIT ?";
+        return jdbcTemplate.queryForList(sql, Long.class, toVectorLiteral(embedding), limit);
     }
-
 }
