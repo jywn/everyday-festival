@@ -3,6 +3,7 @@ package com.festival.everyday.core.interest.service;
 import com.festival.everyday.core.company.exception.CompanyNotFoundException;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
+import com.festival.everyday.core.interest.RedundantInterestException;
 import com.festival.everyday.core.interest.domain.Interest;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.repository.CompanyRepository;
@@ -30,7 +31,7 @@ public class InterestCommandService
 
         // 이미 관심을 보냈으면 예외를 발생
         if (interestRepository.existsByFestivalIdAndCompanyId(festivalId, companyId)) {
-            throw new DuplicateRequestException("이미 관심을 보냈습니다.");
+            throw new RedundantInterestException();
         }
 
         // 관심을 주고 받는 축제와 업체를 조회

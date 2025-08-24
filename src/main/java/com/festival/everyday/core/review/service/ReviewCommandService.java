@@ -14,6 +14,7 @@ import com.festival.everyday.core.review.dto.command.CompanyReviewFormDto;
 import com.festival.everyday.core.review.dto.command.FestivalReviewFormDto;
 import com.festival.everyday.core.review.dto.request.CompanyReviewRequest;
 import com.festival.everyday.core.review.dto.request.FestivalReviewRequest;
+import com.festival.everyday.core.review.exception.ExistingReviewException;
 import com.festival.everyday.core.review.exception.InvalidReviewerException;
 import com.festival.everyday.core.review.repository.ReviewRepository;
 import com.festival.everyday.core.user.domain.User;
@@ -21,6 +22,7 @@ import com.festival.everyday.core.user.exception.UserNotFoundException;
 import com.festival.everyday.core.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,17 +43,11 @@ public class ReviewCommandService {
     private final UserRepository userRepository;
 
 
-    // 실제 참여자인지 확인해야함
     public Long createFestivalReview(Long festivalId, Long userId, String userType, FestivalReviewFormDto formDto) {
 
         if (!festivalRepository.existsById(festivalId)) {
             throw new FestivalNotFoundException();
         }
-
-        // 배포시 해제
-//        if (!applicationRepository.isApplicationSelected(userId, festivalId)) {
-//            throw new InvalidReviewerException();
-//        }
 
         SenderType senderType = switch (userType) {
             case "COMPANY" -> COMPANY;
@@ -62,23 +58,29 @@ public class ReviewCommandService {
         // 리뷰 엔티티를 생성합니다.
         Review review = Review.create(userId, senderType, festivalId, ReceiverType.FESTIVAL, formDto.getContent());
 
-        return reviewRepository.save(review).getId();
+        // 중복 리뷰 예외 발생
+        try {
+            return reviewRepository.save(review).getId();
+        } catch (DataIntegrityViolationException e) {
+            throw new ExistingReviewException();
+        }
     }
 
-    // 실제 참여자인지 확인해야함
     public Long createCompanyReview(Long companyId, CompanyReviewFormDto formDto) {
 
         if (!festivalRepository.existsById(formDto.getFestivalId())) {
             throw new FestivalNotFoundException();
         }
-        // 배포시 해제
-//        if (!applicationRepository.isApplicationSelected(companyId, formDto.getFestivalId())) {
-//            throw new InvalidReviewerException();
-//        }
 
         // 리뷰 엔티티를 생성합니다.
         Review review = Review.create(formDto.getFestivalId(), SenderType.FESTIVAL, companyId, ReceiverType.COMPANY, formDto.getContent());
 
-        return reviewRepository.save(review).getId();
+
+        // 중복 리뷰 예외 발생
+        try {
+            return reviewRepository.save(review).getId();
+        } catch (DataIntegrityViolationException e) {
+            throw new ExistingReviewException();
+        }
     }
 }

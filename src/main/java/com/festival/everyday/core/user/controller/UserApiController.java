@@ -1,5 +1,6 @@
 package com.festival.everyday.core.user.controller;
 
+import com.festival.everyday.core.ai.service.EmbeddingService;
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
@@ -34,6 +35,7 @@ public class UserApiController {
     private final UserQueryService userQueryService;
     private final FestivalQueryService festivalQueryService;
     private final FavoriteQueryService favoriteQueryService;
+    private final EmbeddingService embeddingService;
 
     // 내 프로필을 조회합니다.
     @GetMapping("/me/profile")
@@ -60,6 +62,7 @@ public class UserApiController {
     @PostMapping("/companies")
     public ResponseEntity<ApiResponse<Long>> registerCompany(@RequestBody CompanyRegisterRequest request) {
         Long companyId = userCommandService.companyJoin(request);
+        embeddingService.embedCompany(companyId, request.getIntroduction());
 
         return ResponseEntity.ok(ApiResponse.success("업체 가입에 성공하였습니다.", companyId));
     }

@@ -8,6 +8,8 @@ import com.festival.everyday.core.notice.handler.NoticeEventHandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 public class NoticeDto {
@@ -16,8 +18,9 @@ public class NoticeDto {
     private String senderName;
     private NoticeType noticeType;
     private NoticePayload payload;
+    private LocalDateTime createdAt;
 
     public static NoticeDto from(Notice notice) {
-        return new NoticeDto(notice.getSenderId(), notice.getSenderName(), notice.getType(), notice.getPayload());
+        return new NoticeDto(notice.getSenderId(), notice.getSenderName(), notice.getType(), notice.getPayload(), notice.getCreatedAt());
     }
 }

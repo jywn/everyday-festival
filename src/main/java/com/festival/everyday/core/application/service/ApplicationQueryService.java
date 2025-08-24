@@ -2,6 +2,7 @@ package com.festival.everyday.core.application.service;
 
 import com.festival.everyday.core.application.domain.Application;
 import com.festival.everyday.core.application.domain.SELECTED;
+import com.festival.everyday.core.application.dto.Progress;
 import com.festival.everyday.core.application.dto.command.*;
 import com.festival.everyday.core.application.dto.response.*;
 import com.festival.everyday.core.application.exception.ApplicationNotFoundException;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.festival.everyday.core.application.dto.Progress.*;
 import static com.festival.everyday.core.application.dto.command.ApplicationDetailDto.*;
 
 @Service
@@ -62,8 +64,11 @@ public class ApplicationQueryService {
         return applicationRepository.findLaborApplicationList(festivalId, pageable, status);
     }
 
-    public Page<MyApplicationSimpleDto> getMyApplications(Long userId, Pageable pageable, SELECTED status) {
-        return applicationRepository.findMyApplicationList(userId, pageable, status);
+    public Page<MyApplicationSimpleDto> getMyApplications(Long userId, Pageable pageable, SELECTED status, Progress progress) {
+        return switch (progress) {
+            case ONGOING -> applicationRepository.findOngoingMyApplicationList(userId, pageable, status);
+            case ENDED -> applicationRepository.findEndedMyApplicationList(userId, pageable, status);
+        };
     }
 
     public ApplicationDetailDto getApplicationDetail(Long applicationId) {
@@ -73,5 +78,4 @@ public class ApplicationQueryService {
         }
         return ApplicationDetailDto.from(applicationDetail);
     }
-
 }

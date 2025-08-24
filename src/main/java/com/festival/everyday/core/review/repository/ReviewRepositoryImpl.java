@@ -91,4 +91,5 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
 
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
+
 }

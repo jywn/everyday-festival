@@ -136,7 +136,7 @@ public class Festival extends BaseCreatedAtEntity {
         notNull("link", link);
         notNull("tel", tel);
         notNull("address", address);
-        Festival festival = new Festival(holder, name, period, fee, time, fee, link, tel, address);
+        Festival festival = new Festival(holder, name, period, fee, time, introduction, link, tel, address);
         holder.addFestival(festival);
         return festival;
     }

@@ -4,13 +4,12 @@ import com.festival.everyday.core.application.dto.ApplyStatus;
 import com.festival.everyday.core.application.repository.ApplicationRepository;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.common.dto.response.PageResponse;
+import com.festival.everyday.core.company.dto.command.RecommendCompanyDto;
+import com.festival.everyday.core.company.repository.CompanyRepository;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
 import com.festival.everyday.core.festival.domain.Festival;
-import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
-import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
-import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
-import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
+import com.festival.everyday.core.festival.dto.command.*;
 import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
 import com.festival.everyday.core.festival.repository.FestivalRepository;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 public class FestivalQueryService {
 
     private final FestivalRepository festivalRepository;
+    private final CompanyRepository companyRepository;
     private final CompanyRecruitRepository companyRecruitRepository;
 
     public FestivalDetailResponse findById(Long userId, Long festivalId) {
@@ -61,5 +62,9 @@ public class FestivalQueryService {
     // 사용자 ID 를 통해 찜 여부와 함께 축제 목록 페이지를 검색합니다.
     public Page<FestivalSearchDto> searchByKeyword(Long userId, String keyword, Pageable pageable) {
         return festivalRepository.searchByKeyword(userId, keyword, pageable);
+    }
+
+    public List<RecommendCompanyDto> getRecommendedCompanies(List<Long> idList) {
+        return companyRepository.findRecommendCompanies(idList);
     }
 }
