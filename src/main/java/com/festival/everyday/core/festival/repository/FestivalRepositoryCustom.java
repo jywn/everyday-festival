@@ -1,5 +1,6 @@
 package com.festival.everyday.core.festival.repository;
 
+import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.*;
 import com.festival.everyday.core.recruit.domain.Recruit;
 import com.festival.everyday.core.recruit.dto.command.CategoryDto;
@@ -24,4 +25,6 @@ public interface FestivalRepositoryCustom {
     List<FestivalSearchDto> findSimpleFestivalList(Long userId, List<Long> festivalIds);
 
     SimpleFestivalWithImageDto findSimpleFestivalWithImage(Long festivalId);
+
+    public List<RecommendFestivalDto> findRecommendedFestivals(List<Long> idList);
 }

@@ -28,6 +28,7 @@ public class FestivalCommandService {
 
         // 기획자 ID 와 함께 축제를 등록합니다.
         Festival festival = festivalRepository.save(FestivalMapper.of(holder, festivalFormRequest));
+
         return festival.getId();
     }
 }

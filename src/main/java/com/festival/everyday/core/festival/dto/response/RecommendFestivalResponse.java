@@ -1,0 +1,36 @@
+package com.festival.everyday.core.festival.dto.response;
+
+import com.festival.everyday.core.common.dto.command.AddressDto;
+import com.festival.everyday.core.common.dto.command.PeriodDto;
+import com.festival.everyday.core.festival.dto.command.RecommendFestivalDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
+@AllArgsConstructor
+public class RecommendFestivalResponse {
+
+    // festival
+    private Long id;
+    private String name;
+
+    // address
+    private AddressDto address;
+
+    // period
+    private PeriodDto period;
+
+    // image
+    private String imageUrl;
+
+    public static RecommendFestivalResponse from(RecommendFestivalDto dto) {
+        return new RecommendFestivalResponse(
+                dto.getId(), dto.getName(),
+                AddressDto.of(dto.getCity(), dto.getDistrict(), dto.getDetail()),
+                PeriodDto.of(dto.getBegin(), dto.getEnd()),
+                dto.getImageUrl()
+        );
+    }
+}

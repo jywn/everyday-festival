@@ -14,7 +14,8 @@ import java.util.List;
 public interface ApplicationRepositoryCustom {
     public Page<CompanyApplicationSimpleDto> findCompanyApplicationList(Long festivalId, Pageable pageable, SELECTED status);
     public Page<LaborApplicationSimpleDto> findLaborApplicationList(Long festivalId, Pageable pageable, SELECTED status);
-    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status);
+    public Page<MyApplicationSimpleDto> findOngoingMyApplicationList(Long userId, Pageable pageable, SELECTED status);
+    public Page<MyApplicationSimpleDto> findEndedMyApplicationList(Long userId, Pageable pageable, SELECTED status);
     public Application findApplicationDetail(Long applicationId);
     public Boolean isApplicationSelected(Long senderId, Long festivalId);
 }

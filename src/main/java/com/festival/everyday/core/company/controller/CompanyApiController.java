@@ -1,5 +1,6 @@
 package com.festival.everyday.core.company.controller;
 
+import com.festival.everyday.core.ai.service.EmbeddingService;
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.company.domain.Company;
@@ -12,10 +13,16 @@ import com.festival.everyday.core.common.dto.response.ApiResponse;
 import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
 import com.festival.everyday.core.company.service.CompanyQueryService;
+import com.festival.everyday.core.festival.dto.response.RecommendFestivalResponse;
+import com.festival.everyday.core.festival.service.FestivalQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyApiController {
 
     private final CompanyQueryService companyQueryService;
-    private final FavoriteRepository favoriteRepository;
+    private final EmbeddingService embeddingService;
 
     // 업체 검색 메서드
     @PostMapping("/search")
@@ -48,5 +55,12 @@ public class CompanyApiController {
         CompanyDetailResponse result = CompanyDetailResponse.from(companyQueryService.findById(userId, companyId));
 
         return ResponseEntity.ok(ApiResponse.success("업체 상세 정보 조회 성공", result));
+    }
+
+    @GetMapping("/companies/{companyId}/recommended-festivals")
+    public ResponseEntity<ApiResponse<List<RecommendFestivalResponse>>> recommendFestivals(@PathVariable Long companyId) {
+        List<Long> idList = embeddingService.recommendFestivals(companyId);
+        List<RecommendFestivalResponse> response = companyQueryService.getRecommendedFestivals(idList).stream().map(RecommendFestivalResponse::from).collect(Collectors.toList());
+        return ResponseEntity.ok(ApiResponse.success("추천 축제 목록 조회에 성공하였습니다.", response));
     }
 }

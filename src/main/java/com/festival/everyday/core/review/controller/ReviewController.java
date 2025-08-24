@@ -69,9 +69,10 @@ public class ReviewController {
 
     @GetMapping("/festivals/{festivalId}/reviews/form")
     public ResponseEntity<ApiResponse<FestivalReviewFormResponse>> getFestivalReviewForm(@RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_ID) Long userId,
+                                                                                         @RequestAttribute(name = TokenAuthenticationFilter.ATTR_USER_TYPE) String userType,
                                                                                          @PathVariable Long festivalId) {
 
-        FestivalReviewFormResponse response = FestivalReviewFormResponse.from(reviewQueryService.getFestivalReviewForm(userId, festivalId));
+        FestivalReviewFormResponse response = FestivalReviewFormResponse.from(reviewQueryService.getFestivalReviewForm(userId, userType, festivalId));
 
         return ResponseEntity.ok(ApiResponse.success("축제 리뷰 작성 폼 조회에 성공하였습니다.", response));
     }

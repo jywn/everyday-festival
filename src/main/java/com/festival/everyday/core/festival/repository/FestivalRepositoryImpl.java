@@ -4,10 +4,8 @@ import com.festival.everyday.core.application.dto.ApplyStatus;
 import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
-import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
-import com.festival.everyday.core.festival.dto.command.FestivalSearchDto;
-import com.festival.everyday.core.festival.dto.command.MyFestivalDto;
-import com.festival.everyday.core.festival.dto.command.SimpleFestivalWithImageDto;
+import com.festival.everyday.core.festival.domain.Festival;
+import com.festival.everyday.core.festival.dto.command.*;
 import com.festival.everyday.core.image.domain.OwnerType;
 import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
 import com.festival.everyday.core.recruit.dto.command.CategoryDto;
@@ -183,6 +181,20 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
     }
+
+    @Override
+    public List<RecommendFestivalDto> findRecommendedFestivals(List<Long> idList) {
+         return queryFactory
+                .select(Projections.constructor(RecommendFestivalDto.class,
+                        festival.id, festival.name,
+                        festival.address.city, festival.address.district, festival.address.detail,
+                        festival.period.begin, festival.period.end,
+                        image.url))
+                .from(festival)
+                .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
+                .where(festival.id.in(idList).and(festival.period.end.after(LocalDateTime.now())))
+                .fetch();
+     }
 
 //    @Override
 //    public List<FestivalSearchDto> findSimpleFestivalList(Long userId, List<Long> festivalIds) {

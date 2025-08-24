@@ -60,4 +60,12 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.from(errorCode));
     }
 
+    @ExceptionHandler(DomainValidatorException.class)
+    public ResponseEntity<ErrorResponse> handleDomainValidatorException(DomainValidatorException e) {
+        ErrorCode errorCode = ErrorCode.INVALID_TOKEN;
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(ErrorResponse.from(errorCode));
+    }
+
 }
