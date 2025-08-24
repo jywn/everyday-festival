@@ -40,6 +40,7 @@ public class FestivalQueryService {
         }
 
         festivalDetail.addCategories(festivalRepository.findCompanyRecruitCategories(festivalId));
+
         return FestivalDetailResponse.from(festivalDetail);
     }
 
