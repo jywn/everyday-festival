@@ -33,12 +33,12 @@ public class EmbeddingRepository {
     }
 
     public void saveCompany(Long companyId, float[] embedding) {
-        String sql = "INSERT INTO company_embeddings (company_id, embedding) VALUES (?, ?)";
+        String sql = "INSERT INTO company_embeddings (company_id, embedding) VALUES (?, ?::vector)";
         jdbcTemplate.update(sql, companyId, toPgVector(embedding));
     }
 
     public void saveFestival(Long festivalId, float[] embedding) {
-        String sql = "INSERT INTO festival_embeddings (festival_id, embedding) VALUES (?, ?)";
+        String sql = "INSERT INTO festival_embeddings (festival_id, embedding) VALUES (?, ?::vector)";
         jdbcTemplate.update(sql, festivalId, toPgVector(embedding));
     }
 

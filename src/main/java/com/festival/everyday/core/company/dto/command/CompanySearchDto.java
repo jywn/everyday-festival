@@ -1,6 +1,8 @@
 package com.festival.everyday.core.company.dto.command;
 
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
+import com.festival.everyday.core.image.domain.Image;
 import com.festival.everyday.core.user.domain.Category;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.common.dto.command.AddressDto;
@@ -34,6 +36,6 @@ public class CompanySearchDto {
         this.district = district;
         this.detail = detail;
         this.favorStatus = FavorStatus.valueOf(strFavor);
-        this.imageUrl = imageUrl;
+        this.imageUrl = ImageMapper.serverUrlToDomain(imageUrl);
     }
 }
