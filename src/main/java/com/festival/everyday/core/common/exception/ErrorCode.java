@@ -32,6 +32,7 @@ public enum ErrorCode {
     RESOURCE_NOT_FOUND("404", 404, "요청한 리소스를 찾을 수 없습니다."),
     ACCESS_DENIED("403", 403, "접근 권한이 없습니다."),
     NULL("D400", 400, "NULL 값을 입력하였습니다."),
+    IMAGE_NOT_ATTACHED("I400", 400, "이미지를 첨부하지 않았습니다."),
     REDUNDANT_INTEREST("I409", 409, "이미 관심을 보낸 상대입니다."),
     REDUNDANT_REVIEW("R409", 409, "이미 리뷰를 작성하였습니다."),
     PG_VECTOR_FAILED("P500", 500, "벡터 변환을 실패하였습니다."),
