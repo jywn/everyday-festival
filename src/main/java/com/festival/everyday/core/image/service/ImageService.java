@@ -61,7 +61,7 @@ public class ImageService {
         String encodedName = UUID.randomUUID() + "_" + baseName + "." + ext;
 
         // Image 엔티티 생성 (url은 디렉토리 경로까지만 저장됨)
-        Image image = Image.create(url, imageDto.getOwnerType(), imageDto.getOwnerId(), originalName, encodedName);
+        Image image = Image.create(url + encodedName, imageDto.getOwnerType(), imageDto.getOwnerId(), originalName, encodedName);
 
         try {
             // 디렉토리 생성 보장
