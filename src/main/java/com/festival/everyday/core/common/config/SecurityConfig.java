@@ -13,6 +13,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableWebSecurity
@@ -24,21 +25,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 상태 없음(JWT)
+                // JWT 기반 -> 상태 없음
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // 인증/인가
+                // CORS 적용 (WebMvcConfigurer에서 설정한 정책 사용)
+                .cors(Customizer.withDefaults())
+
+                // 인증/인가 규칙
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers("/users/**").permitAll()
-                        .requestMatchers("/api/auth/logout").authenticated()  // 로그아웃은 AT 필요
+                        .requestMatchers("/api/auth/logout").authenticated()
                         .anyRequest().permitAll()
                 )
 
-                // 인증 실패 시 리다이렉트 대신 401 JSON
+                // 인증 실패 시 JSON 401 응답
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((req, res, e) -> {
                             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -47,7 +51,7 @@ public class SecurityConfig {
                         })
                 )
 
-                // JWT 필터 등록 (순서 중요)
+                // JWT 필터 등록
                 .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -55,7 +59,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // {bcrypt} 등 prefix 사용되는 위임 인코더
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }

@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173", "http://localhost:5178") // React 개발 서버 주소
                 //.allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Set-Cookie") // 클라이언트에서 접근해야 하는 헤더 노출
                 .allowCredentials(true) // 쿠키/인증정보 포함 요청 허용 시 필요
