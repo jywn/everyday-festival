@@ -1,4 +1,7 @@
 spring:
+  web:
+    resources:
+      static-locations: file:/home/ec2-user/images/
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}

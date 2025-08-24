@@ -1,6 +1,7 @@
 package com.festival.everyday.core.company.dto.response;
 
-import com.festival.everyday.core.common.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.dto.command.RecommendCompanyDto;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class RecommendCompanyResponse {
                 dto.getId(), dto.getName(),
                 AddressDto.of(dto.getCity(), dto.getDistrict(), dto.getDetail()),
                 CategoryMapper.enumToStr(dto.getCategory()),
-                dto.getImageUrl()
+                ImageMapper.serverUrlToDomain(dto.getImageUrl())
         );
     }
 }

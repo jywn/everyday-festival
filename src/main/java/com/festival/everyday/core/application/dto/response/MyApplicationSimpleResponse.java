@@ -2,6 +2,7 @@ package com.festival.everyday.core.application.dto.response;
 
 import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.MyApplicationSimpleDto;
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,6 @@ public class MyApplicationSimpleResponse {
                 myApplicationSimpleDto.getId(),
                 myApplicationSimpleDto.getFestivalId(), myApplicationSimpleDto.getName(), myApplicationSimpleDto.getHolderName(),
                 PeriodDto.of(myApplicationSimpleDto.getBegin(), myApplicationSimpleDto.getEnd()),
-                myApplicationSimpleDto.getSelected(), myApplicationSimpleDto.getImageUrl());
+                myApplicationSimpleDto.getSelected(), ImageMapper.serverUrlToDomain(myApplicationSimpleDto.getImageUrl()));
     }
 }

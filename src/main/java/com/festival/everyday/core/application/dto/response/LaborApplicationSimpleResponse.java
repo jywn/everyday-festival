@@ -2,6 +2,7 @@ package com.festival.everyday.core.application.dto.response;
 
 import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.LaborApplicationSimpleDto;
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -19,6 +20,6 @@ public class LaborApplicationSimpleResponse {
     private String imageUrl;
 
     public static LaborApplicationSimpleResponse from(LaborApplicationSimpleDto dto) {
-        return new LaborApplicationSimpleResponse(dto.getId(), dto.getSelected(), dto.getName(), dto.getImageUrl());
+        return new LaborApplicationSimpleResponse(dto.getId(), dto.getSelected(), dto.getName(), ImageMapper.serverUrlToDomain(dto.getImageUrl()));
     }
 }
