@@ -1,20 +1,15 @@
 package com.festival.everyday.core.festival.dto.response;
 
 import com.festival.everyday.core.application.dto.ApplyStatus;
-import com.festival.everyday.core.common.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
-import com.festival.everyday.core.festival.dto.command.FestivalSimpleDto;
-import com.festival.everyday.core.recruit.dto.command.CompanyRecruitDto;
-import com.festival.everyday.core.recruit.dto.command.CompanyRecruitWithApplyDto;
 import com.festival.everyday.core.festival.dto.command.FestivalDetailDto;
-import com.festival.everyday.core.recruit.dto.command.LaborRecruitWithApplyDto;
 import com.festival.everyday.core.recruit.dto.RecruitStatus;
-import com.festival.everyday.core.user.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -73,10 +68,10 @@ public class FestivalDetailResponse {
         public static FestivalOnlyDto from(FestivalDetailDto festivalDetailDto) {
             return new FestivalOnlyDto(
                     festivalDetailDto.getName(), festivalDetailDto.getFee(), festivalDetailDto.getTime(), festivalDetailDto.getIntroduction(),
-                    festivalDetailDto.getTel(), festivalDetailDto.getLink(), festivalDetailDto.getHolderName(), festivalDetailDto.getImageUrl(),
+                    festivalDetailDto.getTel(), festivalDetailDto.getLink(), festivalDetailDto.getHolderName(), ImageMapper.serverUrlToDomain(festivalDetailDto.getImageUrl()),
                     PeriodDto.of(festivalDetailDto.getHoldBegin(), festivalDetailDto.getHoldEnd()),
                     AddressDto.of(festivalDetailDto.getCity(), festivalDetailDto.getDistrict(), festivalDetailDto.getDetail()),
-                            festivalDetailDto.getFavorStatus(), festivalDetailDto.getApplyStatus());
+                    festivalDetailDto.getFavorStatus(), festivalDetailDto.getApplyStatus());
         }
     }
 

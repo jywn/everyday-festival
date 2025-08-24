@@ -1,9 +1,8 @@
 package com.festival.everyday.core.user.dto.response;
 
-import com.festival.everyday.core.common.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.CategoryMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.company.domain.Company;
-import com.festival.everyday.core.user.domain.Category;
 import lombok.Data;
 
 @Data

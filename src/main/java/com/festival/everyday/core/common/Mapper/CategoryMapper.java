@@ -1,8 +1,7 @@
-package com.festival.everyday.core.common;
+package com.festival.everyday.core.common.Mapper;
 
 import com.festival.everyday.core.recruit.dto.command.CategoryDto;
 import com.festival.everyday.core.user.domain.Category;
-import org.springframework.stereotype.Component;
 
 public class CategoryMapper {
 

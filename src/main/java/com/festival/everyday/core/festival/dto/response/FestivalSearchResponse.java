@@ -1,5 +1,6 @@
 package com.festival.everyday.core.festival.dto.response;
 
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
@@ -37,6 +38,6 @@ public class FestivalSearchResponse {
                 AddressDto.of(dto.getCity(), dto.getDistrict(), dto.getDetail()),
                 PeriodDto.of(dto.getBegin(), dto.getEnd()),
                 dto.getFavorStatus(),
-                dto.getImageUrl());
+                ImageMapper.serverUrlToDomain(dto.getImageUrl()));
     }
 }

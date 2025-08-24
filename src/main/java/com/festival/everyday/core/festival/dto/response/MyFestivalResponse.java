@@ -1,5 +1,6 @@
 package com.festival.everyday.core.festival.dto.response;
 
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.common.domain.Address;
 import com.festival.everyday.core.common.dto.command.AddressDto;
 import com.festival.everyday.core.common.dto.command.PeriodDto;
@@ -22,6 +23,7 @@ public class MyFestivalResponse {
     public static MyFestivalResponse from(MyFestivalDto festivalDto) {
         return new MyFestivalResponse(festivalDto.getId(), festivalDto.getName(),
                 AddressDto.of(festivalDto.getCity(), festivalDto.getDistrict(), festivalDto.getName()),
-                PeriodDto.of(festivalDto.getBegin(), festivalDto.getEnd()), festivalDto.getImageUrl());
+                PeriodDto.of(festivalDto.getBegin(), festivalDto.getEnd()),
+                ImageMapper.serverUrlToDomain(festivalDto.getImageUrl()));
     }
 }

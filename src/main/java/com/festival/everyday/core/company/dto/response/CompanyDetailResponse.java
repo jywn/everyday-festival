@@ -1,11 +1,10 @@
 package com.festival.everyday.core.company.dto.response;
 
-import com.festival.everyday.core.common.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
-import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
-import com.festival.everyday.core.user.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -40,6 +39,6 @@ public class CompanyDetailResponse {
                 companyDetailDto.getEmail(),
                 companyDetailDto.getLink(),
                 AddressDto.of(companyDetailDto.getCity(), companyDetailDto.getDistrict(), companyDetailDto.getDetail()),
-                companyDetailDto.getFavorStatus(), companyDetailDto.getImageUrl());
+                companyDetailDto.getFavorStatus(), ImageMapper.serverUrlToDomain(companyDetailDto.getImageUrl()));
     }
 }

@@ -2,10 +2,9 @@ package com.festival.everyday.core.application.dto.response;
 
 import com.festival.everyday.core.application.domain.SELECTED;
 import com.festival.everyday.core.application.dto.command.CompanyApplicationSimpleDto;
-import com.festival.everyday.core.common.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.CategoryMapper;
+import com.festival.everyday.core.common.Mapper.ImageMapper;
 import com.festival.everyday.core.common.dto.command.AddressDto;
-import com.festival.everyday.core.company.domain.Company;
-import com.festival.everyday.core.user.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class CompanyApplicationSimpleResponse {
 
     public static CompanyApplicationSimpleResponse from(CompanyApplicationSimpleDto companyApplicationSimpleDto) {
         return new CompanyApplicationSimpleResponse(companyApplicationSimpleDto.getId(), companyApplicationSimpleDto.getSelected(),
-                SimpleCompanyDto.of(companyApplicationSimpleDto), companyApplicationSimpleDto.getImageUrl());
+                SimpleCompanyDto.of(companyApplicationSimpleDto), ImageMapper.serverUrlToDomain(companyApplicationSimpleDto.getImageUrl()));
     }
 
     @Data

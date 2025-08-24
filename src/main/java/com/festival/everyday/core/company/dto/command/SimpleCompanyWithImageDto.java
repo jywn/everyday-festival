@@ -1,9 +1,7 @@
 package com.festival.everyday.core.company.dto.command;
 
-import com.festival.everyday.core.common.CategoryMapper;
-import com.festival.everyday.core.common.dto.command.AddressDto;
+import com.festival.everyday.core.common.Mapper.CategoryMapper;
 import com.festival.everyday.core.user.domain.Category;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
