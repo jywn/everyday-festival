@@ -17,12 +17,15 @@ public class DummyApplyRunner implements CommandLineRunner {
     private final ApplicationCommandService applicationCommandService;
 
     // 회사/근로자 공통 더미 답변
-    private static final List<String> COMPANY_ANS_1 = List.of("푸드", "음식 업체", "010-6515-7415", "언제든지 가능합니다.");
-    private static final List<String> COMPANY_ANS_2 = List.of("공연/예술", "공연/예술 업체", "010-3253-6115", "언제든지 가능합니다.");
-    private static final List<String> COMPANY_ANS_3 = List.of("오락", "오락 업체", "010-7518-9954", "언제든지 가능합니다.");
-    private static final List<String> COMPANY_ANS_4 = List.of("체험", "체험 업체", "010-0815-1239", "언제든지 가능합니다.");
-    private static final List<String> COMPANY_ANS_5 = List.of("판매", "판매 업체", "010-9891-1289", "언제든지 가능합니다.");
-    private static final List<String> COMPANY_ANS_6 = List.of("홍보(캠페인)", "푸드트럭 업체", "010-6515-7415", "언제든지 가능합니다.");
+    private static final List<String> COMPANY_ANS_1 = List.of("010-6515-7415", "foodtruck@gmail.com","언제든지 가능합니다.");
+    private static final List<String> COMPANY_ANS_2 = List.of("010-3253-6115","art@gmail.com", "언제든지 가능합니다.");
+    private static final List<String> COMPANY_ANS_3 = List.of("010-7518-9954", "entertainment@gmail.com","언제든지 가능합니다.");
+    private static final List<String> COMPANY_ANS_4 = List.of("010-0815-1239", "experience@gmail.com","언제든지 가능합니다.");
+    private static final List<String> COMPANY_ANS_5 = List.of("010-9891-1289", "sale@gmail.com", "언제든지 가능합니다.");
+    private static final List<String> COMPANY_ANS_6 = List.of("010-6515-7415", "campaign@gmail.com", "언제든지 가능합니다.");
+
+
+
     private static final List<String> COMPANY_EANS_ODD =
             List.of(
                     "운영 인원은 총 3명이며, 행사 당일에는 2명이 교대로 부스를 관리합니다. 축제 시작일부터 마감일까지 전부 가능합니다.",
