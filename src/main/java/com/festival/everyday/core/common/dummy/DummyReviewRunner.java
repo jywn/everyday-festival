@@ -64,8 +64,8 @@ public class DummyReviewRunner implements CommandLineRunner {
         reviewCommandService.createFestivalReview(7L, 17L, "COMPANY", CR1);
         reviewCommandService.createFestivalReview(7L, 47L, "COMPANY", CR2);
         reviewCommandService.createFestivalReview(7L, 61L, "LABOR", LR1);
-        reviewCommandService.createFestivalReview(7L, 64L, "LABOR", LR2);
-        reviewCommandService.createFestivalReview(7L, 67L, "LABOR", LR3);
+        //reviewCommandService.createFestivalReview(7L, 64L, "LABOR", LR2);
+        //reviewCommandService.createFestivalReview(7L, 67L, "LABOR", LR3);
         reviewCommandService.createFestivalReview(7L, 70L, "LABOR", LR4);
         reviewCommandService.createFestivalReview(7L, 73L, "LABOR", LR1);
         reviewCommandService.createFestivalReview(7L, 76L, "LABOR", LR2);
