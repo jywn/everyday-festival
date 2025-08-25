@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:5173",
                         "http://localhost:5178",
                         "https://everyday-festival-1.vercel.app") // React 개발 서버 주소
-                //.allowedOrigins("*")
+                .allowedOriginPatterns("https://everyday-festival-*.vercel.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Set-Cookie") // 클라이언트에서 접근해야 하는 헤더 노출
