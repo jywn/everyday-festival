@@ -49,6 +49,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                         .and(favorite.receiverType.eq(ReceiverType.COMPANY)
                                 .and(favorite.receiverId.eq(company.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
+                .orderBy(company.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -99,6 +100,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                                 .and(favorite.receiverId.eq(festival.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(festival.period.end.after(now))
+                .orderBy(festival.period.end.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -131,6 +133,7 @@ public class FavoriteRepositoryImpl implements FavoriteRepositoryCustom {
                                 .and(favorite.receiverId.eq(festival.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(festival.period.end.before(now))
+                .orderBy(festival.period.end.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

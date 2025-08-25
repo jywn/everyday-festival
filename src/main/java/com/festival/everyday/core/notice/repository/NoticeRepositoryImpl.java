@@ -27,6 +27,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom {
                         notice.senderId, notice.senderName, notice.type, notice.payload, notice.createdAt))
                 .from(notice)
                 .where(notice.receiverId.eq(receiverId))
+                .orderBy(notice.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
