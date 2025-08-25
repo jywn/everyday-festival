@@ -12,6 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173",
                         "http://localhost:5178",
+                        "https://festival-everyday.vercel.app",
                         "https://everyday-festival-1.vercel.app") // React 개발 서버 주소
                 .allowedOriginPatterns("https://everyday-festival-*.vercel.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
