@@ -37,6 +37,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 .from(review)
                 .join(company).on(company.id.eq(review.senderId).and(review.senderType.eq(COMPANY)))
                 .where(review.receiverId.eq(receiverId).and(review.receiverType.eq(receiverType)))
+                .orderBy(review.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -58,6 +59,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 .from(review)
                 .join(festival).on(festival.id.eq(review.senderId).and(review.senderType.eq(FESTIVAL)))
                 .where(review.receiverId.eq(receiverId).and(review.receiverType.eq(receiverType)))
+                .orderBy(review.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -80,6 +82,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom{
                 .from(review)
                 .join(labor).on(labor.id.eq(review.senderId).and(review.senderType.eq(LABOR)))
                 .where(review.receiverId.eq(receiverId).and(review.receiverType.eq(receiverType)))
+                .orderBy(review.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

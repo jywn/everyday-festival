@@ -63,6 +63,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .join(festival.holder, holder)
                 .where(andConditions)
+                .orderBy(festival.period.end.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -88,6 +89,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(holder.id.eq(holderId).and(festival.period.end.goe(now)))    // 페스티벌 끝난 시간 >= now
+                .orderBy(festival.period.end.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -112,6 +114,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
                 .where(holder.id.eq(holderId).and(festival.period.end.loe(now)))
+                .orderBy(festival.period.end.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

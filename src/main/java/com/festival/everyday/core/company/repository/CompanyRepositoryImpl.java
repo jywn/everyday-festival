@@ -55,6 +55,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                                 .and(favorite.receiverId.eq(company.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
                 .where(andCondition)
+                .orderBy(company.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -77,6 +78,7 @@ public class CompanyRepositoryImpl implements CompanyRepositoryCustom {
                                 .and(favorite.receiverId.eq(company.id))))
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
                 .where(company.id.in(companyIds))
+                .orderBy(company.createdAt.desc())
                 .fetch();
     }
 
