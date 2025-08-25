@@ -85,7 +85,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest2, 2L);
 
@@ -97,7 +97,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest3, 3L);
 
@@ -120,7 +120,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 "시급 10000원",
                 "일하는 곳이 땡볕입니다.(차가 없을 때는 그늘 진 곳에서 쉬면 됩니다.)",
                 "소홀히 하면 바로 교체될 수 있습니다.",
-                List.of("관련 경험", "진상 고객 응대 방법")
+                List.of("축제에 근로자로 참여한 경험이 있나요? 만약 있다면 어떤 업무를 담당했는지 설명해주세요. ", "불합리한 사항을 요구하는, 소위 진상 손님에 대처하는 본인의 방법을 설명해주세요.")
 
         );
         recruitCommandService.saveLaborRecruit(laborRequest4, 4L);
@@ -132,7 +132,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest5, 5L);
 
@@ -144,7 +144,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest6, 6L);
 
@@ -180,7 +180,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest8, 8L);
 
@@ -192,7 +192,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest9, 9L);
 
@@ -215,7 +215,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 "시급 10000원",
                 "일하는 곳이 땡볕입니다.(차가 없을 때는 그늘 진 곳에서 쉬면 됩니다.)",
                 "소홀히 하면 바로 교체될 수 있습니다.",
-                List.of("관련 경험", "진상 고객 응대 방법")
+                List.of("축제에 근로자로 참여한 경험이 있나요? 만약 있다면 어떤 업무를 담당했는지 설명해주세요. ", "불합리한 사항을 요구하는, 소위 진상 손님에 대처하는 본인의 방법을 설명해주세요.")
 
         );
         recruitCommandService.saveLaborRecruit(laborRequest10, 10L);
@@ -228,7 +228,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest11, 11L);
 
@@ -240,7 +240,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest12, 12L);
 
@@ -276,7 +276,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest14, 14L);
 
@@ -288,7 +288,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "위생 등급 인증 푸드트럭, 보험 가입 업체 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
 
         recruitCommandService.saveCompanyRecruit(companyRequest15, 15L);
@@ -312,7 +312,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 "시급 10000원",
                 "일하는 곳이 땡볕입니다.(차가 없을 때는 그늘 진 곳에서 쉬면 됩니다.)",
                 "소홀히 하면 바로 교체될 수 있습니다.",
-                List.of("관련 경험", "진상 고객 응대 방법")
+                List.of("축제에 근로자로 참여한 경험이 있나요? 만약 있다면 어떤 업무를 담당했는지 설명해주세요. ", "불합리한 사항을 요구하는, 소위 진상 손님에 대처하는 본인의 방법을 설명해주세요.")
 
         );
         recruitCommandService.saveLaborRecruit(laborRequest16, 16L);
@@ -325,7 +325,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "소통이 잘 되시는 분, 시간 개념 정확하신 분 우대",
                 "각 부스에서 발생한 쓰레기·폐기물은 개별 처리하셔야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest17, 17L);
 
@@ -337,7 +337,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "쓰레기를 최소화할 수 있는 용기를 사용하는 업체 우대",
                 "모든 음식 재료는 신선하고 안전한 식자재를 사용해야합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest18, 18L);
 
@@ -373,7 +373,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "안전 수칙을 준수하며 프로그램을 진행할 수 있는 팀 우대",
                 "공연/행사 시간 및 장소는 사전 협의된 내용을 따라야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest20, 20L);
 
@@ -385,7 +385,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "짧은 시간 내에 다수가 참여할 수 있는 프로그램을 우대",
                 "체험 중 발생한 쓰레기는 자체적으로 수거하여 지정된 장소에 버려주세요.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest21, 21L);
 
@@ -408,7 +408,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 "시급 10000원",
                 "일하는 곳이 땡볕입니다.(차가 없을 때는 그늘 진 곳에서 쉬면 됩니다.)",
                 "소홀히 하면 바로 교체될 수 있습니다.",
-                List.of("관련 경험", "진상 고객 응대 방법")
+                List.of("축제에 근로자로 참여한 경험이 있나요? 만약 있다면 어떤 업무를 담당했는지 설명해주세요. ", "불합리한 사항을 요구하는, 소위 진상 손님에 대처하는 본인의 방법을 설명해주세요.")
 
         );
         recruitCommandService.saveLaborRecruit(laborRequest22, 22L);
@@ -420,7 +420,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "네컷만화 그리기 수업을 주관할 수 있는 분 우대",
                 "종이와 펜은 직접 준비하셔야합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest23, 23L);
 
@@ -432,7 +432,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "지속 가능한 환경 메시지를 전달할 수 있는 부스 우대",
                 "부스는 상업적 목적이 아닌 공익 목적으로만 운영되어야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest24, 24L);
 
@@ -467,7 +467,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "남녀노소 누구나 즐길 수 있는 창의적인 체험 콘텐츠 우대",
                 "안전 수칙에 대한 사전 안내 후 체험을 진행해야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest26, 26L);
 
@@ -479,7 +479,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "서울 각 지역의 대학생들과 소통, 친목에 유능하신 분 우대",
                 "음향 장비는 주최 측과 협의 후 반입 가능합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("운영진들의 포부 기재", "필요사항 기재(전력, 발전기 등)", "계획 중인 수익구조 기재")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest27, 27L);
 
@@ -502,7 +502,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 "시급 10000원",
                 "일하는 곳이 땡볕입니다.(차가 없을 때는 그늘 진 곳에서 쉬면 됩니다.)",
                 "소홀히 하면 바로 교체될 수 있습니다.",
-                List.of("관련 경험", "진상 고객 응대 방법")
+                List.of("축제에 근로자로 참여한 경험이 있나요? 만약 있다면 어떤 업무를 담당했는지 설명해주세요. ", "불합리한 사항을 요구하는, 소위 진상 손님에 대처하는 본인의 방법을 설명해주세요.")
 
         );
         recruitCommandService.saveLaborRecruit(laborRequest28, 28L);
@@ -515,7 +515,7 @@ public class DummyRecruitRunner implements CommandLineRunner {
                 null,
                 "다양한 관람객을 유치할 수 있는 매력을 가진 부스 우대",
                 "모든 부스 운영자는 축제 운영본부의 지침을 따라야 합니다.",
-                List.of("부스 운영 계획(구성 인원 수, 가능한 날짜 구체적으로 기재)", "특이사항(진행시 필요한 요구사항)", "푸드 트럭의 경우 음식 판매 가격")
+                List.of("업체를 운영하시는 분들의 스케쥴을 적어주세요", "축제에게 전할 사전 공지사항을 적어주세요", "전반적인 시세에 대해 적어주세요")
         );
         recruitCommandService.saveCompanyRecruit(companyRequest29, 29L);
 
