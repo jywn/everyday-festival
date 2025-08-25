@@ -40,7 +40,7 @@ public class DummyApplyRunner implements CommandLineRunner {
                     "식사의 경우 7000원, 디저트와 음료의 경우 2000원입니다."
             );
     ;
-    private static final List<String> LABOR_ANS = List.of("근로자 답변 1", "근로자 답변 2", "근로자 답변 3");
+    private static final List<String> LABOR_ANS = List.of("010-1237-1284", "LaborAllDummy@gmail.com", "언제든지 가능합니다.");
     private static final List<String> LABOR_EANS_1 = List.of(
             "지난 2년간 여러 행사에서 총 5회 이상 단기 근로자로 활동했습니다. 특히, 작년 부산국제영화제에서는 안내 요원으로 근무하며 인파 통제와 동선 안내를 담당했습니다. 여러 돌발 상황에 유연하게 대처한 경험이 있습니다.",
             "진상 응대가 필요한 상황에서는 감정적으로 대응하기보다, 우선 고객의 불만 사항을 명확히 파악하는 것을 최우선으로 생각합니다. 예를 들어, '무엇이 가장 불편하셨나요?'라고 질문하며 문제의 핵심을 파악하고, 제 선에서 해결 가능한 부분은 즉시 조치하고, 규정을 벗어나는 요구에는 '규정상 어렵지만 다른 방법을 찾아보겠습니다'와 같이 대안을 제시하며 정중하게 거절하는 방법을 선호합니다."
