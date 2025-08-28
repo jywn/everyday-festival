@@ -99,6 +99,10 @@ export VECTOR_DB_USERNAME=festival
 ```
 ---
 ## 트러블 슈팅
+
+자세한 트러블 슈팅과 깨달음의 결과는 다음 시리즈에서 확인 가능하다. <br/>
+https://velog.io/@jywon/series/오늘도-축제로다
+
 <details><summary>식별자는 정렬과 전혀 무관하다.</summary>
   
 extraQuestions는 처음에 값타입 컬렉션으로 설계하였다.
