@@ -1,7 +1,7 @@
 package com.festival.everyday.core.favorite.domain;
 
 import com.festival.everyday.core.common.domain.BaseCreatedAtEntity;
-import com.festival.everyday.core.common.dto.ReceiverType;
+import com.festival.everyday.core.common.domain.ReceiverType;
 import com.festival.everyday.core.user.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

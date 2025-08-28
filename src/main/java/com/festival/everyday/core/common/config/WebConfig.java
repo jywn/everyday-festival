@@ -10,11 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173",
-                        "http://localhost:5178",
-                        "https://festival-everyday.vercel.app",
-                        "https://everyday-festival-1.vercel.app") // React 개발 서버 주소
-                .allowedOriginPatterns("https://everyday-festival-*.vercel.app")
+                .allowedOrigins("https://festival-everyday.vercel.app") // React 개발 서버 주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Set-Cookie") // 클라이언트에서 접근해야 하는 헤더 노출

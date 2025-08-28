@@ -1,5 +1,6 @@
 package com.festival.everyday.core.favorite.service;
 
+import com.festival.everyday.core.application.dto.Progress;
 import com.festival.everyday.core.common.dto.response.PageResponse;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;
@@ -26,11 +27,7 @@ public class FavoriteQueryService {
         return favoriteRepository.findFavoriteCompaniesOfUser(userId, pageable);
     }
 
-    public Page<FestivalSearchDto> getOnGoingFestivalList(Long userId, Pageable pageable) {
-        return favoriteRepository.findFavoredFestivalsByUserIdOngoing(userId, LocalDateTime.now(), pageable);
-    }
-
-    public Page<FestivalSearchDto> getEndedFestivalList(Long userId, Pageable pageable) {
-        return favoriteRepository.findFavoredFestivalsByUserIdEnded(userId, LocalDateTime.now(), pageable);
+    public Page<FestivalSearchDto> getFavoriteFestivalList(Long userId, Pageable pageable, Progress progress) {
+        return favoriteRepository.findFavoredFestivalsByUserId(userId, LocalDateTime.now(), pageable, progress);
     }
 }

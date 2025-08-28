@@ -65,10 +65,7 @@ public class ApplicationQueryService {
     }
 
     public Page<MyApplicationSimpleDto> getMyApplications(Long userId, Pageable pageable, SELECTED status, Progress progress) {
-        return switch (progress) {
-            case ONGOING -> applicationRepository.findOngoingMyApplicationList(userId, pageable, status);
-            case ENDED -> applicationRepository.findEndedMyApplicationList(userId, pageable, status);
-        };
+        return applicationRepository.findMyApplicationList(userId, pageable, status, progress);
     }
 
     public ApplicationDetailDto getApplicationDetail(Long applicationId) {

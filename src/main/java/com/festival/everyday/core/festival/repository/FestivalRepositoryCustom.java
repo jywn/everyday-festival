@@ -1,5 +1,6 @@
 package com.festival.everyday.core.festival.repository;
 
+import com.festival.everyday.core.application.dto.Progress;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.*;
 import com.festival.everyday.core.recruit.domain.Recruit;
@@ -14,9 +15,7 @@ import java.util.List;
 public interface FestivalRepositoryCustom {
     Page<FestivalSearchDto> searchByKeyword(Long userId, String keyword, Pageable pageable);
 
-    Page<MyFestivalDto> findOngoingFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable);
-
-    Page<MyFestivalDto> findEndedFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable);
+    Page<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId, Pageable pageable, Progress progress);
 
     FestivalDetailDto findFestivalDetail(Long festivalId, Long userId);
 

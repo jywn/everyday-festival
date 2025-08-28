@@ -1,18 +1,13 @@
 package com.festival.everyday.core.company.repository;
 
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.common.dto.command.AddressDto;
-import com.festival.everyday.core.company.domain.QCompany;
+import com.festival.everyday.core.common.domain.ReceiverType;
 import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.company.dto.command.RecommendCompanyDto;
 import com.festival.everyday.core.company.dto.command.SimpleCompanyWithImageDto;
-import com.festival.everyday.core.favorite.domain.QFavorite;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.common.Tokenizer;
-import com.festival.everyday.core.festival.domain.QFestival;
 import com.festival.everyday.core.image.domain.OwnerType;
-import com.festival.everyday.core.image.domain.QImage;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,7 +21,6 @@ import java.util.Optional;
 
 import static com.festival.everyday.core.company.domain.QCompany.*;
 import static com.festival.everyday.core.favorite.domain.QFavorite.*;
-import static com.festival.everyday.core.festival.domain.QFestival.*;
 import static com.festival.everyday.core.image.domain.QImage.*;
 
 @RequiredArgsConstructor

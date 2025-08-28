@@ -91,9 +91,8 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
-    // 페이징
     @Override
-    public Page<MyApplicationSimpleDto> findEndedMyApplicationList(Long userId, Pageable pageable, SELECTED status) {
+    public Page<MyApplicationSimpleDto> findMyApplicationList(Long userId, Pageable pageable, SELECTED status, Progress progress) {
         List<MyApplicationSimpleDto> queryResult = queryFactory
                 .select(Projections.constructor(MyApplicationSimpleDto.class,
                         application.id,
@@ -104,7 +103,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .join(application.festival, festival)
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.before(LocalDateTime.now())))
+                .where(application.user.id.eq(userId).and(selectedEq(status)).and(isOngoing(progress)))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(application.createdAt.desc())
@@ -114,41 +113,11 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .select(application.count())
                 .from(application)
                 .join(application.festival, festival)
-                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.before(LocalDateTime.now())));
+                .where(application.user.id.eq(userId).and(selectedEq(status)).and(isOngoing(progress)));
 
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
-    @Override
-    public Page<MyApplicationSimpleDto> findOngoingMyApplicationList(Long userId, Pageable pageable, SELECTED status) {
-        List<MyApplicationSimpleDto> queryResult = queryFactory
-                .select(Projections.constructor(MyApplicationSimpleDto.class,
-                        application.id,
-                        application.festival.id, application.festival.name, application.festival.holder.name,
-                        application.festival.period.begin, application.festival.period.end,
-                        application.selected, image.url))
-                .from(application)
-                .join(application.festival, festival)
-                .join(festival.holder, holder)
-                .leftJoin(image).on(image.ownerType.eq(FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.after(LocalDateTime.now())))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(application.createdAt.desc())
-                .fetch();
-
-        JPAQuery<Long> countQuery = queryFactory
-                .select(application.count())
-                .from(application)
-                .join(application.festival, festival)
-                .where(application.user.id.eq(userId).and(selectedEq(status)).and(application.festival.period.end.after(LocalDateTime.now())));
-
-        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
-    }
-
-    // 엔티티 직접 조회
-    // 배치 사이즈
-    // DTO Projection 고려
     @Override
     public Application findApplicationDetail(Long applicationId) {
         return queryFactory
@@ -171,10 +140,12 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
                 .fetchFirst() != null;
     }
 
-//    @Override
-//    public
 
     private BooleanExpression selectedEq(SELECTED status) {
         return status != null ? application.selected.eq(status) : null;
+    }
+
+    private BooleanExpression isOngoing(Progress progress) {
+        return progress.equals(Progress.ONGOING) ? application.festival.period.end.after(LocalDateTime.now()) : application.festival.period.end.before(LocalDateTime.now());
     }
 }

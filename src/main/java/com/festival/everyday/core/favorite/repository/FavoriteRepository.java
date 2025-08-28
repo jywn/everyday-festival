@@ -1,13 +1,8 @@
 package com.festival.everyday.core.favorite.repository;
 
-import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.favorite.domain.Favorite;
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.festival.domain.Festival;
-import com.festival.everyday.core.user.domain.User;
+import com.festival.everyday.core.common.domain.ReceiverType;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;

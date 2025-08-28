@@ -1,14 +1,8 @@
 package com.festival.everyday.core.festival.service;
 
-import com.festival.everyday.core.application.dto.ApplyStatus;
-import com.festival.everyday.core.application.repository.ApplicationRepository;
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.common.dto.response.PageResponse;
+import com.festival.everyday.core.application.dto.Progress;
 import com.festival.everyday.core.company.dto.command.RecommendCompanyDto;
 import com.festival.everyday.core.company.repository.CompanyRepository;
-import com.festival.everyday.core.favorite.dto.FavorStatus;
-import com.festival.everyday.core.favorite.repository.FavoriteRepository;
-import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.*;
 import com.festival.everyday.core.festival.dto.response.FestivalDetailResponse;
 import com.festival.everyday.core.festival.exception.FestivalNotFoundException;
@@ -44,20 +38,10 @@ public class FestivalQueryService {
         return FestivalDetailResponse.from(festivalDetail);
     }
 
-    // 진행 중인 내 축제 보기
-    public Page<MyFestivalDto> findOngoingListByHolderId(Long holderId, Pageable pageable) {
+    public Page<MyFestivalDto> findFestivalsByHolder(Long holderId, Pageable pageable, Progress progress) {
 
         // 조회한 축제 목록을 찜 여부와 함께 DTO 로 변환합니다.
-        LocalDateTime now = LocalDateTime.now();
-        return festivalRepository.findOngoingFestivalsByHolderIdWithUrl(holderId,now, pageable);
-    }
-
-    // 진행 완료 내 축제 보기
-    public Page<MyFestivalDto> findEndedListByHolderId(Long holderId, Pageable pageable) {
-
-        // 조회한 축제 목록을 찜 여부와 함께 DTO 로 변환합니다.
-        LocalDateTime now = LocalDateTime.now();
-        return festivalRepository.findEndedFestivalsByHolderIdWithUrl(holderId, now, pageable);
+        return festivalRepository.findFestivalsByHolderIdWithUrl(holderId, pageable, progress);
     }
 
     // 사용자 ID 를 통해 찜 여부와 함께 축제 목록 페이지를 검색합니다.

@@ -1,31 +1,29 @@
 package com.festival.everyday.core.image.controller;
 
-import com.festival.everyday.core.image.domain.Image;
 import com.festival.everyday.core.image.domain.OwnerType;
 import com.festival.everyday.core.image.dto.common.ImageDto;
 import com.festival.everyday.core.image.dto.request.ImageRequest;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
 import com.festival.everyday.core.image.dto.response.ImageResponse;
 import com.festival.everyday.core.image.exception.InvalidOwnerException;
-import com.festival.everyday.core.image.service.ImageService;
+import com.festival.everyday.core.image.service.ImageCommandService;
+import com.festival.everyday.core.image.service.ImageQueryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.MalformedURLException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/images")
-public class ImageApiController {
+public class ImageController {
 
-    private final ImageService imageService;
+    private final ImageQueryService imageQueryService;
+    private final ImageCommandService imageCommandService;
 
     @GetMapping
     public ResponseEntity<ApiResponse<ImageResponse>> viewImage(@RequestParam("id") Long id) {
-        ImageResponse imageResponse = imageService.getImage(id);
+        ImageResponse imageResponse = imageQueryService.getImage(id);
         return ResponseEntity.ok(ApiResponse.success("이미지 조회 성공", imageResponse));
     }
 
@@ -44,7 +42,7 @@ public class ImageApiController {
         };
 
         ImageRequest imageRequest = new ImageRequest(Long.parseLong(ownerId), type);
-        Long id = imageService.upload(ImageDto.from(imageRequest), image);
+        Long id = imageCommandService.upload(ImageDto.from(imageRequest), image);
 
         return ResponseEntity.ok(ApiResponse.success("이미지 저장에 성공했습니다.", id));
     }

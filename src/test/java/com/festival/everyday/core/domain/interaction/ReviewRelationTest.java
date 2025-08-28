@@ -1,7 +1,7 @@
 package com.festival.everyday.core.domain.interaction;
 
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.common.dto.SenderType;
+import com.festival.everyday.core.common.domain.ReceiverType;
+import com.festival.everyday.core.common.domain.SenderType;
 import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.common.domain.Address;
 import com.festival.everyday.core.common.domain.Period;
