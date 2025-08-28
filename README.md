@@ -107,4 +107,4 @@ export VECTOR_DB_USERNAME=festival
 
 ---
 ## 결과
-[![발표자료 미리보기](./docs/thumbnail.png)](./docs/서강대학교_배포의민족_오늘도축제로다.pdf)
+[![발표자료 미리보기](./docs/thumbnail.png)](./docs/presentation.pdf)
