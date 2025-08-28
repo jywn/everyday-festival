@@ -103,7 +103,8 @@ export VECTOR_DB_USERNAME=festival
 ---
 
 ## 배포
-ssh -i hackathon_server105.pem ec2-user@43.201.6.192
+`ssh -i hackathon_server105.pem ec2-user@43.201.6.192`
 
 ---
 ## 결과
+[![발표자료 미리보기](./docs/thumbnail.png)](./docs/presentation.pdf)
