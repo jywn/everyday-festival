@@ -2,32 +2,25 @@ package com.festival.everyday.core.company.controller;
 
 import com.festival.everyday.core.ai.service.EmbeddingService;
 import com.festival.everyday.core.common.config.jwt.TokenAuthenticationFilter;
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.company.domain.Company;
-import com.festival.everyday.core.company.dto.command.CompanyDetailDto;
 import com.festival.everyday.core.company.dto.command.CompanySearchDto;
 import com.festival.everyday.core.company.dto.response.CompanyDetailResponse;
-import com.festival.everyday.core.favorite.dto.FavorStatus;
 import com.festival.everyday.core.common.dto.request.SearchRequest;
 import com.festival.everyday.core.common.dto.response.ApiResponse;
 import com.festival.everyday.core.common.dto.response.PageResponse;
-import com.festival.everyday.core.favorite.repository.FavoriteRepository;
 import com.festival.everyday.core.company.service.CompanyQueryService;
 import com.festival.everyday.core.festival.dto.response.RecommendFestivalResponse;
-import com.festival.everyday.core.festival.service.FestivalQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/companies")
-public class CompanyApiController {
+public class CompanyController {
 
     private final CompanyQueryService companyQueryService;
     private final EmbeddingService embeddingService;

@@ -1,4 +1,4 @@
-package com.festival.everyday.core.common.dto;
+package com.festival.everyday.core.common.domain;
 
 public enum ReceiverType {
     FESTIVAL, COMPANY

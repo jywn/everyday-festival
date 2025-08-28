@@ -1,10 +1,8 @@
 package com.festival.everyday.core.notice.dto.command;
 
-import com.festival.everyday.core.common.dto.ReceiverType;
 import com.festival.everyday.core.notice.domain.Notice;
 import com.festival.everyday.core.notice.domain.NoticeType;
 import com.festival.everyday.core.notice.domain.payload.NoticePayload;
-import com.festival.everyday.core.notice.handler.NoticeEventHandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

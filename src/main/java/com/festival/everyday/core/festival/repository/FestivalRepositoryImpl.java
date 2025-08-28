@@ -1,14 +1,11 @@
 package com.festival.everyday.core.festival.repository;
 
 import com.festival.everyday.core.application.dto.ApplyStatus;
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.company.dto.command.CompanySearchDto;
+import com.festival.everyday.core.application.dto.Progress;
+import com.festival.everyday.core.common.domain.ReceiverType;
 import com.festival.everyday.core.favorite.dto.FavorStatus;
-import com.festival.everyday.core.festival.domain.Festival;
 import com.festival.everyday.core.festival.dto.command.*;
 import com.festival.everyday.core.image.domain.OwnerType;
-import com.festival.everyday.core.recruit.domain.QCompanyRecruit;
-import com.festival.everyday.core.recruit.dto.command.CategoryDto;
 import com.festival.everyday.core.user.domain.Category;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.*;
@@ -21,11 +18,9 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static com.festival.everyday.core.application.domain.QApplication.*;
 import static com.festival.everyday.core.common.Tokenizer.*;
-import static com.festival.everyday.core.company.domain.QCompany.company;
 import static com.festival.everyday.core.favorite.domain.QFavorite.*;
 import static com.festival.everyday.core.festival.domain.QFestival.*;
 import static com.festival.everyday.core.image.domain.QImage.*;
@@ -77,9 +72,8 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
 
-    // 페이징
     @Override
-    public Page<MyFestivalDto> findOngoingFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable) {
+    public Page<MyFestivalDto> findFestivalsByHolderIdWithUrl(Long holderId, Pageable pageable, Progress progress) {
 
         List<MyFestivalDto> queryResult = queryFactory
                 .select(Projections.constructor(MyFestivalDto.class,
@@ -88,7 +82,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .from(festival)
                 .join(festival.holder, holder)
                 .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(holder.id.eq(holderId).and(festival.period.end.goe(now)))    // 페스티벌 끝난 시간 >= now
+                .where(holder.id.eq(holderId).and(isOngoing(progress)))
                 .orderBy(festival.period.end.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -98,32 +92,7 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .select(festival.count())
                 .from(festival)
                 .join(festival.holder, holder)
-                .where(holder.id.eq(holderId));
-
-        return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
-    }
-
-    @Override
-    public Page<MyFestivalDto> findEndedFestivalsByHolderIdWithUrl(Long holderId, LocalDateTime now, Pageable pageable) {
-
-        List<MyFestivalDto> queryResult = queryFactory
-                .select(Projections.constructor(MyFestivalDto.class,
-                        festival.id, festival.name, festival.address.city, festival.address.district, festival.address.detail,
-                        festival.period.begin, festival.period.end, image.url))
-                .from(festival)
-                .join(festival.holder, holder)
-                .leftJoin(image).on(image.ownerType.eq(OwnerType.FESTIVAL).and(image.ownerId.eq(festival.id)))
-                .where(holder.id.eq(holderId).and(festival.period.end.loe(now)))
-                .orderBy(festival.period.end.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        JPAQuery<Long> countQuery = queryFactory
-                .select(festival.count())
-                .from(festival)
-                .join(festival.holder, holder)
-                .where(holder.id.eq(holderId));
+                .where(holder.id.eq(holderId).and(isOngoing(progress)));
 
         return PageableExecutionUtils.getPage(queryResult, pageable, countQuery::fetchOne);
     }
@@ -199,23 +168,6 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
                 .fetch();
      }
 
-//    @Override
-//    public List<FestivalSearchDto> findSimpleFestivalList(Long userId, List<Long> festivalIds) {
-//
-//        return queryFactory
-//                .select(Projections.constructor(CompanySearchDto.class,
-//                        company.id, company.name, company.category,
-//                        company.address.city, company.address.district, company.address.detail,
-//                        favorStatus(), image.url))
-//                .from(company)
-//                .leftJoin(favorite).on(favorite.sender.id.eq(userId)
-//                        .and(favorite.receiverType.eq(ReceiverType.COMPANY)
-//                                .and(favorite.receiverId.eq(company.id))))
-//                .leftJoin(image).on(image.ownerType.eq(OwnerType.COMPANY).and(image.ownerId.eq(company.id)))
-//                .where(company.id.in(companyIds))
-//                .fetch();
-//    }
-
     private static SimpleExpression<String> favorStatus() {
         return new CaseBuilder()
                 .when(favorite.id.isNotNull()).then(Expressions.constant(FavorStatus.FAVORED.name()))
@@ -235,5 +187,9 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
             andCondition = (andCondition == null) ? tokenExpr : andCondition.and(tokenExpr);
         }
         return andCondition;
+    }
+
+    private BooleanExpression isOngoing(Progress progress) {
+        return progress.equals(Progress.ONGOING) ? festival.period.end.after(LocalDateTime.now()) : festival.period.end.before(LocalDateTime.now());
     }
 }

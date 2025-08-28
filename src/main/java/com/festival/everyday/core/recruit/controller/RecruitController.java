@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class RecruitApiController {
+public class RecruitController {
 
     private final RecruitCommandService recruitCommandService;
     private final RecruitQueryService recruitQueryService;
@@ -34,15 +34,4 @@ public class RecruitApiController {
         RecruitWithQuestionsResponse response = RecruitWithQuestionsResponse.from(recruitQueryService.findRecruitWithQuestions(recruitId));
         return ResponseEntity.ok(ApiResponse.success("모집 공고와 추가 질문 조회에 성공하였습니다.", response));
     }
-//    @GetMapping("/festivals/{festivalId}/company-recruit")
-//    public ResponseEntity<ApiResponse<CompanyRecruitResponse>> viewCompanyRecruit(@PathVariable Long festivalId) {
-//        CompanyRecruitResponse companyRecruitResponse = CompanyRecruitResponse.from(recruitQueryService.findCompanyRecruit(festivalId));
-//        return ResponseEntity.ok(ApiResponse.success("업체 모집 공고 조회에 성공하였습니다.", companyRecruitResponse));
-//    }
-//
-//    @GetMapping("/festivals/{festivalId}/labor-recruit")
-//    public ResponseEntity<ApiResponse<LaborRecruitResponse>> viewLaborRecruit(@PathVariable Long festivalId) {
-//        LaborRecruitResponse laborRecruitResponse = LaborRecruitResponse.from(recruitQueryService.findLaborRecruit(festivalId));
-//        return ResponseEntity.ok(ApiResponse.success("근로자 모집 공고 조회에 성공하였습니다.", laborRecruitResponse));
-//    }
 }

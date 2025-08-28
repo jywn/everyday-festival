@@ -1,7 +1,7 @@
 package com.festival.everyday.core.common;
 
 import com.festival.everyday.core.common.domain.Period;
-import com.festival.everyday.core.common.dto.ReceiverType;
+import com.festival.everyday.core.common.domain.ReceiverType;
 import com.festival.everyday.core.company.domain.Company;
 import com.festival.everyday.core.favorite.domain.Favorite;
 import com.festival.everyday.core.favorite.repository.FavoriteRepository;

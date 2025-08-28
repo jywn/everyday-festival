@@ -1,6 +1,6 @@
 package com.festival.everyday.core.common.dummy;
 
-import com.festival.everyday.core.common.dto.ReceiverType;
+import com.festival.everyday.core.common.domain.ReceiverType;
 import com.festival.everyday.core.favorite.dto.request.FavoriteRequest;
 import com.festival.everyday.core.favorite.service.FavoriteCommandService;
 import lombok.RequiredArgsConstructor;

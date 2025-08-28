@@ -1,7 +1,7 @@
 package com.festival.everyday.core.review.repository;
 
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.common.dto.SenderType;
+import com.festival.everyday.core.common.domain.ReceiverType;
+import com.festival.everyday.core.common.domain.SenderType;
 import com.festival.everyday.core.review.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 

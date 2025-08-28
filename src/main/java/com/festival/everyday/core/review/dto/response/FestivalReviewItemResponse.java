@@ -1,7 +1,7 @@
 package com.festival.everyday.core.review.dto.response;
 
 import com.festival.everyday.core.review.domain.Review;
-import com.festival.everyday.core.common.dto.SenderType;
+import com.festival.everyday.core.common.domain.SenderType;
 import lombok.Builder;
 import lombok.Getter;
 

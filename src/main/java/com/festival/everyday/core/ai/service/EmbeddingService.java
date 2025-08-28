@@ -61,18 +61,6 @@ public class EmbeddingService {
         return embedding;
     }
 
-//    // JAVA float[] -> pgvector vector
-//    private String toPgVector(float[] embedding) {
-//        StringBuilder sb = new StringBuilder("[");
-//        for (int i = 0; i < embedding.length; i++) {
-//            if (i > 0) sb.append(",");
-//            sb.append(embedding[i]);
-//        }
-//        sb.append("]");
-//        return sb.toString();
-//    }
-
-
     // 임베딩 값 반환
     public float[] createEmbedding(String text) {
         return embeddingModel.embed(text);

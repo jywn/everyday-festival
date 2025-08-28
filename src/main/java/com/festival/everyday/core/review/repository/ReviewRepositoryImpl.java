@@ -1,12 +1,7 @@
 package com.festival.everyday.core.review.repository;
 
-import com.festival.everyday.core.common.dto.ReceiverType;
-import com.festival.everyday.core.common.dto.SenderType;
-import com.festival.everyday.core.company.domain.QCompany;
-import com.festival.everyday.core.festival.domain.QFestival;
-import com.festival.everyday.core.review.domain.QReview;
+import com.festival.everyday.core.common.domain.ReceiverType;
 import com.festival.everyday.core.review.dto.command.ReviewAndSenderDto;
-import com.festival.everyday.core.user.domain.QLabor;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,7 +12,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
-import static com.festival.everyday.core.common.dto.SenderType.*;
+import static com.festival.everyday.core.common.domain.SenderType.*;
 import static com.festival.everyday.core.company.domain.QCompany.*;
 import static com.festival.everyday.core.festival.domain.QFestival.*;
 import static com.festival.everyday.core.review.domain.QReview.*;

@@ -1,10 +1,12 @@
 package com.festival.everyday.core.image.service;
 
 import com.festival.everyday.core.image.domain.Image;
+import com.festival.everyday.core.image.dto.response.ImageResponse;
 import com.festival.everyday.core.image.exception.ImageNotFoundException;
 import com.festival.everyday.core.image.repository.ImageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -22,11 +24,22 @@ public class ImageQueryService {
 
     private final ImageRepository imageRepository;
 
-    // 이미지를 조회합니다. (가능한 사용하지 않습니다.)
-    public Resource getImage(Long id) throws MalformedURLException {
-        Image findImage = imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
+    @Value("${IMAGE_URL}")
+    private String url;
 
-        Path imgPath = Paths.get(findImage.getFullPath(), findImage.getEncodedName());
-        return new UrlResource(imgPath.toUri());
+    /**
+     * 이미지 조회
+     */
+    public ImageResponse getImage(Long id) {
+        Image image = imageRepository.findById(id)
+                .orElseThrow(ImageNotFoundException::new);
+
+        String imageUrl = url + image.getEncodedName();
+
+        return ImageResponse.of(
+                image.getId(),
+                image.getOriginalName(),
+                imageUrl
+        );
     }
 }
